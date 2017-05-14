@@ -1,19 +1,26 @@
-___
 #### GL
-Complete OpenGL 4.5 Core Profile Wrapper for C++11. 
-___
+Complete OpenGL 4.5 Core Profile Wrapper for C++11.
+
+---
+
 #### Dependencies
 * OpenGL
 * GLEW
-* CUDA (optional, for interoperation support)
-___
+* CUDA (optional, for interoperation support) 
+
+---
+
 #### Building
 * Follow the cmake build process for locating the dependencies.
 * Toggle BUILD_SHARED_LIBS for creating dynamic library.
 * Toggle CUDA_INTEROP_SUPPORT for Cuda interoperation support. Note that the build will ask for the location of Cuda upon enabling this option.
-___
+
+---
+
 #### Getting Started
+
 Creating and uploading data to buffers:
+
 ```cpp
 #include <gl/all.hpp>
 
@@ -25,7 +32,9 @@ void buffer_example()
   buffer.set_data(vertices.size(), vertices.data());
 }
 ```
+
 Creating and uploading data to textures:
+
 ```cpp
 #include <gl/all.hpp>
 
@@ -62,4 +71,9 @@ void shader_program_example()
   program.unuse();
 }
 ```
+
+---
+
+#### Extensions
+
 For adding GLM support to type-inferring uniform variable setters of the shader program, simply `#include <gl/auxiliary/glm_uniforms.hpp>`.
