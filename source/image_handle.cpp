@@ -13,10 +13,10 @@ void image_handle::set_resident(bool resident, GLenum access)
 }
 bool image_handle::is_resident () const
 {
-  return glIsImageHandleResidentARB(id_);
+  return glIsImageHandleResidentARB(id_) != 0;
 }
 
-GLuint image_handle::id() const
+GLuint64 image_handle::id() const
 {
   return id_;
 }

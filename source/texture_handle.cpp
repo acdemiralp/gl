@@ -13,10 +13,10 @@ void texture_handle::set_resident(bool resident)
 }
 bool texture_handle::is_resident () const
 {
-  return glIsTextureHandleResidentARB(id_);
+  return glIsTextureHandleResidentARB(id_) != 0;
 }
 
-GLuint texture_handle::id() const
+GLuint64 texture_handle::id() const
 {
   return id_;
 }

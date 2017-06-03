@@ -32,7 +32,7 @@ public:
   void set_resident(bool resident, GLenum access = GL_READ_WRITE);
   bool is_resident () const;
 
-  GLuint id() const;
+  GLuint64 id() const;
 
 protected:
   GLuint64 id_;

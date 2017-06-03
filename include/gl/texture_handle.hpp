@@ -38,7 +38,7 @@ public:
   void set_resident(bool resident);
   bool is_resident () const;
 
-  GLuint id() const;
+  GLuint64 id() const;
 
 protected:
   GLuint64 id_;
