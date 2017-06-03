@@ -13,8 +13,10 @@
 #include <utility>
 #include <vector>
 
+#include <gl/image_handle.hpp>
 #include <gl/opengl.hpp>
 #include <gl/shader.hpp>
+#include <gl/texture_handle.hpp>
 
 #include <export.hpp>
 
@@ -179,6 +181,13 @@ public:
   void set_uniform_matrix_42d(GLint location, const std::vector<GLdouble>& value, bool transpose = false);
   void set_uniform_matrix_34d(GLint location, const std::vector<GLdouble>& value, bool transpose = false);
   void set_uniform_matrix_43d(GLint location, const std::vector<GLdouble>& value, bool transpose = false);
+
+#ifdef GL_ARB_bindless_texture
+  void set_uniform_handle(GLint location, const texture_handle&              value);
+  void set_uniform_handle(GLint location, const std::vector<texture_handle>& value);
+  void set_uniform_handle(GLint location, const image_handle&                value);
+  void set_uniform_handle(GLint location, const std::vector<image_handle>&   value);
+#endif
 
   void set_uniform_block_binding(GLuint index, GLuint binding);
 
