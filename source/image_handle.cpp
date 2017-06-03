@@ -15,4 +15,9 @@ bool image_handle::is_resident () const
 {
   return glIsImageHandleResidentARB(id_);
 }
+
+GLuint image_handle::id() const
+{
+  return id_;
+}
 }

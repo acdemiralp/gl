@@ -15,4 +15,9 @@ bool texture_handle::is_resident () const
 {
   return glIsTextureHandleResidentARB(id_);
 }
+
+GLuint texture_handle::id() const
+{
+  return id_;
+}
 }
