@@ -53,4 +53,9 @@
 // TODO 22.0 State and state requests.
 #include <gl/state.hpp>
 
+// Extension - Image handles.
+#include <gl/image_handle.hpp>
+// Extension - Texture handles.
+#include <gl/texture_handle.hpp>
+
 #endif
