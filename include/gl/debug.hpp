@@ -17,7 +17,7 @@
 
 namespace gl
 {
-struct debug_log
+struct GL_EXPORT debug_log
 {
   GLenum      source   ;
   GLenum      type     ;
