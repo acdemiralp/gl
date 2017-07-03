@@ -18,7 +18,7 @@
 #include <gl/shader.hpp>
 // 7.3 Program objects (uncopyable).
 #include <gl/program.hpp>
-// TODO 7.4 Program pipeline objects.
+// 7.4 Program pipeline objects (uncopyable).
 #include <gl/pipeline.hpp>
 // 8.1 Texture objects (uncopyable).
 #include <gl/texture.hpp>
