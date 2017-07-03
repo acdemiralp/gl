@@ -68,6 +68,10 @@ std::string object_label     (const type& object)
   return label;
 }
 GL_EXPORT std::string sync_object_label(const sync& sync_object);
+
+// 22.2 String queries.
+void* get_debug_callback_function ();
+void* get_debug_callback_user_data();
 }
 
 #endif

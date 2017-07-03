@@ -6,6 +6,9 @@
 #ifndef GL_STATE_HPP_
 #define GL_STATE_HPP_
 
+#include <string>
+#include <vector>
+
 #include <gl/opengl.hpp>
 
 #include <export.hpp>
@@ -47,10 +50,14 @@ GL_EXPORT void set_polygon_smooth_hint            (GLenum hint = GL_NICEST);
 // 22.1 Simple queries.
 
 // 22.2 String queries.
+GL_EXPORT std::string renderer();
+GL_EXPORT std::string vendor  ();
+GL_EXPORT std::string version ();
+
+GL_EXPORT std::vector<std::string> extensions               ();
+GL_EXPORT std::vector<std::string> shading_language_versions();
 
 // 22.3 Internal format queries.
-
-// 22.4 Transform feedback queries.
 
 }
 

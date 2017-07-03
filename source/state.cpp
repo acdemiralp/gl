@@ -126,8 +126,40 @@ void set_polygon_smooth_hint            (GLenum hint)
 // 22.1 Simple queries.
 
 // 22.2 String queries.
+std::string renderer()
+{
+  return std::string(reinterpret_cast<char const*>(glGetString(GL_RENDERER)));
+}
+std::string vendor  ()
+{
+  return std::string(reinterpret_cast<char const*>(glGetString(GL_VENDOR)));
+}
+std::string version ()
+{
+  return std::string(reinterpret_cast<char const*>(glGetString(GL_VERSION)));
+}
+
+std::vector<std::string> extensions               ()
+{
+  GLint count;
+  glGetIntegerv(GL_NUM_EXTENSIONS, &count);
+
+  std::vector<std::string> result;
+  for(auto i = 0; i < count; i++)
+    result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_EXTENSIONS, i)));
+  return result;
+}
+std::vector<std::string> shading_language_versions()
+{
+  GLint count;
+  glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &count);
+
+  std::vector<std::string> result;
+  for(auto i = 0; i < count; i++)
+    result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
+  return result;
+}
 
 // 22.3 Internal format queries.
 
-// 22.4 Transform feedback queries.
 }
