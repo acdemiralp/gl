@@ -43,11 +43,22 @@ public:
   void draw_stream          (GLenum mode, GLuint stream)                         const;
   void draw_stream_instanced(GLenum mode, GLuint stream, GLsizei instance_count) const;
 
+  // 22.4 Transform feedback queries.
+  bool    is_paused     () const;
+  bool    is_active     () const;
+  GLint   buffer_binding(GLuint index) const;
+  GLint   buffer_start  (GLuint index) const;
+  GLint64 buffer_size   (GLuint index) const;
+
   static const GLenum native_type = GL_TRANSFORM_FEEDBACK;
 
   GLuint id() const;
 
-private:
+protected:
+  GLint   get_parameter   (GLenum parameter) const;
+  GLint   get_parameter   (GLenum parameter, GLuint index) const;
+  GLint64 get_parameter_64(GLenum parameter, GLuint index) const;
+
   GLuint id_      = 0;
   bool   managed_ = true;
 };

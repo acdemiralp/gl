@@ -78,8 +78,49 @@ void transform_feedback::draw_stream_instanced(GLenum mode, GLuint stream, GLsiz
   glDrawTransformFeedbackStreamInstanced(mode, id_, stream, instance_count);
 }
 
+// 22.4 Transform feedback queries.
+bool    transform_feedback::is_paused     () const
+{
+  return get_parameter(GL_TRANSFORM_FEEDBACK_PAUSED);
+}
+bool    transform_feedback::is_active     () const
+{
+  return get_parameter(GL_TRANSFORM_FEEDBACK_ACTIVE);
+}
+GLint   transform_feedback::buffer_binding(GLuint index) const
+{
+  return get_parameter(GL_TRANSFORM_FEEDBACK_BUFFER_BINDING, index);
+}
+GLint   transform_feedback::buffer_start  (GLuint index) const
+{
+  return get_parameter(GL_TRANSFORM_FEEDBACK_BUFFER_START, index);
+}
+GLint64 transform_feedback::buffer_size   (GLuint index) const
+{
+  return get_parameter_64(GL_TRANSFORM_FEEDBACK_BUFFER_SIZE, index);
+}
+
 GLuint transform_feedback::id() const
 {
   return id_;
+}
+
+GLint   transform_feedback::get_parameter   (GLenum parameter) const
+{
+  GLint result;
+  glGetTransformFeedbackiv(id_, parameter, &result);
+  return result;
+}
+GLint   transform_feedback::get_parameter   (GLenum parameter, GLuint index) const
+{
+  GLint result;
+  glGetTransformFeedbacki_v(id_, parameter, index, &result);
+  return result;
+}
+GLint64 transform_feedback::get_parameter_64(GLenum parameter, GLuint index) const
+{
+  GLint64 result;
+  glGetTransformFeedbacki64_v(id_, parameter, index, &result);
+  return result;
 }
 }
