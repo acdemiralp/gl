@@ -48,6 +48,7 @@ GL_EXPORT void set_line_smooth_hint               (GLenum hint = GL_NICEST);
 GL_EXPORT void set_polygon_smooth_hint            (GLenum hint = GL_NICEST);
 
 // 22.1 Simple queries.
+// TODO!
 
 // 22.2 String queries.
 GL_EXPORT std::string renderer();
@@ -58,7 +59,7 @@ GL_EXPORT std::vector<std::string> extensions               ();
 GL_EXPORT std::vector<std::string> shading_language_versions();
 
 // 22.3 Internal format queries.
-
+// TODO!
 }
 
 #endif

@@ -24,7 +24,7 @@
 #include <gl/texture.hpp>
 // 8.2 Sampler objects.
 #include <gl/sampler.hpp>
-// TODO 8.18 Texture views.
+// 8.18 Texture views.
 #include <gl/texture_view.hpp>
 // 9.0 Framebuffer objects (uncopyable).
 #include <gl/framebuffer.hpp>
@@ -50,7 +50,7 @@
 #include <gl/compute.hpp>
 // 20.0 Debug.
 #include <gl/debug.hpp>
-// TODO 22.0 State and state requests.
+// 22.0 State and state requests.
 #include <gl/state.hpp>
 
 // Extension - Image handles.

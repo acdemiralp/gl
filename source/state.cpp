@@ -124,6 +124,7 @@ void set_polygon_smooth_hint            (GLenum hint)
 }
 
 // 22.1 Simple queries.
+// TODO!
 
 // 22.2 String queries.
 std::string renderer()
@@ -161,5 +162,5 @@ std::vector<std::string> shading_language_versions()
 }
 
 // 22.3 Internal format queries.
-
+// TODO!
 }
