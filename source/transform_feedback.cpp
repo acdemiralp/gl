@@ -81,11 +81,11 @@ void transform_feedback::draw_stream_instanced(GLenum mode, GLuint stream, GLsiz
 // 22.4 Transform feedback queries.
 bool    transform_feedback::is_paused     () const
 {
-  return get_parameter(GL_TRANSFORM_FEEDBACK_PAUSED);
+  return get_parameter(GL_TRANSFORM_FEEDBACK_PAUSED) != 0;
 }
 bool    transform_feedback::is_active     () const
 {
-  return get_parameter(GL_TRANSFORM_FEEDBACK_ACTIVE);
+  return get_parameter(GL_TRANSFORM_FEEDBACK_ACTIVE) != 0;
 }
 GLint   transform_feedback::buffer_binding(GLuint index) const
 {
