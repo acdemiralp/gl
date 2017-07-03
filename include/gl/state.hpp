@@ -13,30 +13,30 @@
 namespace gl
 {
 // 8.4.1 Pixel storage modes.
-GL_EXPORT void set_pack_swap_bytes               (bool   value = false);
-GL_EXPORT void set_pack_lsb_first                (bool   value = false);
-GL_EXPORT void set_pack_row_length               (GLint  value = 0);
-GL_EXPORT void set_pack_image_height             (GLint  value = 0);
-GL_EXPORT void set_pack_skip_images              (GLint  value = 0);
-GL_EXPORT void set_pack_skip_pixels              (GLint  value = 0);
-GL_EXPORT void set_pack_skip_rows                (GLint  value = 0);
-GL_EXPORT void set_pack_alignment                (GLint  value = 4);
-GL_EXPORT void set_pack_compressed_block_width   (GLint  value = 0);
-GL_EXPORT void set_pack_compressed_block_height  (GLint  value = 0);
-GL_EXPORT void set_pack_compressed_block_depth   (GLint  value = 0);
-GL_EXPORT void set_pack_compressed_block_size    (GLint  value = 0);
-GL_EXPORT void set_unpack_swap_bytes             (bool   value = false);
-GL_EXPORT void set_unpack_lsb_first              (bool   value = false);
-GL_EXPORT void set_unpack_row_length             (GLint  value = 0);
-GL_EXPORT void set_unpack_image_height           (GLint  value = 0);
-GL_EXPORT void set_unpack_skip_images            (GLint  value = 0);
-GL_EXPORT void set_unpack_skip_pixels            (GLint  value = 0);
-GL_EXPORT void set_unpack_skip_rows              (GLint  value = 0);
-GL_EXPORT void set_unpack_alignment              (GLint  value = 4);
-GL_EXPORT void set_unpack_compressed_block_width (GLint  value = 0);
-GL_EXPORT void set_unpack_compressed_block_height(GLint  value = 0);
-GL_EXPORT void set_unpack_compressed_block_depth (GLint  value = 0);
-GL_EXPORT void set_unpack_compressed_block_size  (GLint  value = 0);
+GL_EXPORT void set_pack_swap_bytes                (bool   value = false);
+GL_EXPORT void set_pack_lsb_first                 (bool   value = false);
+GL_EXPORT void set_pack_row_length                (GLint  value = 0);
+GL_EXPORT void set_pack_image_height              (GLint  value = 0);
+GL_EXPORT void set_pack_skip_images               (GLint  value = 0);
+GL_EXPORT void set_pack_skip_pixels               (GLint  value = 0);
+GL_EXPORT void set_pack_skip_rows                 (GLint  value = 0);
+GL_EXPORT void set_pack_alignment                 (GLint  value = 4);
+GL_EXPORT void set_pack_compressed_block_width    (GLint  value = 0);
+GL_EXPORT void set_pack_compressed_block_height   (GLint  value = 0);
+GL_EXPORT void set_pack_compressed_block_depth    (GLint  value = 0);
+GL_EXPORT void set_pack_compressed_block_size     (GLint  value = 0);
+GL_EXPORT void set_unpack_swap_bytes              (bool   value = false);
+GL_EXPORT void set_unpack_lsb_first               (bool   value = false);
+GL_EXPORT void set_unpack_row_length              (GLint  value = 0);
+GL_EXPORT void set_unpack_image_height            (GLint  value = 0);
+GL_EXPORT void set_unpack_skip_images             (GLint  value = 0);
+GL_EXPORT void set_unpack_skip_pixels             (GLint  value = 0);
+GL_EXPORT void set_unpack_skip_rows               (GLint  value = 0);
+GL_EXPORT void set_unpack_alignment               (GLint  value = 4);
+GL_EXPORT void set_unpack_compressed_block_width  (GLint  value = 0);
+GL_EXPORT void set_unpack_compressed_block_height (GLint  value = 0);
+GL_EXPORT void set_unpack_compressed_block_depth  (GLint  value = 0);
+GL_EXPORT void set_unpack_compressed_block_size   (GLint  value = 0);
 
 // 21.5 Hints.
 GL_EXPORT void set_fragment_shader_derivative_hint(GLenum hint = GL_NICEST);
