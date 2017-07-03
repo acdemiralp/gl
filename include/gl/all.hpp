@@ -18,13 +18,13 @@
 #include <gl/shader.hpp>
 // 7.3 Program objects (uncopyable).
 #include <gl/program.hpp>
-// TODO 7.4 Program pipeline objects.
+// 7.4 Program pipeline objects (uncopyable).
 #include <gl/pipeline.hpp>
 // 8.1 Texture objects (uncopyable).
 #include <gl/texture.hpp>
 // 8.2 Sampler objects.
 #include <gl/sampler.hpp>
-// TODO 8.18 Texture views.
+// 8.18 Texture views.
 #include <gl/texture_view.hpp>
 // 9.0 Framebuffer objects (uncopyable).
 #include <gl/framebuffer.hpp>
@@ -50,7 +50,12 @@
 #include <gl/compute.hpp>
 // 20.0 Debug.
 #include <gl/debug.hpp>
-// TODO 22.0 State and state requests.
+// 22.0 State and state requests.
 #include <gl/state.hpp>
+
+// Extension - Image handles.
+#include <gl/image_handle.hpp>
+// Extension - Texture handles.
+#include <gl/texture_handle.hpp>
 
 #endif

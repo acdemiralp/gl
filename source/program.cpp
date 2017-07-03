@@ -533,6 +533,35 @@ void program::set_uniform_matrix_43d(GLint location, const std::vector<GLdouble>
   glProgramUniformMatrix4x3dv(id_, location, static_cast<GLsizei>(value.size()) / 12, transpose, value.data());
 }
 
+#ifdef GL_ARB_bindless_texture
+void program::set_uniform_handle(GLint location, const texture_handle&              value)
+{
+  glProgramUniformHandleui64ARB(id_, location, value.id());
+}
+void program::set_uniform_handle(GLint location, const std::vector<texture_handle>& value)
+{
+  std::vector<GLuint64> ids(value.size());
+  std::transform(value.begin(), value.end(), ids.begin(), [&](const texture_handle& iteratee)
+  {
+    return iteratee.id();
+  });
+  glProgramUniformHandleui64vARB(id_, location, static_cast<GLsizei>(ids.size()), ids.data());
+}
+void program::set_uniform_handle(GLint location, const image_handle&                value)
+{
+  glProgramUniformHandleui64ARB(id_, location, value.id());
+}
+void program::set_uniform_handle(GLint location, const std::vector<image_handle>&   value)
+{
+  std::vector<GLuint64> ids(value.size());
+  std::transform(value.begin(), value.end(), ids.begin(), [&](const image_handle& iteratee)
+  {
+    return iteratee.id();
+  });
+  glProgramUniformHandleui64vARB(id_, location, static_cast<GLsizei>(ids.size()), ids.data());
+}
+#endif
+
 void program::set_uniform_block_binding(GLuint index, GLuint binding)
 {
   glUniformBlockBinding(id_, index, binding);

@@ -100,4 +100,17 @@ std::string sync_object_label(const sync& sync_object)
   glGetObjectPtrLabel(sync_object.id(), size, nullptr, &label[0]);
   return label;
 }
+
+void* get_debug_callback_function ()
+{
+  GLvoid* result;
+  glGetPointerv(GL_DEBUG_CALLBACK_FUNCTION, &result);
+  return result;
+}
+void* get_debug_callback_user_data()
+{
+  GLvoid* result;
+  glGetPointerv(GL_DEBUG_CALLBACK_USER_PARAM, &result);
+  return result;
+}
 }

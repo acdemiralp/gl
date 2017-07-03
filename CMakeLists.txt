@@ -25,6 +25,7 @@ set(PROJECT_SOURCES
   include/gl/debug.hpp
   include/gl/draw_commands.hpp
   include/gl/framebuffer.hpp
+  include/gl/image_handle.hpp
   include/gl/opengl.hpp
   include/gl/per_fragment_ops.hpp
   include/gl/pipeline.hpp
@@ -38,6 +39,7 @@ set(PROJECT_SOURCES
   include/gl/sync.hpp
   include/gl/tessellation.hpp
   include/gl/texture.hpp
+  include/gl/texture_handle.hpp
   include/gl/texture_view.hpp
   include/gl/transform_feedback.hpp
   include/gl/unmanaged.hpp
@@ -51,6 +53,7 @@ set(PROJECT_SOURCES
   source/debug.cpp
   source/draw_commands.cpp
   source/framebuffer.cpp
+  source/image_handle.cpp
   source/opengl.cpp
   source/per_fragment_ops.cpp
   source/pipeline.cpp
@@ -64,6 +67,7 @@ set(PROJECT_SOURCES
   source/sync.cpp
   source/tessellation.cpp
   source/texture.cpp
+  source/texture_handle.cpp
   source/texture_view.cpp
   source/transform_feedback.cpp
   source/vertex_array.cpp
