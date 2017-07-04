@@ -59,7 +59,8 @@ GL_EXPORT std::vector<std::string> extensions               ();
 GL_EXPORT std::vector<std::string> shading_language_versions();
 
 // 22.3 Internal format queries.
-// TODO!
+GL_EXPORT GLint   internal_format_info   (GLenum target, GLenum internal_format, GLenum parameter);
+GL_EXPORT GLint64 internal_format_info_64(GLenum target, GLenum internal_format, GLenum parameter);
 }
 
 #endif
