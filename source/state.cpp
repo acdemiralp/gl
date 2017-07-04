@@ -160,18 +160,4 @@ std::vector<std::string> shading_language_versions()
     result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
   return result;
 }
-
-// 22.3 Internal format queries.
-GLint   internal_format_info   (GLenum target, GLenum internal_format, GLenum parameter)
-{
-  GLint result;
-  glGetInternalformativ(target, internal_format, parameter, 1, &result);
-  return result;
-}
-GLint64 internal_format_info_64(GLenum target, GLenum internal_format, GLenum parameter)
-{
-  GLint64 result;
-  glGetInternalformati64v(target, internal_format, parameter, 1, &result);
-  return result;
-}
 }

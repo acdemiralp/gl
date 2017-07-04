@@ -485,6 +485,20 @@ public:
   {
     glCopyImageSubData(source.id(), GL_RENDERBUFFER, source_level, source_x, source_y, source_z, id_, target, level, x, y, z, width, height, depth);
   }
+  
+  // 22.3 Internal format queries.
+  static GLint   internal_format_info   (GLenum internal_format, GLenum parameter)
+  {
+    GLint result;
+    glGetInternalformativ(target, internal_format, parameter, 1, &result);
+    return result;
+  }
+  static GLint64 internal_format_info_64(GLenum internal_format, GLenum parameter)
+  {
+    GLint64 result;
+    glGetInternalformati64v(target, internal_format, parameter, 1, &result);
+    return result;
+  }
 
   static const GLenum native_type = GL_TEXTURE;
 
