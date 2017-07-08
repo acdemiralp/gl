@@ -88,10 +88,10 @@ source_group("include\\${PROJECT_NAME}" FILES ${EXPORT_HEADER})
 include(import_library)
 
 find_package  (GLEW REQUIRED)
-import_library(glew GLEW_INCLUDE_DIR GLEW_LIBRARY)
+import_library(GLEW_INCLUDE_DIR GLEW_LIBRARY)
 
 find_package  (OpenGL REQUIRED)
-import_library(opengl OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
+import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
 
 if(CUDA_INTEROP_SUPPORT)
   find_package(CUDA REQUIRED)
@@ -102,7 +102,7 @@ if(CUDA_INTEROP_SUPPORT)
     "-gencode=arch=compute_52,code=sm_52" # Maxwell
     "-gencode=arch=compute_61,code=sm_61" # Pascal
     "--expt-extended-lambda")
-  import_library(cuda CUDA_INCLUDE_DIRS CUDA_LIBRARIES)
+  import_library(CUDA_INCLUDE_DIRS CUDA_LIBRARIES)
 endif()
 
 ##################################################    Targets     ##################################################
@@ -111,8 +111,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<INSTALL_INTERFACE:include> PRIVATE source)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_LIBRARIES})
-set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIRS})
+target_link_libraries     (${PROJECT_NAME} PUBLIC ${PROJECT_LIBRARIES})
+set_target_properties     (${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 if(NOT BUILD_SHARED_LIBS)
@@ -125,9 +126,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${DEFINITIONS}")
 
 ##################################################    Postbuild   ##################################################
 include               (GenerateExportHeader)
+string                (TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 string                (TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 generate_export_header(${PROJECT_NAME} 
-  EXPORT_FILE_NAME     export.hpp
+  EXPORT_FILE_NAME     ${PROJECT_NAME_LOWER}_export.hpp
   EXPORT_MACRO_NAME    ${PROJECT_NAME_UPPER}_EXPORT
   STATIC_DEFINE        ${PROJECT_NAME_UPPER}_STATIC
 )

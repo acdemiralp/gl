@@ -8,7 +8,7 @@
 
 #include <gl/opengl.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {
@@ -54,6 +54,10 @@ public:
   void copy_image_sub_data(const renderbuffer& source,
     GLint source_level, GLint source_x, GLint source_y, GLint source_z,
     GLint level       , GLint x       , GLint y       , GLint z       , GLint width, GLint height, GLint depth);
+  
+  // 22.3 Internal format queries.
+  static GLint   internal_format_info   (GLenum internal_format, GLenum parameter);
+  static GLint64 internal_format_info_64(GLenum internal_format, GLenum parameter);
 
   static const GLenum native_type = GL_RENDERBUFFER;
 

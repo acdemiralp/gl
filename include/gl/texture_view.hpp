@@ -9,7 +9,7 @@
 #include <gl/opengl.hpp>
 #include <gl/texture.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {

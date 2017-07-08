@@ -102,6 +102,19 @@ void renderbuffer::copy_image_sub_data(const renderbuffer& source,
   glCopyImageSubData(source.id(), GL_RENDERBUFFER, source_level, source_x, source_y, source_z, id_, GL_RENDERBUFFER, level, x, y, z, width, height, depth);
 }
 
+GLint   renderbuffer::internal_format_info   (GLenum internal_format, GLenum parameter)
+{
+  GLint result;
+  glGetInternalformativ(GL_RENDERBUFFER, internal_format, parameter, 1, &result);
+  return result;
+}
+GLint64 renderbuffer::internal_format_info_64(GLenum internal_format, GLenum parameter)
+{
+  GLint64 result;
+  glGetInternalformati64v(GL_RENDERBUFFER, internal_format, parameter, 1, &result);
+  return result;
+}
+
 GLuint renderbuffer::id() const
 {
   return id_;

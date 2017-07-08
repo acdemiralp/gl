@@ -108,6 +108,16 @@ void set_depth_function    (GLenum function)
   glDepthFunc(function);
 }
 
+// 17.3.7 SRGB conversion.
+void set_framebuffer_srgb_enabled(bool enabled)
+{
+  enabled ? glEnable(GL_FRAMEBUFFER_SRGB) : glDisable(GL_FRAMEBUFFER_SRGB);
+}
+bool framebuffer_srgb_enabled()
+{
+  return glIsEnabled(GL_FRAMEBUFFER_SRGB) != 0;
+}
+
 // 17.3.8 Blending.
 void set_blending_enabled(bool enabled)
 {

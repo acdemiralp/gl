@@ -12,7 +12,7 @@
 #include <gl/opengl.hpp>
 #include <gl/unmanaged.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {

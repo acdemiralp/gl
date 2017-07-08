@@ -11,7 +11,7 @@
 
 #include <gl/opengl.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {
@@ -46,6 +46,10 @@ GL_EXPORT void set_stencil_operation   (GLenum stencil_fail, GLenum depth_fail, 
 GL_EXPORT void set_depth_test_enabled(bool enabled);
 GL_EXPORT bool depth_test_enabled    ();
 GL_EXPORT void set_depth_function    (GLenum function = GL_LESS);
+
+// 17.3.7 SRGB conversion.
+GL_EXPORT void set_framebuffer_srgb_enabled(bool enabled);
+GL_EXPORT bool framebuffer_srgb_enabled    ();
 
 // 17.3.8 Blending.
 GL_EXPORT void set_blending_enabled(bool enabled);

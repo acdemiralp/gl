@@ -13,7 +13,7 @@
 #include <gl/opengl.hpp>
 #include <gl/sync.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {

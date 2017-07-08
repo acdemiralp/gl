@@ -11,7 +11,7 @@
 
 #include <gl/opengl.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {
@@ -57,9 +57,6 @@ GL_EXPORT std::string version ();
 
 GL_EXPORT std::vector<std::string> extensions               ();
 GL_EXPORT std::vector<std::string> shading_language_versions();
-
-// 22.3 Internal format queries.
-// TODO!
 }
 
 #endif

@@ -160,7 +160,4 @@ std::vector<std::string> shading_language_versions()
     result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
   return result;
 }
-
-// 22.3 Internal format queries.
-// TODO!
 }

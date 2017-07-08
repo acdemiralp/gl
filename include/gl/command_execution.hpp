@@ -8,7 +8,7 @@
 
 #include <gl/opengl.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 // 2.3 Command execution.
 namespace gl
