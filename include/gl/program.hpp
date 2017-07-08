@@ -18,7 +18,7 @@
 #include <gl/shader.hpp>
 #include <gl/texture_handle.hpp>
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {

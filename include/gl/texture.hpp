@@ -18,7 +18,7 @@
   #include <cuda_runtime_api.h>
 #endif
 
-#include <export.hpp>
+#include <gl_export.hpp>
 
 namespace gl
 {
