@@ -123,9 +123,6 @@ void set_polygon_smooth_hint            (GLenum hint)
   glHint(GL_POLYGON_SMOOTH_HINT, hint);
 }
 
-// 22.1 Simple queries.
-// TODO!
-
 // 22.2 String queries.
 std::string renderer()
 {
