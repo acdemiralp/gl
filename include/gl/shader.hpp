@@ -9,10 +9,9 @@
 #include <fstream>
 #include <string>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/unmanaged.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

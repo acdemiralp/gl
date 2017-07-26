@@ -5,6 +5,8 @@ list                  (APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 set_property          (GLOBAL PROPERTY USE_FOLDERS ON)
 set                   (CMAKE_CXX_VISIBILITY_PRESET hidden)
 set                   (CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+string                (TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
+string                (TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 
 ##################################################    Options     ##################################################
 option(BUILD_SHARED_LIBS "Build shared (dynamic) libraries." ON)
@@ -77,12 +79,9 @@ set(PROJECT_SOURCES
   license.txt
   readme.md
 )
+list(APPEND PROJECT_SOURCES "include/${PROJECT_NAME}/export.hpp")
 include(assign_source_group)
 assign_source_group(${PROJECT_SOURCES})
-
-set         (EXPORT_HEADER "${PROJECT_BINARY_DIR}/export.hpp")
-list        (APPEND PROJECT_SOURCES ${EXPORT_HEADER})
-source_group("include\\${PROJECT_NAME}" FILES ${EXPORT_HEADER})
 
 ##################################################  Dependencies  ##################################################
 include(import_library)
@@ -115,7 +114,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIRS})
 target_link_libraries     (${PROJECT_NAME} PUBLIC ${PROJECT_LIBRARIES})
 set_target_properties     (${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
-string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 if(NOT BUILD_SHARED_LIBS)
   set(DEFINITIONS "${DEFINITIONS} -D${PROJECT_NAME_UPPER}_STATIC")
 endif()
@@ -126,10 +124,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${DEFINITIONS}")
 
 ##################################################    Postbuild   ##################################################
 include               (GenerateExportHeader)
-string                (TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
-string                (TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 generate_export_header(${PROJECT_NAME} 
-  EXPORT_FILE_NAME     ${PROJECT_NAME_LOWER}_export.hpp
+  EXPORT_FILE_NAME     ${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME}/export.hpp
   EXPORT_MACRO_NAME    ${PROJECT_NAME_UPPER}_EXPORT
   STATIC_DEFINE        ${PROJECT_NAME_UPPER}_STATIC
 )
@@ -158,7 +154,6 @@ install(TARGETS ${PROJECT_NAME} EXPORT "${PROJECT_NAME}-config"
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
-install(DIRECTORY include/ DESTINATION include)
-install(FILES   "${PROJECT_BINARY_DIR}/export.hpp" DESTINATION "include/${PROJECT_NAME}")
-install(EXPORT  "${PROJECT_NAME}-config"           DESTINATION "cmake")
-export (TARGETS "${PROJECT_NAME}"                  FILE        "${PROJECT_NAME}-config.cmake")
+install(DIRECTORY "include/"               DESTINATION "include")
+install(EXPORT    "${PROJECT_NAME}-config" DESTINATION "cmake"  )
+export (TARGETS   "${PROJECT_NAME}"        FILE        "${PROJECT_NAME}-config.cmake")

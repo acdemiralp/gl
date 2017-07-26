@@ -9,9 +9,8 @@
 #include <array>
 #include <cstddef>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

@@ -6,10 +6,9 @@
 #ifndef GL_PIPELINE_HPP_
 #define GL_PIPELINE_HPP_
 
+#include <gl/export.hpp>
 #include <gl/program.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

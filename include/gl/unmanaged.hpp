@@ -6,7 +6,7 @@
 #ifndef GL_UNMANAGED_HPP_
 #define GL_UNMANAGED_HPP_
 
-#include <gl_export.hpp>
+#include <gl/export.hpp>
 
 namespace gl
 {

@@ -6,9 +6,8 @@
 #ifndef GL_VERTEX_POST_PROCESSING_OPS_HPP_
 #define GL_VERTEX_POST_PROCESSING_OPS_HPP_
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

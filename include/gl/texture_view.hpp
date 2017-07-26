@@ -6,10 +6,9 @@
 #ifndef GL_TEXTURE_VIEW_HPP_
 #define GL_TEXTURE_VIEW_HPP_
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/texture.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

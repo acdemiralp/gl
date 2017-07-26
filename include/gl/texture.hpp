@@ -10,6 +10,7 @@
 #include <cstddef>
 
 #include <gl/buffer.hpp>
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/renderbuffer.hpp>
 
@@ -17,8 +18,6 @@
   #include <cuda_gl_interop.h>
   #include <cuda_runtime_api.h>
 #endif
-
-#include <gl_export.hpp>
 
 namespace gl
 {
