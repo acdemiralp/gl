@@ -7,7 +7,7 @@
 #define GL_OPENGL_HPP_
 
 #include <gl/export.hpp>
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 namespace gl
 {
