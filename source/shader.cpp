@@ -43,34 +43,38 @@ void shader::release_compiler()
 }
 
 // 7.13 Shader queries.
-GLenum      shader::type           () const
+GLenum      shader::type            () const
 {
   return get_parameter(GL_SHADER_TYPE);
 }
-bool        shader::compile_status () const
+bool        shader::compile_status  () const
 {
   return get_parameter(GL_COMPILE_STATUS) != 0;
 }
-bool        shader::delete_status  () const
+bool        shader::delete_status   () const
 {
   return get_parameter(GL_DELETE_STATUS) != 0;
 }
-GLsizei     shader::source_length  () const
+bool        shader::is_spir_v_binary() const
+{
+  return get_parameter(GL_SPIR_V_BINARY) != 0;
+}
+GLsizei     shader::source_length   () const
 {
   return get_parameter(GL_SHADER_SOURCE_LENGTH);
 }
-GLsizei     shader::info_log_length() const
+GLsizei     shader::info_log_length () const
 {
   return get_parameter(GL_INFO_LOG_LENGTH);
 }
-std::string shader::source         () const
+std::string shader::source          () const
 {
   std::string result;
   result.resize(source_length());
   glGetShaderSource(id_, static_cast<GLsizei>(result.size()), nullptr, &result[0]);
   return result;
 }
-std::string shader::info_log       () const
+std::string shader::info_log        () const
 {
   std::string result;
   result.resize(info_log_length());

@@ -34,13 +34,14 @@ public:
   static void release_compiler();
 
   // 7.13 Shader queries.
-  GLenum      type           () const;
-  bool        compile_status () const;
-  bool        delete_status  () const;
-  GLsizei     source_length  () const;
-  GLsizei     info_log_length() const;
-  std::string source         () const;
-  std::string info_log       () const;
+  GLenum      type            () const;
+  bool        compile_status  () const;
+  bool        delete_status   () const;
+  bool        is_spir_v_binary() const;
+  GLsizei     source_length   () const;
+  GLsizei     info_log_length () const;
+  std::string source          () const;
+  std::string info_log        () const;
 
   static const GLenum native_type = GL_SHADER;
 
