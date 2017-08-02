@@ -114,13 +114,13 @@ void set_cull_face (GLenum mode)
 }
 
 // 14.6.4 Polygon rasterization and depth offset.
-void set_polygon_mode  (GLenum mode)
+void set_polygon_mode        (GLenum mode)
 {
   glPolygonMode(GL_FRONT_AND_BACK, mode);
 }
-void set_polygon_offset(GLfloat factor, GLfloat units)
+void set_polygon_offset_clamp(GLfloat factor, GLfloat units, GLfloat clamp)
 {
-  glPolygonOffset(factor, units);
+  glPolygonOffsetClamp(factor, units, clamp);
 }
 
 void set_polygon_point_offset_enabled(bool enabled)
