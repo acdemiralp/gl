@@ -27,6 +27,23 @@ void shader::set_source(const std::string& source) const
   auto shader_cstring = source.c_str();
   glShaderSource(id_, 1, &shader_cstring, nullptr);
 }
+void shader::set_binary(const std::vector<uint8_t>& binary, GLenum format) const
+{
+  glShaderBinary(1, &id_, format, reinterpret_cast<const void*>(binary.data()), GLsizei(binary.size()));
+}
+void shader::specialize(const std::string& entry_point, const std::vector<std::tuple<GLuint, GLuint>>& index_value_pairs) const
+{
+  std::vector<GLuint> indices;
+  std::vector<GLuint> values ;
+  indices.reserve(index_value_pairs.size());
+  values .reserve(index_value_pairs.size());
+  for (const auto& constant : index_value_pairs)
+  {
+    indices.push_back(std::get<0>(constant));
+    values .push_back(std::get<1>(constant));
+  }
+  glSpecializeShader(id_, entry_point.c_str(), GLuint(index_value_pairs.size()), indices.data(), values.data());
+}
 bool shader::compile   () const
 {
   glCompileShader(id_);
@@ -37,6 +54,13 @@ bool shader::is_valid  () const
   return glIsShader(id_) != 0;
 }
 
+void shader::set_binaries    (const std::vector<shader>& shaders, const std::vector<uint8_t>& binary, GLenum format)
+{
+  std::vector<GLuint> ids;
+  for(auto& shader : shaders)
+    ids.push_back(shader.id());
+  glShaderBinary(GLsizei(ids.size()), ids.data(), format, reinterpret_cast<const void*>(binary.data()), GLsizei(binary.size()));
+}
 void shader::release_compiler()
 {
   glReleaseShaderCompiler();

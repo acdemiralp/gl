@@ -8,6 +8,8 @@
 
 #include <fstream>
 #include <string>
+#include <tuple>
+#include <vector>
 
 #include <gl/export.hpp>
 #include <gl/opengl.hpp>
@@ -28,9 +30,12 @@ public:
   shader& operator=(      shader&& temp) = default;
 
   void set_source(const std::string& source) const;
+  void set_binary(const std::vector<uint8_t>& binary, GLenum format = GL_SHADER_BINARY_FORMAT_SPIR_V) const;
+  void specialize(const std::string& entry_point, const std::vector<std::tuple<GLuint, GLuint>>& index_value_pairs) const;
   bool compile   () const;
   bool is_valid  () const;
 
+  static void set_binaries    (const std::vector<shader>& shaders, const std::vector<uint8_t>& binary, GLenum format = GL_SHADER_BINARY_FORMAT_SPIR_V);
   static void release_compiler();
 
   // 7.13 Shader queries.
