@@ -10,6 +10,7 @@
 #include <cstddef>
 
 #include <gl/buffer.hpp>
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/renderbuffer.hpp>
 
@@ -17,8 +18,6 @@
   #include <cuda_gl_interop.h>
   #include <cuda_runtime_api.h>
 #endif
-
-#include <gl_export.hpp>
 
 namespace gl
 {
@@ -173,6 +172,10 @@ public:
   {
     glTextureParameterf(id_, GL_TEXTURE_MAX_LOD, value);
   }
+  void set_max_anisotropy    (GLfloat max_anisotropy)
+  {
+    glTextureParameterf(id_, GL_TEXTURE_MAX_ANISOTROPY, max_anisotropy);
+  }
   void set_base_level        (GLuint  value)
   {
     glTextureParameteri(id_, GL_TEXTURE_BASE_LEVEL, value);
@@ -262,6 +265,10 @@ public:
   GLfloat                max_lod           () const
   {
     return get_float_parameter(GL_TEXTURE_MAX_LOD);
+  }
+  GLfloat                max_anisotropy    () const
+  {
+    return get_float_parameter(GL_TEXTURE_MAX_ANISOTROPY);
   }
   GLuint                 base_level        () const
   {

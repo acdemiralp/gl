@@ -123,9 +123,6 @@ void set_polygon_smooth_hint            (GLenum hint)
   glHint(GL_POLYGON_SMOOTH_HINT, hint);
 }
 
-// 22.1 Simple queries.
-// TODO!
-
 // 22.2 String queries.
 std::string renderer()
 {
@@ -158,6 +155,16 @@ std::vector<std::string> shading_language_versions()
   std::vector<std::string> result;
   for(auto i = 0; i < count; i++)
     result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
+  return result;
+}
+std::vector<std::string> spir_v_extensions        ()
+{
+  GLint count;
+  glGetIntegerv(GL_NUM_SPIR_V_EXTENSIONS, &count);
+
+  std::vector<std::string> result;
+  for(auto i = 0; i < count; i++)
+    result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_SPIR_V_EXTENSIONS, i)));
   return result;
 }
 }

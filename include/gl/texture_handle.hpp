@@ -6,10 +6,9 @@
 #ifndef GL_TEXTURE_HANDLE_HPP_
 #define GL_TEXTURE_HANDLE_HPP_
 
+#include <gl/export.hpp>
 #include <gl/sampler.hpp>
 #include <gl/texture.hpp>
-
-#include <gl_export.hpp>
 
 #ifdef GL_ARB_bindless_texture
 

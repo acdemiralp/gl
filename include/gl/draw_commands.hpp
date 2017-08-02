@@ -10,9 +10,8 @@
 #include <utility>
 #include <vector>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {
@@ -51,6 +50,7 @@ GL_EXPORT void draw_arrays_indirect                             (GLenum mode, GL
 
 GL_EXPORT void multi_draw_arrays                                (GLenum mode, const std::vector<std::pair<GLint, GLsizei>>& offset_count_pairs);
 GL_EXPORT void multi_draw_arrays_indirect                       (GLenum mode, const GLint offset, GLsizei draw_count, GLsizei stride = sizeof(draw_arrays_indirect_command));
+GL_EXPORT void multi_draw_arrays_indirect_count                 (GLenum mode, const GLint offset, GLintptr draw_count, GLsizei max_draw_count, GLsizei stride = sizeof(draw_arrays_indirect_command));
 
 GL_EXPORT void draw_elements                                    (GLenum mode, GLsizei count, GLenum type, const void* indices = nullptr);
 GL_EXPORT void draw_elements_instanced                          (GLenum mode, GLsizei count, GLenum type, const void* indices = nullptr, GLsizei instance_count = 1);
@@ -60,11 +60,12 @@ GL_EXPORT void draw_elements_indirect                           (GLenum mode, GL
 
 GL_EXPORT void multi_draw_elements                              (GLenum mode, GLenum type, const std::vector<std::pair<GLint, GLsizei>>& offset_count_pairs);
 GL_EXPORT void multi_draw_elements_indirect                     (GLenum mode, GLenum type, const GLint offset, GLsizei draw_count, GLsizei stride = sizeof(draw_elements_indirect_command));
+GL_EXPORT void multi_draw_elements_indirect_count               (GLenum mode, GLenum type, const GLint offset, GLintptr draw_count, GLsizei max_draw_count, GLsizei stride = sizeof(draw_arrays_indirect_command));
 
-GL_EXPORT void draw_elements_base_vertex                        (GLenum mode, GLsizei count, GLenum type, const void* indices = nullptr, GLint base_vertex = 0);
+GL_EXPORT void draw_elements_base_vertex                        (GLenum mode, GLsizei count, GLenum type, void* indices = nullptr, GLint base_vertex = 0);
 GL_EXPORT void draw_elements_instanced_base_vertex              (GLenum mode, GLsizei count, GLenum type, const void* indices = nullptr, GLsizei instance_count = 1, GLint base_vertex = 0);
 GL_EXPORT void draw_elements_instanced_base_vertex_base_instance(GLenum mode, GLsizei count, GLenum type, const void* indices = nullptr, GLsizei instance_count = 1, GLint base_vertex = 0, GLuint base_instance = 0);
-GL_EXPORT void draw_range_elements_base_vertex                  (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void* indices = nullptr, GLint base_vertex = 0);
+GL_EXPORT void draw_range_elements_base_vertex                  (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices = nullptr, GLint base_vertex = 0);
 
 GL_EXPORT void multi_draw_elements_base_vertex                  (GLenum mode, GLenum type, const std::vector<std::tuple<GLint, GLsizei, GLint>>& offset_count_base_vertex_triplets);
 }

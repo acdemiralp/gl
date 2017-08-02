@@ -9,9 +9,8 @@
 #include <string>
 #include <vector>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {
@@ -47,9 +46,6 @@ GL_EXPORT void set_texture_compression_hint       (GLenum hint = GL_NICEST);
 GL_EXPORT void set_line_smooth_hint               (GLenum hint = GL_NICEST);
 GL_EXPORT void set_polygon_smooth_hint            (GLenum hint = GL_NICEST);
 
-// 22.1 Simple queries.
-// TODO!
-
 // 22.2 String queries.
 GL_EXPORT std::string renderer();
 GL_EXPORT std::string vendor  ();
@@ -57,6 +53,7 @@ GL_EXPORT std::string version ();
 
 GL_EXPORT std::vector<std::string> extensions               ();
 GL_EXPORT std::vector<std::string> shading_language_versions();
+GL_EXPORT std::vector<std::string> spir_v_extensions        ();
 }
 
 #endif

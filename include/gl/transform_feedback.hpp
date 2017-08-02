@@ -6,10 +6,9 @@
 #ifndef GL_TRANSFORM_FEEDBACK_HPP_
 #define GL_TRANSFORM_FEEDBACK_HPP_
 
+#include <gl/export.hpp>
 #include <gl/buffer.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

@@ -7,9 +7,8 @@
 #define GL_VERTEX_ARRAY_HPP_
 
 #include <gl/buffer.hpp>
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

@@ -139,13 +139,26 @@ protected:
   bool   managed_ = true;
 };
 
-using any_samples_passed_query                    = query<GL_ANY_SAMPLES_PASSED>;
-using any_samples_passed_query_conservative       = query<GL_ANY_SAMPLES_PASSED_CONSERVATIVE>;
-using primitives_generated_query                  = query<GL_PRIMITIVES_GENERATED>;
-using samples_passed_query                        = query<GL_SAMPLES_PASSED>;
-using time_elapsed_query                          = query<GL_TIME_ELAPSED>;
-using timestamp_query                             = query<GL_TIMESTAMP>;
-using transform_feedback_primitives_written_query = query<GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN>;
+using any_samples_passed_query                         = query<GL_ANY_SAMPLES_PASSED>;
+using any_samples_passed_query_conservative            = query<GL_ANY_SAMPLES_PASSED_CONSERVATIVE>;
+using primitives_generated_query                       = query<GL_PRIMITIVES_GENERATED>;
+using samples_passed_query                             = query<GL_SAMPLES_PASSED>;
+using time_elapsed_query                               = query<GL_TIME_ELAPSED>;
+using primitives_submitted_query                       = query<GL_PRIMITIVES_SUBMITTED>;
+using vertices_submitted_query                         = query<GL_VERTICES_SUBMITTED>;
+using transform_feedback_primitives_written_query      = query<GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN>;
+using transform_feedback_overflow_query                = query<GL_TRANSFORM_FEEDBACK_OVERFLOW>;
+using transform_feedback_stream_overflow_query         = query<GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW>;
+using compute_shader_invocations_query                 = query<GL_COMPUTE_SHADER_INVOCATIONS>;
+using vertex_shader_invocations_query                  = query<GL_VERTEX_SHADER_INVOCATIONS>;
+using fragment_shader_invocations_query                = query<GL_FRAGMENT_SHADER_INVOCATIONS>;
+using geometry_shader_invocations_query                = query<GL_GEOMETRY_SHADER_INVOCATIONS>;
+using tessellation_evaluation_shader_invocations_query = query<GL_TESS_EVALUATION_SHADER_INVOCATIONS>;
+using tessellation_control_shader_patches_query        = query<GL_TESS_CONTROL_SHADER_PATCHES>;
+using geometry_shader_primitives_emitted_query         = query<GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED>;
+using clipping_input_primitives_query                  = query<GL_CLIPPING_INPUT_PRIMITIVES>;
+using clipping_output_primitives_query                 = query<GL_CLIPPING_OUTPUT_PRIMITIVES>;
+using timestamp_query                                  = query<GL_TIMESTAMP>;
 }
 
 #endif

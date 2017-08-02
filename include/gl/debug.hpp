@@ -10,10 +10,9 @@
 #include <string>
 #include <vector>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/sync.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {

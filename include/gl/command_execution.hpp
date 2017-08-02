@@ -6,9 +6,8 @@
 #ifndef GL_COMMAND_EXECUTION_HPP_
 #define GL_COMMAND_EXECUTION_HPP_
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 // 2.3 Command execution.
 namespace gl

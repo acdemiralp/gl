@@ -10,14 +10,13 @@
 #include <type_traits>
 #include <vector>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 #ifdef GL_CUDA_INTEROP_SUPPORT
   #include <cuda_gl_interop.h>
   #include <cuda_runtime_api.h>
 #endif
-
-#include <gl_export.hpp>
 
 namespace gl
 {

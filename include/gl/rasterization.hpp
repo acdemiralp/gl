@@ -8,9 +8,8 @@
 
 #include <array>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {
@@ -53,8 +52,8 @@ GL_EXPORT void set_front_face(GLenum mode = GL_CCW );
 GL_EXPORT void set_cull_face (GLenum mode = GL_BACK);
 
 // 14.6.4 Polygon rasterization and depth offset.
-GL_EXPORT void set_polygon_mode  (GLenum mode = GL_FILL);
-GL_EXPORT void set_polygon_offset(GLfloat factor, GLfloat units);
+GL_EXPORT void set_polygon_mode        (GLenum mode = GL_FILL);
+GL_EXPORT void set_polygon_offset_clamp(GLfloat factor, GLfloat units, GLfloat clamp = 0.0F);
 
 GL_EXPORT void set_polygon_point_offset_enabled(bool enabled);
 GL_EXPORT bool polygon_point_offset_enabled    ();

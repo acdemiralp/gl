@@ -6,11 +6,10 @@
 #ifndef GL_TESSELLATION_HPP_
 #define GL_TESSELLATION_HPP_
 
-#include <vector>
+#include <array>
 
+#include <gl/export.hpp>
 #include <gl/opengl.hpp>
-
-#include <gl_export.hpp>
 
 namespace gl
 {
@@ -18,8 +17,13 @@ namespace gl
 GL_EXPORT void set_patch_vertex_count(GLint count);
 
 // 11.2.2 Tessellation primitive generation.
-GL_EXPORT void set_patch_default_inner_level(const std::vector<float>& inner_level);
-GL_EXPORT void set_patch_default_outer_level(const std::vector<float>& outer_level);
+GL_EXPORT void set_patch_default_inner_level(const std::array<GLfloat, 2>& inner_level);
+GL_EXPORT void set_patch_default_outer_level(const std::array<GLfloat, 4>& outer_level);
+
+// 22.1 Simple queries.
+GL_EXPORT GLint                  patch_vertex_count       ();
+GL_EXPORT std::array<GLfloat, 2> patch_default_inner_level();
+GL_EXPORT std::array<GLfloat, 4> patch_default_outer_level();
 }
 
 #endif

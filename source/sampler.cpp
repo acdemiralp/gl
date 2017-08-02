@@ -64,85 +64,89 @@ bool sampler::is_valid() const
   return glIsSampler(id_) != 0;
 }
 
-void sampler::set_wrap_s      (GLenum  mode)
+void sampler::set_wrap_s        (GLenum  mode)
 {
   glSamplerParameteri(id_, GL_TEXTURE_WRAP_S, mode);
 }
-void sampler::set_wrap_t      (GLenum  mode)
+void sampler::set_wrap_t        (GLenum  mode)
 {
   glSamplerParameteri(id_, GL_TEXTURE_WRAP_T, mode);
 }
-void sampler::set_wrap_r      (GLenum  mode)
+void sampler::set_wrap_r        (GLenum  mode)
 {
   glSamplerParameteri(id_, GL_TEXTURE_WRAP_R, mode);
 }
-void sampler::set_min_filter  (GLenum  mode)
+void sampler::set_min_filter    (GLenum  mode)
 {
   glSamplerParameteri(id_, GL_TEXTURE_MIN_FILTER, mode);
 }
-void sampler::set_mag_filter  (GLenum  mode)
+void sampler::set_mag_filter    (GLenum  mode)
 {
   glSamplerParameteri(id_, GL_TEXTURE_MAG_FILTER, mode);
 }
-void sampler::set_min_lod     (GLfloat value)
+void sampler::set_min_lod       (GLfloat value)
 {
   glSamplerParameterf(id_, GL_TEXTURE_MIN_LOD, value);
 }
-void sampler::set_max_lod     (GLfloat value)
+void sampler::set_max_lod       (GLfloat value)
 {
   glSamplerParameterf(id_, GL_TEXTURE_MAX_LOD, value);
 }
-void sampler::set_border_color(const std::array<GLint  , 4>& color)
+void sampler::set_border_color  (const std::array<GLint  , 4>& color)
 {
   glSamplerParameterIiv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
 }
-void sampler::set_border_color(const std::array<GLuint , 4>& color)
+void sampler::set_border_color  (const std::array<GLuint , 4>& color)
 {
   glSamplerParameterIuiv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
 }
-void sampler::set_border_color(const std::array<GLfloat, 4>& color)
+void sampler::set_border_color  (const std::array<GLfloat, 4>& color)
 {
   glSamplerParameterfv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
 }
-void sampler::set_lod_bias    (GLfloat bias)
+void sampler::set_lod_bias      (GLfloat bias)
 {
   glSamplerParameterf(id_, GL_TEXTURE_LOD_BIAS, bias);
 }
-void sampler::set_compare_mode(GLenum  mode)
+void sampler::set_max_anisotropy(GLfloat max_anisotropy)
+{
+  glSamplerParameterf(id_, GL_TEXTURE_MAX_ANISOTROPY, max_anisotropy);
+}
+void sampler::set_compare_mode  (GLenum  mode)
 {
   glSamplerParameteri(id_, GL_TEXTURE_COMPARE_MODE, mode);
 }
-void sampler::set_compare_func(GLenum  function)
+void sampler::set_compare_func  (GLenum  function)
 {
   glSamplerParameteri(id_, GL_TEXTURE_COMPARE_FUNC, function);
 }
 
 // 8.3 Sampler queries.
-GLenum  sampler::wrap_s    () const
+GLenum  sampler::wrap_s        () const
 {
   return get_int_parameter(GL_TEXTURE_WRAP_S);
 }
-GLenum  sampler::wrap_t    () const
+GLenum  sampler::wrap_t        () const
 {
   return get_int_parameter(GL_TEXTURE_WRAP_T);
 }
-GLenum  sampler::wrap_r    () const
+GLenum  sampler::wrap_r        () const
 {
   return get_int_parameter(GL_TEXTURE_WRAP_R);
 }
-GLenum  sampler::min_filter() const
+GLenum  sampler::min_filter    () const
 {
   return get_int_parameter(GL_TEXTURE_MIN_FILTER);
 }
-GLenum  sampler::mag_filter() const
+GLenum  sampler::mag_filter    () const
 {
   return get_int_parameter(GL_TEXTURE_MAG_FILTER);
 }
-GLfloat sampler::min_lod   () const
+GLfloat sampler::min_lod       () const
 {
   return get_float_parameter(GL_TEXTURE_MIN_LOD);
 }
-GLfloat sampler::max_lod   () const
+GLfloat sampler::max_lod       () const
 {
   return get_float_parameter(GL_TEXTURE_MAX_LOD);
 }
@@ -154,15 +158,19 @@ std::array<GLint  , 4> sampler::border_color_int() const
 {
   return get_int_parameter<4>(GL_TEXTURE_BORDER_COLOR);
 }
-GLfloat sampler::lod_bias    () const
+GLfloat sampler::lod_bias      () const
 {
   return get_float_parameter(GL_TEXTURE_LOD_BIAS);
 }
-GLenum  sampler::compare_mode() const
+GLfloat sampler::max_anisotropy() const
+{
+  return get_float_parameter(GL_TEXTURE_MAX_ANISOTROPY);
+}
+GLenum  sampler::compare_mode  () const
 {
   return get_int_parameter(GL_TEXTURE_COMPARE_MODE);
 }
-GLenum  sampler::compare_func() const
+GLenum  sampler::compare_func  () const
 {
   return get_int_parameter(GL_TEXTURE_COMPARE_FUNC);
 }

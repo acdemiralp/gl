@@ -69,6 +69,10 @@ void multi_draw_arrays_indirect                       (GLenum mode, const GLint 
 {
   glMultiDrawArraysIndirect(mode, reinterpret_cast<const void*>(std::size_t(offset)), draw_count, stride);
 }
+void multi_draw_arrays_indirect_count                 (GLenum mode, const GLint offset, GLintptr draw_count, GLsizei max_draw_count, GLsizei stride)
+{
+  glMultiDrawArraysIndirectCount(mode, reinterpret_cast<const void*>(std::size_t(offset)), draw_count, max_draw_count, stride);
+}
 
 void draw_elements                                    (GLenum mode, GLsizei count, GLenum type, const void* indices)
 {
@@ -108,8 +112,12 @@ void multi_draw_elements_indirect                     (GLenum mode, GLenum type,
 {
   glMultiDrawElementsIndirect(mode, type, reinterpret_cast<const void*>(std::size_t(offset)), draw_count, stride);
 }
+void multi_draw_elements_indirect_count               (GLenum mode, GLenum type, const GLint offset, GLintptr draw_count, GLsizei max_draw_count, GLsizei stride)
+{
+  glMultiDrawElementsIndirectCount(mode, type, reinterpret_cast<const void*>(std::size_t(offset)), draw_count, max_draw_count, stride);
+}
 
-void draw_elements_base_vertex                        (GLenum mode, GLsizei count, GLenum type, const void* indices, GLint base_vertex)
+void draw_elements_base_vertex                        (GLenum mode, GLsizei count, GLenum type, void* indices, GLint base_vertex)
 {
   glDrawElementsBaseVertex(mode, count, type, indices, base_vertex);
 }
@@ -121,7 +129,7 @@ void draw_elements_instanced_base_vertex_base_instance(GLenum mode, GLsizei coun
 {
   glDrawElementsInstancedBaseVertexBaseInstance(mode, count, type, indices, instance_count, base_vertex, base_instance);
 }
-void draw_range_elements_base_vertex                  (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void* indices, GLint base_vertex)
+void draw_range_elements_base_vertex                  (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices, GLint base_vertex)
 {
   glDrawRangeElementsBaseVertex(mode, start, end, count, type, indices, base_vertex);
 }
