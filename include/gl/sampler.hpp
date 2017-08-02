@@ -30,33 +30,35 @@ public:
   static void unbind  (GLuint unit);
   bool        is_valid() const;
 
-  void set_wrap_s      (GLenum  mode );
-  void set_wrap_t      (GLenum  mode );
-  void set_wrap_r      (GLenum  mode );
-  void set_min_filter  (GLenum  mode );
-  void set_mag_filter  (GLenum  mode );
-  void set_min_lod     (GLfloat value);
-  void set_max_lod     (GLfloat value);
-  void set_border_color(const std::array<GLint  , 4>& color);
-  void set_border_color(const std::array<GLuint , 4>& color);
-  void set_border_color(const std::array<GLfloat, 4>& color);
-  void set_lod_bias    (GLfloat bias);
-  void set_compare_mode(GLenum  mode);
-  void set_compare_func(GLenum  function);
+  void set_wrap_s        (GLenum  mode );
+  void set_wrap_t        (GLenum  mode );
+  void set_wrap_r        (GLenum  mode );
+  void set_min_filter    (GLenum  mode );
+  void set_mag_filter    (GLenum  mode );
+  void set_min_lod       (GLfloat value);
+  void set_max_lod       (GLfloat value);
+  void set_border_color  (const std::array<GLint  , 4>& color);
+  void set_border_color  (const std::array<GLuint , 4>& color);
+  void set_border_color  (const std::array<GLfloat, 4>& color);
+  void set_lod_bias      (GLfloat bias);
+  void set_max_anisotropy(GLfloat max_anisotropy);
+  void set_compare_mode  (GLenum  mode);
+  void set_compare_func  (GLenum  function);
 
   // 8.3 Sampler queries.
-  GLenum  wrap_s    () const;
-  GLenum  wrap_t    () const;
-  GLenum  wrap_r    () const;
-  GLenum  min_filter() const;
-  GLenum  mag_filter() const;
-  GLfloat min_lod   () const;
-  GLfloat max_lod   () const;
+  GLenum  wrap_s        () const;
+  GLenum  wrap_t        () const;
+  GLenum  wrap_r        () const;
+  GLenum  min_filter    () const;
+  GLenum  mag_filter    () const;
+  GLfloat min_lod       () const;
+  GLfloat max_lod       () const;
   std::array<GLfloat, 4> border_color    () const;
   std::array<GLint  , 4> border_color_int() const;
-  GLfloat lod_bias    () const;
-  GLenum  compare_mode() const;
-  GLenum  compare_func() const;
+  GLfloat lod_bias      () const;
+  GLfloat max_anisotropy() const;
+  GLenum  compare_mode  () const;
+  GLenum  compare_func  () const;
 
   static const GLenum native_type = GL_SAMPLER;
 

@@ -172,6 +172,10 @@ public:
   {
     glTextureParameterf(id_, GL_TEXTURE_MAX_LOD, value);
   }
+  void set_max_anisotropy    (GLfloat max_anisotropy)
+  {
+    glTextureParameterf(id_, GL_TEXTURE_MAX_ANISOTROPY, max_anisotropy);
+  }
   void set_base_level        (GLuint  value)
   {
     glTextureParameteri(id_, GL_TEXTURE_BASE_LEVEL, value);
@@ -261,6 +265,10 @@ public:
   GLfloat                max_lod           () const
   {
     return get_float_parameter(GL_TEXTURE_MAX_LOD);
+  }
+  GLfloat                max_anisotropy    () const
+  {
+    return get_float_parameter(GL_TEXTURE_MAX_ANISOTROPY);
   }
   GLuint                 base_level        () const
   {
