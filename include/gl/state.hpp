@@ -53,6 +53,7 @@ GL_EXPORT std::string version ();
 
 GL_EXPORT std::vector<std::string> extensions               ();
 GL_EXPORT std::vector<std::string> shading_language_versions();
+GL_EXPORT std::vector<std::string> spir_v_extensions        ();
 }
 
 #endif

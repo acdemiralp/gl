@@ -157,4 +157,14 @@ std::vector<std::string> shading_language_versions()
     result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
   return result;
 }
+std::vector<std::string> spir_v_extensions        ()
+{
+  GLint count;
+  glGetIntegerv(GL_NUM_SPIR_V_EXTENSIONS, &count);
+
+  std::vector<std::string> result;
+  for(auto i = 0; i < count; i++)
+    result.emplace_back(reinterpret_cast<char const*>(glGetStringi(GL_SPIR_V_EXTENSIONS, i)));
+  return result;
+}
 }
