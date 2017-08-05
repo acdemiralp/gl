@@ -11,7 +11,7 @@
 
 namespace gl
 {
-GL_EXPORT void initialize ();
+GL_EXPORT bool initialize ();
 GL_EXPORT void print_error(const char* prefix);
 
 GL_EXPORT GLsizei format_component_count(GLenum format);

@@ -12,11 +12,11 @@
 
 namespace gl
 {
-void initialize ()
+bool initialize ()
 {
 #ifdef _WIN32
   glewExperimental = true;
-  glewInit();
+  return glewInit() == GLEW_OK;
 #elif __APPLE__
 
 #else
