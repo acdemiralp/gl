@@ -19,7 +19,7 @@ GL_EXPORT void print_error(const char* prefix);
 GL_EXPORT GLsizei format_component_count(GLenum format);
 GL_EXPORT GLsizei type_size             (GLenum type  );
 
-GL_EXPORT const GLuint invalid_id = std::numeric_limits<GLuint>::max();
+const GLuint invalid_id = std::numeric_limits<GLuint>::max();
 }
 
 #endif
