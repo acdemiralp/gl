@@ -28,7 +28,7 @@ public:
 
   }
   texture_handle(const texture_handle&  that) = default;
-  texture_handle(texture_handle&& temp)       = default;
+  texture_handle(      texture_handle&& temp) = default;
  ~texture_handle()                            = default;
 
   texture_handle& operator=(const texture_handle&  that) = default;

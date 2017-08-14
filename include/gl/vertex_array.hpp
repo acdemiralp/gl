@@ -18,11 +18,11 @@ public:
   // 10.3.1 Vertex array objects.
   vertex_array();
   vertex_array(GLuint id);
-  vertex_array(const vertex_array&  that) = delete ;
-  vertex_array(      vertex_array&& temp) = default;
+  vertex_array(const vertex_array&  that) = delete;
+  vertex_array(      vertex_array&& temp) noexcept;
   virtual ~vertex_array();
-  vertex_array& operator=(const vertex_array&  that) = delete ;
-  vertex_array& operator=(      vertex_array&& temp) = default;
+  vertex_array& operator=(const vertex_array&  that) = delete;
+  vertex_array& operator=(      vertex_array&& temp) noexcept;
 
   void        bind    () const;
   static void unbind  ();

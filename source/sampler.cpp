@@ -5,6 +5,8 @@
 
 #include <gl/sampler.hpp>
 
+#include <utility>
+
 namespace gl
 {
 // 8.2 Sampler objects.
@@ -16,7 +18,7 @@ sampler::sampler(GLuint id): id_(id), managed_(false)
 {
 
 }
-sampler::sampler(const sampler& that): sampler()
+sampler::sampler(const sampler&  that): sampler()
 {
   set_wrap_s      (that.wrap_s      ());
   set_wrap_t      (that.wrap_t      ());
@@ -29,13 +31,18 @@ sampler::sampler(const sampler& that): sampler()
   set_lod_bias    (that.lod_bias    ());
   set_compare_mode(that.compare_mode());
   set_compare_func(that.compare_func());
+}
+sampler::sampler(      sampler&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+  temp.id_      = invalid_id;
+  temp.managed_ = false;
 }
 sampler::~sampler()
 {
-  if (managed_)
+  if (managed_ && id_ != invalid_id)
     glDeleteSamplers(1, &id_);
 }
-sampler& sampler::operator=(const sampler& that)
+sampler& sampler::operator=(const sampler&  that)
 {
   set_wrap_s      (that.wrap_s      ());
   set_wrap_t      (that.wrap_t      ());
@@ -48,6 +55,18 @@ sampler& sampler::operator=(const sampler& that)
   set_lod_bias    (that.lod_bias    ());
   set_compare_mode(that.compare_mode());
   set_compare_func(that.compare_func());
+  return *this;
+}
+sampler& sampler::operator=(      sampler&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    managed_ = std::move(temp.managed_);
+
+    temp.id_      = invalid_id;
+    temp.managed_ = false;    
+  }
   return *this;
 }
 

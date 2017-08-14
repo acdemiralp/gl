@@ -5,15 +5,32 @@
 
 #include <gl/sync.hpp>
 
+#include <utility>
+
 namespace gl
 {
 sync::sync () : id_(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0))
 {
   
 }
+sync::sync (sync&& temp) noexcept : id_(std::move(temp.id_))
+{
+  temp.id_ = nullptr;
+}
 sync::~sync()
 {
-  glDeleteSync(id_);
+  if(id_ != nullptr)
+    glDeleteSync(id_);
+}
+
+sync& sync::operator=(sync&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    temp.id_ = nullptr;
+  }
+  return *this;
 }
 
 GLenum sync::client_wait(GLbitfield flags, GLuint64 timeout_ns) const

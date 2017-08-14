@@ -27,10 +27,10 @@ public:
   buffer();
   buffer(GLuint id);
   buffer(const buffer&  that);
-  buffer(      buffer&& temp) = default;
+  buffer(      buffer&& temp) noexcept;
   virtual ~buffer();
   buffer& operator=(const buffer&  that);
-  buffer& operator=(      buffer&& temp) = default;
+  buffer& operator=(      buffer&& temp) noexcept;
 
   // 6.1 Create and bind buffer objects.
   template<GLenum target>
@@ -97,7 +97,7 @@ protected:
   GLint   get_parameter   (GLenum parameter) const;
   GLint64 get_parameter_64(GLenum parameter) const;
 
-  GLuint id_      = 0;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 
 #ifdef GL_CUDA_INTEROP_SUPPORT

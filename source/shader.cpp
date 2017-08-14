@@ -5,21 +5,41 @@
 
 #include <gl/shader.hpp>
 
+#include <utility>
+
 namespace gl
 {
 // 7.1 Shader objects.
-shader::shader(GLenum type)
+shader::shader (GLenum type)
 {
   id_ = glCreateShader(type);
 }
-shader::shader(GLuint id, unmanaged_t unmanaged): id_(id), managed_(false)
+shader::shader (GLuint id, unmanaged_t unmanaged) : id_(id), managed_(false)
 {
 
 }
+shader::shader (shader&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+  temp.id_      = invalid_id;
+  temp.managed_ = false;
+}
 shader::~shader()
 {
-  if (managed_)
-  glDeleteShader(id_);
+  if (managed_ && id_ != invalid_id)
+    glDeleteShader(id_);
+}
+
+shader& shader::operator=(shader&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    managed_ = std::move(temp.managed_);
+
+    temp.id_      = invalid_id;
+    temp.managed_ = false;    
+  }
+  return *this;
 }
 
 void shader::set_source(const std::string& source) const

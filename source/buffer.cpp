@@ -5,6 +5,8 @@
 
 #include <gl/buffer.hpp>
 
+#include <utility>
+
 namespace gl
 {
 // 6.0 Buffer objects.
@@ -16,24 +18,54 @@ buffer::buffer (GLuint id): id_(id), managed_(false)
 {
 
 }
-buffer::buffer (const buffer& that): buffer()
+buffer::buffer (const buffer&  that): buffer()
 {
   that.is_immutable()
     ? set_data_immutable(that.size(), nullptr, that.storage_flags())
     : set_data          (that.size(), nullptr, that.usage        ());
   copy_sub_data(that, 0, 0, size());
+}
+buffer::buffer (      buffer&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+#ifdef GL_CUDA_INTEROP_SUPPORT
+  resource_ = std::move(temp.resource_);
+#endif
+
+  temp.id_       = invalid_id;
+  temp.managed_  = false;
+#ifdef GL_CUDA_INTEROP_SUPPORT
+  temp.resource_ = nullptr;
+#endif
 }
 buffer::~buffer()
 {
-  if (managed_)
-  glDeleteBuffers(1, &id_);
+  if (managed_ && id_ != invalid_id)
+    glDeleteBuffers(1, &id_);
 }
-buffer& buffer::operator=(const buffer& that)
+buffer& buffer::operator=(const buffer&  that)
 {
   that.is_immutable()
     ? set_data_immutable(that.size(), nullptr, that.storage_flags())
     : set_data          (that.size(), nullptr, that.usage        ());
   copy_sub_data(that, 0, 0, size());
+  return *this;
+}
+buffer& buffer::operator=(      buffer&& temp) noexcept
+{ 
+  if (this != &temp)
+  {
+    id_       = std::move(temp.id_);
+    managed_  = std::move(temp.managed_);
+#ifdef GL_CUDA_INTEROP_SUPPORT
+    resource_ = std::move(temp.resource_);
+#endif
+
+    temp.id_       = invalid_id;
+    temp.managed_  = false;
+#ifdef GL_CUDA_INTEROP_SUPPORT
+    temp.resource_ = nullptr;
+#endif
+  }
   return *this;
 }
 
@@ -168,9 +200,9 @@ void buffer::cuda_unregister()
 }
 
 void buffer::cuda_unmap     ()
-  {
-    cudaGraphicsUnmapResources(1, &resource_, nullptr);
-  }
+{
+  cudaGraphicsUnmapResources(1, &resource_, nullptr);
+}
 #endif
 
 GLint   buffer::get_parameter   (GLenum parameter) const

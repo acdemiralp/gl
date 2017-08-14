@@ -18,11 +18,11 @@ public:
   // 13.2 Transform feedback.
   transform_feedback();
   transform_feedback(GLuint id);
-  transform_feedback(const transform_feedback&  that) = delete ;
-  transform_feedback(      transform_feedback&& temp) = default;
+  transform_feedback(const transform_feedback&  that) = delete;
+  transform_feedback(      transform_feedback&& temp) noexcept;
   virtual ~transform_feedback();
-  transform_feedback& operator=(const transform_feedback&  that) = delete ;
-  transform_feedback& operator=(      transform_feedback&& temp) = default;
+  transform_feedback& operator=(const transform_feedback&  that) = delete;
+  transform_feedback& operator=(      transform_feedback&& temp) noexcept;
   
   void        bind    () const;
   static void unbind  ();
@@ -58,7 +58,7 @@ protected:
   GLint   get_parameter   (GLenum parameter, GLuint index) const;
   GLint64 get_parameter_64(GLenum parameter, GLuint index) const;
 
-  GLuint id_      = 0;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 }

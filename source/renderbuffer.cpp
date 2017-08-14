@@ -5,29 +5,48 @@
 
 #include <gl/renderbuffer.hpp>
 
+#include <utility>
+
 namespace gl
 {
 // 9.2.4 Renderbuffer objects.
-renderbuffer::renderbuffer()
+renderbuffer::renderbuffer ()
 {
   glCreateRenderbuffers(1, &id_);
 }
-renderbuffer::renderbuffer(GLuint id): id_(id), managed_(false)
+renderbuffer::renderbuffer (GLuint id): id_(id), managed_(false)
 {
 
 }
-renderbuffer::renderbuffer(const renderbuffer& that): renderbuffer()
+renderbuffer::renderbuffer (const renderbuffer&  that): renderbuffer()
 {
   set_storage_multisample(that.samples(), that.internal_format(), that.width(), that.height());
+}
+renderbuffer::renderbuffer (      renderbuffer&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+  temp.id_      = invalid_id;
+  temp.managed_ = false;
 }
 renderbuffer::~renderbuffer()
 {
-  if (managed_)
+  if (managed_ && id_ != invalid_id)
     glDeleteRenderbuffers(1, &id_);
 }
-renderbuffer& renderbuffer::operator=(const renderbuffer& that)
+renderbuffer& renderbuffer::operator=(const renderbuffer&  that)
 {
   set_storage_multisample(that.samples(), that.internal_format(), that.width(), that.height());
+  return *this;
+}
+renderbuffer& renderbuffer::operator=(      renderbuffer&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    managed_ = std::move(temp.managed_);
+
+    temp.id_      = invalid_id;
+    temp.managed_ = false;
+  }
   return *this;
 }
 

@@ -18,11 +18,11 @@ public:
   // 7.4 Program pipeline objects.
   pipeline();
   pipeline(GLuint id);
-  pipeline(const pipeline&  that) = delete ;
-  pipeline(      pipeline&& temp) = default;
+  pipeline(const pipeline&  that) = delete;
+  pipeline(      pipeline&& temp) noexcept;
   virtual ~pipeline();
-  pipeline& operator=(const pipeline&  that) = delete ;
-  pipeline& operator=(      pipeline&& temp) = default;
+  pipeline& operator=(const pipeline&  that) = delete;
+  pipeline& operator=(      pipeline&& temp) noexcept;
 
   void        bind    () const;
   static void unbind  ();
@@ -54,7 +54,7 @@ public:
 protected:
   GLint get_parameter(GLenum parameter) const;
 
-  GLuint id_      = 0;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 }

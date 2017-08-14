@@ -21,10 +21,10 @@ public:
   renderbuffer();
   renderbuffer(GLuint id);
   renderbuffer(const renderbuffer&  that);
-  renderbuffer(      renderbuffer&& temp) = default;
+  renderbuffer(      renderbuffer&& temp) noexcept;
   virtual ~renderbuffer();
   renderbuffer& operator=(const renderbuffer&  that);
-  renderbuffer& operator=(      renderbuffer&& temp) = default;
+  renderbuffer& operator=(      renderbuffer&& temp) noexcept;
 
   void        bind    () const;
   static void unbind  ();
@@ -65,7 +65,7 @@ public:
 protected:
   GLint get_parameter(GLenum parameter) const;
 
-  GLuint id_      ;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 

@@ -16,11 +16,11 @@ class GL_EXPORT sync
 public:
   // 4.1 Sync objects and fences.
   sync();
-  sync(const sync&  that) = delete ;
-  sync(      sync&& temp) = default;
+  sync(const sync&  that) = delete;
+  sync(      sync&& temp) noexcept;
   virtual ~sync();
-  sync& operator=(const sync&  that) = delete ;
-  sync& operator=(      sync&& temp) = default;
+  sync& operator=(const sync&  that) = delete;
+  sync& operator=(      sync&& temp) noexcept;
 
   // 4.1.1 Waiting for sync objects.
   GLenum client_wait(GLbitfield flags = GL_SYNC_FLUSH_COMMANDS_BIT, GLuint64 timeout_ns = 10E+10) const;

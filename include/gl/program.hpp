@@ -29,11 +29,11 @@ public:
   // 7.3 Program objects.
   program();
   program(GLuint id);
-  program(const program&  that) = delete ;
-  program(      program&& temp) = default;
+  program(const program&  that) = delete;
+  program(      program&& temp) noexcept;
   virtual ~program();
-  program& operator=(const program&  that) = delete ;
-  program& operator=(      program&& temp) = default;
+  program& operator=(const program&  that) = delete;
+  program& operator=(      program&& temp) noexcept;
   
   template<GLenum shader_type>
   static program create_shader_program(const std::string&              shader_string );
@@ -325,7 +325,7 @@ protected:
   GLint              get_active_atomic_counter_buffer_parameter(GLuint index,                GLenum parameter) const;
   GLint              get_program_stage_parameter               (GLenum shader_type,          GLenum parameter) const;
 
-  GLuint id_      ;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 
