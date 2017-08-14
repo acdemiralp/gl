@@ -15,10 +15,28 @@ transform_feedback::transform_feedback (GLuint id) : id_(id), managed_(false)
 {
 
 }
+transform_feedback::transform_feedback(transform_feedback&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+  temp.id_      = invalid_id;
+  temp.managed_ = false;
+}
 transform_feedback::~transform_feedback()
 {
-  if(managed_)
+  if(managed_ && id_ != invalid_id)
     glDeleteTransformFeedbacks(1, &id_);
+}
+
+transform_feedback& transform_feedback::operator=(transform_feedback&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    managed_ = std::move(temp.managed_);
+
+    temp.id_      = invalid_id;
+    temp.managed_ = false;    
+  }
+  return *this;
 }
 
 void transform_feedback::bind    () const

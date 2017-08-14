@@ -6,6 +6,7 @@
 #include <gl/framebuffer.hpp>
 
 #include <cassert>
+#include <utility>
 
 namespace gl
 {
@@ -18,10 +19,28 @@ framebuffer::framebuffer (GLuint id): id_(id), managed_(false)
 {
 
 }
+framebuffer::framebuffer (framebuffer&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+  temp.id_      = invalid_id;
+  temp.managed_ = false;
+}
 framebuffer::~framebuffer()
 {
-  if (managed_)
-  glDeleteFramebuffers(1, &id_);
+  if (managed_ && id_ != invalid_id)
+    glDeleteFramebuffers(1, &id_);
+}
+
+framebuffer& framebuffer::operator=(framebuffer&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    managed_ = std::move(temp.managed_);
+
+    temp.id_      = invalid_id;
+    temp.managed_ = false;    
+  }
+  return *this;
 }
 
 // 9.2 Binding and managing.

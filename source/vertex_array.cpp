@@ -12,14 +12,32 @@ vertex_array::vertex_array ()
 {
   glCreateVertexArrays(1, &id_);
 }
-vertex_array::vertex_array (GLuint id): id_(id), managed_(false)
+vertex_array::vertex_array (GLuint id) : id_(id), managed_(false)
 {
 
 }
+vertex_array::vertex_array (vertex_array&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+  temp.id_      = invalid_id;
+  temp.managed_ = false;
+}
 vertex_array::~vertex_array()
 {
-  if (managed_)
-  glDeleteVertexArrays(1, &id_);
+  if (managed_ && id_ != invalid_id)
+    glDeleteVertexArrays(1, &id_);
+}
+
+vertex_array& vertex_array::operator=(vertex_array&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    managed_ = std::move(temp.managed_);
+
+    temp.id_      = invalid_id;
+    temp.managed_ = false;    
+  }
+  return *this;
 }
 
 void vertex_array::bind    () const

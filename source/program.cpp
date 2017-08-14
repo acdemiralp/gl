@@ -5,21 +5,41 @@
 
 #include <gl/program.hpp>
 
+#include <utility>
+
 namespace gl
 {
 // 7.3 Program objects.
-program::program(): id_(glCreateProgram())
+program::program (): id_(glCreateProgram())
 {
 
 }
-program::program(GLuint id): id_(id), managed_(false)
+program::program (GLuint id): id_(id), managed_(false)
 {
 
+}
+program::program (program&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+{
+  temp.id_      = invalid_id;
+  temp.managed_ = false;
 }
 program::~program()
 {
-  if (managed_)
-  glDeleteProgram(id_);
+  if (managed_ && id_ != invalid_id)
+    glDeleteProgram(id_);
+}
+
+program& program::operator=(program&& temp) noexcept
+{
+  if (this != &temp)
+  {
+    id_      = std::move(temp.id_);
+    managed_ = std::move(temp.managed_);
+
+    temp.id_      = invalid_id;
+    temp.managed_ = false;    
+  }
+  return *this;
 }
 
 void program::attach_shader(const shader& shader) const

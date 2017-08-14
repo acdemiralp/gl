@@ -21,11 +21,11 @@ public:
   // 9.0 Framebuffer objects.
   framebuffer();
   framebuffer(GLuint id);
-  framebuffer(const framebuffer&  that) = delete ;
-  framebuffer(      framebuffer&& temp) = default;
+  framebuffer(const framebuffer&  that) = delete;
+  framebuffer(      framebuffer&& temp) noexcept;
   virtual ~framebuffer();
-  framebuffer& operator=(const framebuffer&  that) = delete ;
-  framebuffer& operator=(      framebuffer&& temp) = default;
+  framebuffer& operator=(const framebuffer&  that) = delete;
+  framebuffer& operator=(      framebuffer&& temp) noexcept;
 
   // 9.2 Binding and managing.
   template<GLenum target = GL_FRAMEBUFFER>
@@ -115,7 +115,7 @@ protected:
   GLint get_parameter           (                   GLenum parameter) const;
   GLint get_attachment_parameter(GLenum attachment, GLenum parameter) const;
 
-  GLuint id_      = 0;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 

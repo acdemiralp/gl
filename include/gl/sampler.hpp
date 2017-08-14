@@ -21,10 +21,10 @@ public:
   sampler();
   sampler(GLuint id);
   sampler(const sampler&  that);
-  sampler(      sampler&& temp) = default;
+  sampler(      sampler&& temp) noexcept;
   virtual ~sampler();
   sampler& operator=(const sampler&  that);
-  sampler& operator=(      sampler&& temp) = default;
+  sampler& operator=(      sampler&& temp) noexcept;
 
   void        bind    (GLuint unit) const;
   static void unbind  (GLuint unit);
@@ -72,7 +72,7 @@ protected:
   std::array<GLfloat, count> get_float_parameter(GLenum parameter) const;
   GLfloat                    get_float_parameter(GLenum parameter) const;
 
-  GLuint id_;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 

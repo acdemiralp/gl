@@ -7,6 +7,7 @@
 #define GL_QUERY_HPP_
 
 #include <type_traits>
+#include <utility>
 
 #include <gl/opengl.hpp>
 
@@ -25,15 +26,30 @@ public:
   {
     
   }
-  query(const query&  that) = delete ;
-  query(      query&& temp) = default;
+  query(const query&  that) = delete;
+  query(      query&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  {
+    temp.id_      = invalid_id;
+    temp.managed_ = false;
+  }
   virtual ~query()
   {
-    if(managed_)
+    if(managed_ && id_ != invalid_id)
       glDeleteQueries(1, &id_);
   }
-  query& operator=(const query&  that) = delete ;
-  query& operator=(      query&& temp) = default;
+  query& operator=(const query&  that) = delete;
+  query& operator=(      query&& temp) noexcept
+  {
+    if (this != &temp)
+    {
+      id_      = std::move(temp.id_);
+      managed_ = std::move(temp.managed_);
+
+      temp.id_      = invalid_id;
+      temp.managed_ = false;    
+    }
+    return *this;
+  }
   
   void        begin        ()             const
   {
@@ -135,7 +151,7 @@ protected:
     return   result;
   }
 
-  GLuint id_;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 

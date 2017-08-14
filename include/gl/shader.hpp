@@ -23,11 +23,11 @@ public:
   // 7.1 Shader objects.
   shader(GLenum type);
   shader(GLuint id, unmanaged_t unmanaged);
-  shader(const shader&  that) = delete ;
-  shader(      shader&& temp) = default;
+  shader(const shader&  that) = delete;
+  shader(      shader&& temp) noexcept;
   virtual ~shader();
-  shader& operator=(const shader&  that) = delete ;
-  shader& operator=(      shader&& temp) = default;
+  shader& operator=(const shader&  that) = delete;
+  shader& operator=(      shader&& temp) noexcept;
 
   void set_source(const std::string& source) const;
   void set_binary(const std::vector<uint8_t>& binary, GLenum format = GL_SHADER_BINARY_FORMAT_SPIR_V) const;
@@ -58,7 +58,7 @@ public:
 protected:
   GLint get_parameter(GLenum parameter) const;
 
-  GLuint id_      = 0;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 }

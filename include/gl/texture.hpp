@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cstddef>
+#include <utility>
 
 #include <gl/buffer.hpp>
 #include <gl/export.hpp>
@@ -41,15 +42,43 @@ public:
   {
 
   }
-  texture(const texture&  that) = delete ;
-  texture(      texture&& temp) = default;
+  texture(const texture&  that) = delete;
+  texture(      texture&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  {
+#ifdef GL_CUDA_INTEROP_SUPPORT
+    resource_ = std::move(temp.resource_);
+#endif
+
+    temp.id_       = invalid_id;
+    temp.managed_  = false;
+#ifdef GL_CUDA_INTEROP_SUPPORT
+    temp.resource_ = nullptr;
+#endif 
+  }
   virtual ~texture()
   {
-    if (managed_)
+    if (managed_ && id_ != invalid_id)
       glDeleteTextures(1, &id_);
   }
-  texture& operator=(const texture&  that) = delete ;
-  texture& operator=(      texture&& temp) = default;
+  texture& operator=(const texture&  that) = delete;
+  texture& operator=(      texture&& temp) noexcept
+  {
+    if (this != &temp)
+    {
+      id_       = std::move(temp.id_);
+      managed_  = std::move(temp.managed_);
+#ifdef GL_CUDA_INTEROP_SUPPORT
+      resource_ = std::move(temp.resource_);
+#endif
+
+      temp.id_       = invalid_id;
+      temp.managed_  = false     ;
+#ifdef GL_CUDA_INTEROP_SUPPORT
+      temp.resource_ = nullptr   ;
+#endif
+    }
+  return *this;
+  }
 
   void        bind      () const
   {
@@ -598,7 +627,7 @@ protected:
     return result;
   }
   
-  GLuint id_      = 0;
+  GLuint id_      = invalid_id;
   bool   managed_ = true;
 
 #ifdef GL_CUDA_INTEROP_SUPPORT
