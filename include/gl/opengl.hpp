@@ -6,6 +6,8 @@
 #ifndef GL_OPENGL_HPP_
 #define GL_OPENGL_HPP_
 
+#include <limits>
+
 #include <gl/export.hpp>
 #include <GL/glew.h>
 
@@ -16,6 +18,8 @@ GL_EXPORT void print_error(const char* prefix);
 
 GL_EXPORT GLsizei format_component_count(GLenum format);
 GL_EXPORT GLsizei type_size             (GLenum type  );
+
+GL_EXPORT const GLuint invalid_id = std::numeric_limits<GLuint>::max();
 }
 
 #endif
