@@ -34,11 +34,11 @@ namespace gl
 // }
 // 
 // Create a managed shader.
-// mak::gl::shader managed_shader(GL_VERTEX_SHADER);
+// gl::shader managed_shader(GL_VERTEX_SHADER);
 // 
 // Create an unmanaged shader.
 // GLuint raw_id = glCreateShader(GL_VERTEX_SHADER);
-// mak::gl::shader unmanaged_shader(raw_id, mak::gl::unmanaged);
+// gl::shader unmanaged_shader(raw_id, gl::unmanaged);
 
 struct GL_EXPORT unmanaged_t
 {
