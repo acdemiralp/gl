@@ -14,14 +14,8 @@ namespace gl
 {
 bool initialize ()
 {
-#ifdef _WIN32
   glewExperimental = true;
   return glewInit() == GLEW_OK;
-#elif __APPLE__
-
-#else
-
-#endif
 }
 void print_error(const char* prefix)
 {
