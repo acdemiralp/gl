@@ -49,7 +49,7 @@ void shader::set_source(const std::string& source) const
 }
 void shader::set_binary(const std::vector<uint8_t>& binary, GLenum format) const
 {
-  glShaderBinary(1, &id_, format, reinterpret_cast<const void*>(binary.data()), GLsizei(binary.size()));
+  glShaderBinary(1, &id_, format, static_cast<const void*>(binary.data()), static_cast<GLsizei>(binary.size()));
 }
 void shader::specialize(const std::string& entry_point, const std::vector<std::tuple<GLuint, GLuint>>& index_value_pairs) const
 {
@@ -79,7 +79,7 @@ void shader::set_binaries    (const std::vector<shader>& shaders, const std::vec
   std::vector<GLuint> ids;
   for(auto& shader : shaders)
     ids.push_back(shader.id());
-  glShaderBinary(GLsizei(ids.size()), ids.data(), format, reinterpret_cast<const void*>(binary.data()), GLsizei(binary.size()));
+  glShaderBinary(static_cast<GLsizei>(ids.size()), ids.data(), format, static_cast<const void*>(binary.data()), static_cast<GLsizei>(binary.size()));
 }
 void shader::release_compiler()
 {
