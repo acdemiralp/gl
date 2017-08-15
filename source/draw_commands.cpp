@@ -97,16 +97,16 @@ void draw_elements_indirect                           (GLenum mode, GLenum type,
 
 void multi_draw_elements                              (GLenum mode, GLenum type, const std::vector<std::pair<GLint, GLsizei>>& offset_count_pairs)
 {
-  std::vector<GLint>   offsets;
-  std::vector<GLsizei> counts ;
+  std::vector<const void*> offsets;
+  std::vector<GLsizei>     counts ;
   offsets.reserve(offset_count_pairs.size());
   counts .reserve(offset_count_pairs.size());
   for (const auto& pair : offset_count_pairs)
   {
-    offsets.push_back(pair.first );
+    offsets.push_back(reinterpret_cast<const void*>(std::size_t(pair.first)));
     counts .push_back(pair.second);
   }
-  glMultiDrawElements(mode, counts.data(), type, reinterpret_cast<void**>(offsets.data()), static_cast<GLsizei>(offset_count_pairs.size()));
+  glMultiDrawElements(mode, counts.data(), type, offsets.data(), static_cast<GLsizei>(offset_count_pairs.size()));
 }
 void multi_draw_elements_indirect                     (GLenum mode, GLenum type, const GLint offset, GLsizei draw_count, GLsizei stride)
 {
@@ -136,7 +136,7 @@ void draw_range_elements_base_vertex                  (GLenum mode, GLuint start
 
 void multi_draw_elements_base_vertex                  (GLenum mode, GLenum type, const std::vector<std::tuple<GLint, GLsizei, GLint>>& offset_count_base_vertex_triplets)
 {
-  std::vector<GLint>   offsets;
+  std::vector<void*>   offsets;
   std::vector<GLsizei> counts;
   std::vector<GLint>   base_vertices;
   offsets      .reserve(offset_count_base_vertex_triplets.size());
@@ -144,10 +144,10 @@ void multi_draw_elements_base_vertex                  (GLenum mode, GLenum type,
   base_vertices.reserve(offset_count_base_vertex_triplets.size());
   for (const auto& triplet : offset_count_base_vertex_triplets)
   {
-    offsets      .push_back(std::get<0>(triplet));
+    offsets      .push_back(reinterpret_cast<void*>(std::size_t(std::get<0>(triplet))));
     counts       .push_back(std::get<1>(triplet));
     base_vertices.push_back(std::get<2>(triplet));
   }
-  glMultiDrawElementsBaseVertex(mode, counts.data(), type, reinterpret_cast<void**>(offsets.data()), static_cast<GLsizei>(offset_count_base_vertex_triplets.size()), base_vertices.data());
+  glMultiDrawElementsBaseVertex(mode, counts.data(), type, offsets.data(), static_cast<GLsizei>(offset_count_base_vertex_triplets.size()), base_vertices.data());
 }
 }
