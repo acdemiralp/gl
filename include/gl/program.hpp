@@ -51,17 +51,17 @@ public:
   void set_binary_retrievable(bool binary_retrievable);
 
   // 7.3.1 Program interfaces.
-  GLsizei     interface_active_resources               (GLenum interface) const;
-  GLsizei     interface_max_name_length                (GLenum interface) const;
-  GLsizei     interface_max_active_variable_count      (GLenum interface) const;
-  GLsizei     interface_max_compatible_subroutine_count(GLenum interface) const;
-  GLuint      resource_index                           (GLenum interface, const std::string& name) const;
-  std::string resource_name                            (GLenum interface, GLuint index) const;
-  GLint       resource_location                        (GLenum interface, const std::string& name) const;
-  GLint       resource_location_index                  (GLenum interface, const std::string& name) const;
+  GLsizei     interface_active_resources               (GLenum interfaced) const;
+  GLsizei     interface_max_name_length                (GLenum interfaced) const;
+  GLsizei     interface_max_active_variable_count      (GLenum interfaced) const;
+  GLsizei     interface_max_compatible_subroutine_count(GLenum interfaced) const;
+  GLuint      resource_index                           (GLenum interfaced, const std::string& name) const;
+  std::string resource_name                            (GLenum interfaced, GLuint index) const;
+  GLint       resource_location                        (GLenum interfaced, const std::string& name) const;
+  GLint       resource_location_index                  (GLenum interfaced, const std::string& name) const;
 
-  GLint              resource_parameter (GLenum interface, GLuint index, GLenum parameter) const;
-  std::vector<GLint> resource_parameters(GLenum interface, GLuint index, const std::vector<GLenum>& parameters) const;
+  GLint              resource_parameter (GLenum interfaced, GLuint index, GLenum parameter) const;
+  std::vector<GLint> resource_parameters(GLenum interfaced, GLuint index, const std::vector<GLenum>& parameters) const;
 
   // 7.5 Program binaries.
   template<typename type = GLbyte>
@@ -318,7 +318,7 @@ public:
 
 protected:
   GLint              get_parameter                             (                             GLenum parameter) const;
-  GLint              get_interface_parameter                   (GLenum interface,            GLenum parameter) const;
+  GLint              get_interface_parameter                   (GLenum interfaced,           GLenum parameter) const;
   GLint              get_active_uniform_parameter              (GLuint index,                GLenum parameter) const;
   std::vector<GLint> get_active_uniform_parameters             (std::vector<GLuint> indices, GLenum parameter) const;
   GLint              get_active_uniform_block_parameter        (GLuint index,                GLenum parameter) const;
