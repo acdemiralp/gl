@@ -20,6 +20,10 @@
 #include <gl/shader.hpp>
 #include <gl/texture_handle.hpp>
 
+#ifdef interface 
+#undef interface 
+#endif
+
 namespace gl
 {
 // Next steps: Modularize uniform, uniform block, atomic counter, attribute accesses.
