@@ -79,6 +79,7 @@ set(PROJECT_SOURCES
   source/vertex_post_processing_ops.cpp
   source/viewport.cpp
 
+  conanfile.py
   license.txt
   readme.md
 )
@@ -90,7 +91,7 @@ assign_source_group(${PROJECT_SOURCES})
 include(import_library)
 
 find_package_or_conan(glew REQUIRED)
-list                 (APPEND PROJECT_LIBRARIES ${CONAN_OR_CMAKE_glew})
+list                 (APPEND PROJECT_LIBRARIES ${glew})
 
 find_package  (OpenGL REQUIRED)
 import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
@@ -115,7 +116,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<INSTALL_INTERFACE:include> PRIVATE source)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIRS})
-target_link_libraries     (${PROJECT_NAME} PRIVATE ${PROJECT_LIBRARIES})
+target_link_libraries     (${PROJECT_NAME} PUBLIC ${PROJECT_LIBRARIES})
 set_target_properties     (${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 if(NOT BUILD_SHARED_LIBS)

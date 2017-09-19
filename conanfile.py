@@ -5,13 +5,13 @@ import os
 class GlConan(ConanFile):                                    # Change.
     name            = "gl"                                   # Change.
     version         = "1.0.0"                                # Change.
-    license         = "MIT"
+    license         = "MIT"																	 
     url             = "https://github.com/acdemiralp/gl"     # Change.
     description     = "Conan package for gl"                 # Change.
     requires        = "glew/2.1.0@RWTH-VR/thirdparty"        # Change.
-    settings        = "os", "compiler", "build_type", "arch"
-    options         = {"shared": [True, False]}              # Change (optional).
-    default_options = "shared=True"                          # Change (optional).
+    settings        = "arch", "build_type", "compiler", "os"
+    options         = {"shared": [True, False]}
+    default_options = "shared=True", "glew:shared=True"      # Change.
     generators      = "cmake"
 
     def source(self):
@@ -19,7 +19,6 @@ class GlConan(ConanFile):                                    # Change.
         download ("%s/archive/%s" % (self.url, zip_name), zip_name, verify=False)
         unzip    (zip_name)
         os.unlink(zip_name)
-        self.run ("cd %s-%s" % (self.name, self.version))
 
     def build(self):
         cmake          = CMake(self)
@@ -40,33 +39,5 @@ class GlConan(ConanFile):                                    # Change.
 
     def package_info(self): # Change.
         self.cpp_info.libs = [self.name]
-        glew_lib = ""
-        # Linux.
-        if self.settings.os == "Linux":
-            glew_lib = "GLEW"
-            if not self.options.shared:
-                self.cpp_info.libs.append("GL")
-        # MACOS.
-        elif self.settings.os == "Macos":
-            glew_lib = "GLEW"
-            self.cpp_info.exelinkflags.append("-framework OpenGL")
-        # Windows.
-        else:
-            glew_lib = "glew32"
-            if not self.options.shared:
-                self.cpp_info.defines.append("GL_STATIC"  )
-                self.cpp_info.defines.append("GLEW_STATIC")
-
-            if self.settings.compiler == "Visual Studio":
-                if not self.options.shared:
-                    glew_lib += "s"
-                    self.cpp_info.libs.append("OpenGL32.lib")
-                    if self.settings.compiler.runtime != "MT":
-                        self.cpp_info.exelinkflags.append('-NODEFAULTLIB:LIBCMTD')
-                        self.cpp_info.exelinkflags.append('-NODEFAULTLIB:LIBCMT' )
-            else:
-                self.cpp_info.libs.append("opengl32")
-
-        if self.settings.build_type == "Debug":
-            glew_lib += "d"
-        self.cpp_info.libs.append(glew_lib)
+        if self.settings.os == "Windows":
+            self.cpp_info.defines.append("GL_STATIC")
