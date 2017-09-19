@@ -40,4 +40,5 @@ class GlConan(ConanFile):                                    # Change.
     def package_info(self): # Change.
         self.cpp_info.libs = [self.name]
         if self.settings.os == "Windows":
-            self.cpp_info.defines.append("GL_STATIC")
+            if not self.options.shared:
+                self.cpp_info.defines.append("GL_STATIC")
