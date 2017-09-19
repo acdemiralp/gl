@@ -115,7 +115,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<INSTALL_INTERFACE:include> PRIVATE source)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_DIRS})
-target_link_libraries     (${PROJECT_NAME} PRIVATE ${PROJECT_LIBRARIES})
+target_link_libraries     (${PROJECT_NAME} PUBLIC ${PROJECT_LIBRARIES})
 set_target_properties     (${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 if(NOT BUILD_SHARED_LIBS)
