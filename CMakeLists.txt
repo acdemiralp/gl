@@ -8,6 +8,7 @@ set                   (CMAKE_CXX_VISIBILITY_PRESET hidden)
 set                   (CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 string                (TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 string                (TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
+include               (conan)
 
 ##################################################    Options     ##################################################
 option(BUILD_SHARED_LIBS "Build shared (dynamic) libraries." ON)
@@ -18,6 +19,7 @@ option(CUDA_INTEROP_SUPPORT "Include cuda interoperation support for buffers and
 set(PROJECT_SOURCES
   CMakeLists.txt
   cmake/assign_source_group.cmake
+  cmake/conan.cmake
   cmake/import_library.cmake
   
   include/gl/auxiliary/glm_uniforms.hpp
@@ -87,8 +89,8 @@ assign_source_group(${PROJECT_SOURCES})
 ##################################################  Dependencies  ##################################################
 include(import_library)
 
-find_package  (GLEW REQUIRED)
-import_library(GLEW_INCLUDE_DIR GLEW_LIBRARY)
+find_package_or_conan(glew REQUIRED)
+list                 (APPEND PROJECT_LIBRARIES ${CONAN_OR_CMAKE_glew})
 
 find_package  (OpenGL REQUIRED)
 import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
