@@ -79,6 +79,7 @@ set(PROJECT_SOURCES
   source/vertex_post_processing_ops.cpp
   source/viewport.cpp
 
+  conanfile.py
   license.txt
   readme.md
 )
@@ -90,7 +91,7 @@ assign_source_group(${PROJECT_SOURCES})
 include(import_library)
 
 find_package_or_conan(glew REQUIRED)
-list                 (APPEND PROJECT_LIBRARIES ${CONAN_OR_CMAKE_glew})
+list                 (APPEND PROJECT_LIBRARIES ${glew})
 
 find_package  (OpenGL REQUIRED)
 import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
