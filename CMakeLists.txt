@@ -19,6 +19,7 @@ option(CUDA_INTEROP_SUPPORT "Include cuda interoperation support for buffers and
 set(PROJECT_SOURCES
   CMakeLists.txt
   cmake/assign_source_group.cmake
+  cmake/conan.cmake
   cmake/import_library.cmake
   
   include/gl/auxiliary/glm_uniforms.hpp
@@ -88,7 +89,7 @@ assign_source_group(${PROJECT_SOURCES})
 ##################################################  Dependencies  ##################################################
 include(import_library)
 
-find_package_or_conan(GLEW REQUIRED)
+find_package_or_conan(glew REQUIRED)
 list                 (APPEND PROJECT_LIBRARIES ${CONAN_OR_CMAKE_glew})
 
 find_package  (OpenGL REQUIRED)
