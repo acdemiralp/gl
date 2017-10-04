@@ -91,7 +91,11 @@ assign_source_group(${PROJECT_SOURCES})
 include(import_library)
 
 find_package_or_conan(glew REQUIRED)
-list                 (APPEND PROJECT_LIBRARIES ${glew})
+if   (USE_CONAN) 
+  list(APPEND PROJECT_LIBRARIES ${glew})
+else ()
+  import_library(GLEW_INCLUDE_DIR GLEW_LIBRARIES)
+endif()
 
 find_package  (OpenGL REQUIRED)
 import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
