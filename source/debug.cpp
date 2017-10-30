@@ -16,14 +16,14 @@ bool debug_output_enabled    ()
   return glIsEnabled(GL_DEBUG_OUTPUT) != 0;
 }
 
-void set_debug_log_callback(const std::function<void(const debug_log&)>& callback, void* user_data)
+void set_debug_log_callback(const std::function<void(const debug_log&)>& callback, const void* user_data)
 {
   std::function<void(GLenum, GLenum, GLuint, GLenum, GLsizei, const char*, const void*)> function =
   [&](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char* message, const void* data)
   {
     callback(debug_log({source, type, id, severity, std::string(message), data}));
   };
-  glDebugMessageCallback((GLDEBUGPROC)function.target<void(GLenum, GLenum, GLuint, GLenum, GLsizei, const char*, const void*)>(), user_data);
+  glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(function.target<void(GLenum, GLenum, GLuint, GLenum, GLsizei, const char*, const void*)>()), user_data);
 }
 
 void set_debug_log_filters(GLenum source, GLenum type, const std::vector<GLuint>& ids, GLenum severity, bool enabled)

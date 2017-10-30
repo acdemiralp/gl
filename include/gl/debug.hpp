@@ -22,7 +22,7 @@ struct GL_EXPORT debug_log
   GLenum      type     ;
   GLuint      id       ;
   GLenum      severity ;
-  std::string message  ;
+  std::string message  ; // Warning C4251 inside this line.
   const void* user_data;
 };
 
@@ -31,7 +31,7 @@ GL_EXPORT void set_debug_output_enabled(bool enabled);
 GL_EXPORT bool debug_output_enabled    ();
 
 // 20.2 Debug message callback.
-GL_EXPORT void set_debug_log_callback(const std::function<void(const debug_log&)>& callback, void* user_data = nullptr);
+GL_EXPORT void set_debug_log_callback(const std::function<void(const debug_log&)>& callback, const void* user_data = nullptr);
 
 // 20.4 Controlling debug messages.
 GL_EXPORT void set_debug_log_filters(GLenum source, GLenum type, const std::vector<GLuint>& ids, GLenum severity, bool enabled);
