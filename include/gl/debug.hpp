@@ -22,7 +22,7 @@ struct GL_EXPORT debug_log
   GLenum      type     ;
   GLuint      id       ;
   GLenum      severity ;
-  std::string message  ;
+  std::string message  ; // Warning C4251 inside this line.
   const void* user_data;
 };
 
