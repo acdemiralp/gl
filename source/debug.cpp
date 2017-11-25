@@ -9,7 +9,7 @@ namespace gl
 {
 extern "C" inline void debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* data)
 {
-  auto callback = reinterpret_cast<const std::function<void(const debug_log&)>*>(data);
+  auto callback = reinterpret_cast<const std::function<void(debug_log)>*>(data);
   if  (callback != nullptr) (*callback)(debug_log({source, type, id, severity, std::string(message)}));
 }
 
@@ -22,9 +22,10 @@ bool debug_output_enabled    ()
   return glIsEnabled(GL_DEBUG_OUTPUT) != 0;
 }
 
-void set_debug_log_callback(const std::function<void(const debug_log&)>& callback)
+void set_debug_log_callback(const std::function<void(debug_log)>& callback)
 {
-  glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debug_callback), reinterpret_cast<const void*>(&callback));
+  detail::debug_log_callback = callback;
+  glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debug_callback), reinterpret_cast<const void*>(&detail::debug_log_callback));
 }
 
 void set_debug_log_filters(GLenum source, GLenum type, const std::vector<GLuint>& ids, GLenum severity, bool enabled)
