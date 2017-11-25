@@ -7,6 +7,12 @@
 
 namespace gl
 {
+extern "C" inline void debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* data)
+{
+  auto callback = reinterpret_cast<const std::function<void(debug_log)>*>(data);
+  if  (callback != nullptr) (*callback)(debug_log({source, type, id, severity, std::string(message)}));
+}
+
 void set_debug_output_enabled(bool enabled)
 {
   enabled ? glEnable(GL_DEBUG_OUTPUT) : glDisable(GL_DEBUG_OUTPUT);
@@ -16,14 +22,10 @@ bool debug_output_enabled    ()
   return glIsEnabled(GL_DEBUG_OUTPUT) != 0;
 }
 
-void set_debug_log_callback(const std::function<void(const debug_log&)>& callback, const void* user_data)
+void set_debug_log_callback(const std::function<void(debug_log)>& callback)
 {
-  std::function<void(GLenum, GLenum, GLuint, GLenum, GLsizei, const char*, const void*)> function =
-  [&](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char* message, const void* data)
-  {
-    callback(debug_log({source, type, id, severity, std::string(message), data}));
-  };
-  glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(function.target<void(GLenum, GLenum, GLuint, GLenum, GLsizei, const char*, const void*)>()), user_data);
+  detail::debug_log_callback = callback;
+  glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debug_callback), reinterpret_cast<const void*>(&detail::debug_log_callback));
 }
 
 void set_debug_log_filters(GLenum source, GLenum type, const std::vector<GLuint>& ids, GLenum severity, bool enabled)
@@ -87,7 +89,7 @@ std::vector<debug_log> debug_logs(GLuint count)
 
   std::vector<debug_log> debug_logs(real_count);
   for (unsigned i = 0; i < real_count; i++)
-    debug_logs[i] = debug_log{sources[i], types[i], ids[i], severities[i], messages[i], nullptr};
+    debug_logs[i] = debug_log{sources[i], types[i], ids[i], severities[i], messages[i]};
   return debug_logs;
 }
 
