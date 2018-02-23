@@ -62,7 +62,7 @@ void shader::specialize(const std::string& entry_point, const std::vector<std::t
     indices.push_back(std::get<0>(constant));
     values .push_back(std::get<1>(constant));
   }
-  glSpecializeShader(id_, entry_point.c_str(), GLuint(index_value_pairs.size()), indices.data(), values.data());
+  glSpecializeShader(id_, entry_point.c_str(), static_cast<GLuint>(index_value_pairs.size()), indices.data(), values.data());
 }
 bool shader::compile   () const
 {

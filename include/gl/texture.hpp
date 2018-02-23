@@ -427,7 +427,7 @@ public:
     auto h = height(level); if (h == 0) h = 1;
     auto d = depth (level); if (d == 0) d = 1;
     std::vector<GLubyte> data(w * h * d * format_component_count(format) * type_size(type));
-    glGetTextureImage(id_, level, format, type, data.size(), static_cast<void*>(data.data()));
+    glGetTextureImage(id_, level, format, type, static_cast<GLsizei>(data.size()), static_cast<void*>(data.data()));
     return data;
   }
   std::vector<GLubyte> sub_image           (GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type) const
@@ -436,20 +436,20 @@ public:
     auto h = height; if (h == 0) h = 1;
     auto d = depth ; if (d == 0) d = 1;
     std::vector<GLubyte> data(w * h * d * format_component_count(format) * type_size(type));
-    glGetTextureSubImage(id_, level, x, y, z, w, h, d, format, type, data.size(), static_cast<void*>(data.data()));
+    glGetTextureSubImage(id_, level, x, y, z, w, h, d, format, type, static_cast<GLsizei>(data.size()), static_cast<void*>(data.data()));
     return data;
   }
   std::vector<GLubyte> compressed_image    (GLint level) const
   {
     std::vector<GLubyte> data(compressed_size(level));
-    glGetCompressedTextureImage(id_, level, data.size(), static_cast<void*>(data.data()));
+    glGetCompressedTextureImage(id_, level, static_cast<GLsizei>(data.size()), static_cast<void*>(data.data()));
     return data;
   }
   std::vector<GLubyte> compressed_sub_image(GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height, GLsizei depth, GLsizei buffer_size) const
   {
     // Note: Buffer size is exposed since it cannot be calculated due to lack of format and type information.
     std::vector<GLubyte> data(buffer_size);
-    glGetCompressedTextureSubImage(id_, level, x, y, z, width, height, depth, data.size(), static_cast<void*>(data.data()));
+    glGetCompressedTextureSubImage(id_, level, x, y, z, width, height, depth, static_cast<GLsizei>(data.size()), static_cast<void*>(data.data()));
     return data;
   }
 

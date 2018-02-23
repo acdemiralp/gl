@@ -50,7 +50,7 @@ GL_EXPORT void pop_debug_group ();
 template<typename type>
 void set_object_label     (const type& object     , const std::string& label)
 {
-  glObjectLabel(type::native_type, object.id(), label.size(), label.data());
+  glObjectLabel(type::native_type, object.id(), static_cast<GLsizei>(label.size()), label.data());
 }
 GL_EXPORT void set_sync_object_label(const sync& sync_object, const std::string& label);
 

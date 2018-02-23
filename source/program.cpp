@@ -481,76 +481,76 @@ void program::set_uniform_4d(GLint location, const std::vector<GLdouble>&   valu
 
 void program::set_uniform_matrix_22f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix2fv(id_, location, static_cast<GLsizei>(value.size()) / 4, transpose, value.data());
+  glProgramUniformMatrix2fv(id_, location, static_cast<GLsizei>(value.size() / 4), transpose, value.data());
 }
 void program::set_uniform_matrix_33f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix3fv(id_, location, static_cast<GLsizei>(value.size()) / 9, transpose, value.data());
+  glProgramUniformMatrix3fv(id_, location, static_cast<GLsizei>(value.size() / 9), transpose, value.data());
 }
 void program::set_uniform_matrix_44f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix4fv(id_, location, static_cast<GLsizei>(value.size()) / 16, transpose, value.data());
+  glProgramUniformMatrix4fv(id_, location, static_cast<GLsizei>(value.size() / 16), transpose, value.data());
 }
 void program::set_uniform_matrix_23f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix2x3fv(id_, location, static_cast<GLsizei>(value.size()) / 6, transpose, value.data());
+  glProgramUniformMatrix2x3fv(id_, location, static_cast<GLsizei>(value.size() / 6), transpose, value.data());
 }
 void program::set_uniform_matrix_32f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix3x2fv(id_, location, static_cast<GLsizei>(value.size()) / 6, transpose, value.data());
+  glProgramUniformMatrix3x2fv(id_, location, static_cast<GLsizei>(value.size() / 6), transpose, value.data());
 }
 void program::set_uniform_matrix_24f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix2x4fv(id_, location, static_cast<GLsizei>(value.size()) / 8, transpose, value.data());
+  glProgramUniformMatrix2x4fv(id_, location, static_cast<GLsizei>(value.size() / 8), transpose, value.data());
 }
 void program::set_uniform_matrix_42f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix4x2fv(id_, location, static_cast<GLsizei>(value.size()) / 8, transpose, value.data());
+  glProgramUniformMatrix4x2fv(id_, location, static_cast<GLsizei>(value.size() / 8), transpose, value.data());
 }
 void program::set_uniform_matrix_34f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix3x4fv(id_, location, static_cast<GLsizei>(value.size()) / 12, transpose, value.data());
+  glProgramUniformMatrix3x4fv(id_, location, static_cast<GLsizei>(value.size() / 12), transpose, value.data());
 }
 void program::set_uniform_matrix_43f(GLint location, const std::vector<GLfloat>& value, bool transpose)
 {
-  glProgramUniformMatrix4x3fv(id_, location, static_cast<GLsizei>(value.size()) / 12, transpose, value.data());
+  glProgramUniformMatrix4x3fv(id_, location, static_cast<GLsizei>(value.size() / 12), transpose, value.data());
 }
 
 void program::set_uniform_matrix_22d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix2dv(id_, location, static_cast<GLsizei>(value.size()) / 4, transpose, value.data());
+  glProgramUniformMatrix2dv(id_, location, static_cast<GLsizei>(value.size() / 4), transpose, value.data());
 }
 void program::set_uniform_matrix_33d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix3dv(id_, location, static_cast<GLsizei>(value.size()) / 9, transpose, value.data());
+  glProgramUniformMatrix3dv(id_, location, static_cast<GLsizei>(value.size() / 9), transpose, value.data());
 }
 void program::set_uniform_matrix_44d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix4dv(id_, location, static_cast<GLsizei>(value.size()) / 16, transpose, value.data());
+  glProgramUniformMatrix4dv(id_, location, static_cast<GLsizei>(value.size() / 16), transpose, value.data());
 }
 void program::set_uniform_matrix_23d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix2x3dv(id_, location, static_cast<GLsizei>(value.size()) / 6, transpose, value.data());
+  glProgramUniformMatrix2x3dv(id_, location, static_cast<GLsizei>(value.size() / 6), transpose, value.data());
 }
 void program::set_uniform_matrix_32d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix3x2dv(id_, location, static_cast<GLsizei>(value.size()) / 6, transpose, value.data());
+  glProgramUniformMatrix3x2dv(id_, location, static_cast<GLsizei>(value.size() / 6), transpose, value.data());
 }
 void program::set_uniform_matrix_24d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix2x4dv(id_, location, static_cast<GLsizei>(value.size()) / 8, transpose, value.data());
+  glProgramUniformMatrix2x4dv(id_, location, static_cast<GLsizei>(value.size() / 8), transpose, value.data());
 }
 void program::set_uniform_matrix_42d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix4x2dv(id_, location, static_cast<GLsizei>(value.size()) / 8, transpose, value.data());
+  glProgramUniformMatrix4x2dv(id_, location, static_cast<GLsizei>(value.size() / 8), transpose, value.data());
 }
 void program::set_uniform_matrix_34d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix3x4dv(id_, location, static_cast<GLsizei>(value.size()) / 12, transpose, value.data());
+  glProgramUniformMatrix3x4dv(id_, location, static_cast<GLsizei>(value.size() / 12), transpose, value.data());
 }
 void program::set_uniform_matrix_43d(GLint location, const std::vector<GLdouble>& value, bool transpose)
 {
-  glProgramUniformMatrix4x3dv(id_, location, static_cast<GLsizei>(value.size()) / 12, transpose, value.data());
+  glProgramUniformMatrix4x3dv(id_, location, static_cast<GLsizei>(value.size() / 12), transpose, value.data());
 }
 
 #ifdef GL_ARB_bindless_texture
