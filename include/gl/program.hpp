@@ -349,7 +349,7 @@ program program::create_shader_program(const std::vector<std::string>& shader_st
   {
     return shader_string.c_str();
   });
-  return program(glCreateShaderProgramv(shader_type, shader_strings.size(), shader_strings_c.data()));
+  return program(glCreateShaderProgramv(shader_type, static_cast<GLsizei>(shader_strings.size()), shader_strings_c.data()));
 }
 
 // 7.5 Program binaries.
@@ -357,13 +357,13 @@ template <typename type>
 std::vector<type> program::program_binary    (GLenum format) const
 {
   std::vector<type> result(binary_length());
-  glGetProgramBinary(id_, result.size(), nullptr, &format, static_cast<void*>(result.data()));
+  glGetProgramBinary(id_, static_cast<GLsizei>(result.size()), nullptr, &format, static_cast<void*>(result.data()));
   return result;
 }
 template <typename type>
 void              program::set_program_binary(GLenum format, const std::vector<type>& binary)
 {
-  glProgramBinary(id_, format, static_cast<const void*>(binary.data()), binary.size());
+  glProgramBinary(id_, format, static_cast<const void*>(binary.data()), static_cast<GLsizei>(binary.size()));
 }
 
 // X Extended Functionality - Type-inferring uniform setters.
