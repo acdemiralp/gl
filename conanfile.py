@@ -4,13 +4,13 @@ import os
 
 class GlConan(ConanFile):
     name            = "gl"
-    version         = "1.0.3"     
+    version         = "1.0.4"     
     description     = "Conan package for gl."           
     url             = "https://github.com/acdemiralp/gl"
     license         = "MIT"											
     settings        = "arch", "build_type", "compiler", "os"
     generators      = "cmake"
-    requires        = "glew/2.1.0@RWTH-VR/thirdparty"
+    requires        = "glew/2.1.0_3@RWTH-VR/thirdparty"
     options         = {"shared": [True, False]} 
     default_options = "shared=True", "glew:shared=True"
 
