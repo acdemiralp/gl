@@ -39,10 +39,8 @@ public:
   program& operator=(const program&  that) = delete;
   program& operator=(      program&& temp) noexcept;
   
-  template<GLenum shader_type>
-  static program create_shader_program(const std::string&              shader_string );
-  template<GLenum shader_type>
-  static program create_shader_program(const std::vector<std::string>& shader_strings);
+  static program create_shader_program(GLenum type, const std::string&              shader_string );
+  static program create_shader_program(GLenum type, const std::vector<std::string>& shader_strings);
 
   void        attach_shader(const shader& shader) const;
   void        detach_shader(const shader& shader) const;
@@ -332,25 +330,6 @@ protected:
   GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
-
-// 7.3 Program objects.
-template <GLenum shader_type>
-program program::create_shader_program(const std::string&              shader_string )
-{
-  auto shader_string_c = shader_string.c_str();
-  return std::move(program(glCreateShaderProgramv(shader_type, 1, &shader_string_c)));
-}
-template <GLenum shader_type>
-program program::create_shader_program(const std::vector<std::string>& shader_strings)
-{
-  std::vector<char*> shader_strings_c(shader_strings.size());
-  std::transform(shader_strings.begin(), shader_strings.end(), shader_strings_c.begin(), 
-  [&](const std::string& shader_string)
-  {
-    return shader_string.c_str();
-  });
-  return program(glCreateShaderProgramv(shader_type, static_cast<GLsizei>(shader_strings.size()), shader_strings_c.data()));
-}
 
 // 7.5 Program binaries.
 template <typename type>

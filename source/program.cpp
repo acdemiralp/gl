@@ -77,6 +77,23 @@ void program::set_binary_retrievable(bool binary_retrievable)
   glProgramParameteri(id_, GL_PROGRAM_BINARY_RETRIEVABLE_HINT, binary_retrievable);
 }
 
+// 7.3 Program objects.
+program program::create_shader_program(GLenum type, const std::string&              shader_string )
+{
+  auto shader_string_c = shader_string.c_str();
+  return std::move(program(glCreateShaderProgramv(type, 1, &shader_string_c)));
+}
+program program::create_shader_program(GLenum type, const std::vector<std::string>& shader_strings)
+{
+  std::vector<char*> shader_strings_c(shader_strings.size());
+  std::transform(shader_strings.begin(), shader_strings.end(), shader_strings_c.begin(), 
+  [&](const std::string& shader_string)
+  {
+    return shader_string.c_str();
+  });
+  return program(glCreateShaderProgramv(type, static_cast<GLsizei>(shader_strings.size()), shader_strings_c.data()));
+}
+
 // 7.3.1 Program interfaces.
 GLsizei     program::interface_active_resources               (GLenum interface) const
 {

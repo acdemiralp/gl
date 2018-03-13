@@ -69,6 +69,32 @@ buffer& buffer::operator=(      buffer&& temp) noexcept
   return *this;
 }
 
+// 6.1 Create and bind buffer objects.
+void buffer::bind        (GLenum target) const
+{
+  glBindBuffer(target, id_);
+}
+void buffer::unbind      (GLenum target)
+{
+  glBindBuffer(target, 0);
+}
+void buffer::bind_range  (GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const
+{
+  glBindBufferRange(target, index, id_, offset, size);
+}
+void buffer::unbind_range(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size)
+{
+  glBindBufferRange(target, index, 0, offset, size);
+}
+void buffer::bind_base   (GLenum target, GLuint index) const
+{
+  glBindBufferBase(target, index, id_);
+}
+void buffer::unbind_base (GLenum target, GLuint index)
+{
+  glBindBufferBase(target, index, 0);
+}
+
 // 6.2 Create / modify buffer object data (bindless).
 void  buffer::set_data_immutable (GLsizeiptr size, const void* data, GLbitfield storage_flags)
 {

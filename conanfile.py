@@ -4,7 +4,7 @@ import os
 
 class GlConan(ConanFile):
     name            = "gl"
-    version         = "1.0.4"     
+    version         = "1.1.0"     
     description     = "Conan package for gl."           
     url             = "https://github.com/acdemiralp/gl"
     license         = "MIT"											
