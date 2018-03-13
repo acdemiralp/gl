@@ -44,6 +44,15 @@ framebuffer& framebuffer::operator=(framebuffer&& temp) noexcept
 }
 
 // 9.2 Binding and managing.
+void framebuffer::bind  (GLenum target) const
+{
+  glBindFramebuffer(target, id_);
+}
+void framebuffer::unbind(GLenum target)
+{
+  glBindFramebuffer(target, 0);
+}
+
 bool framebuffer::is_valid() const
 {
   return glIsFramebuffer(id_) != 0;
@@ -182,6 +191,12 @@ GLenum  framebuffer::texture_cube_map_face(GLenum attachment) const
 void framebuffer::attach_renderbuffer(GLenum attachment, const renderbuffer& renderbuffer)
 {
   glNamedFramebufferRenderbuffer(id_, attachment, GL_RENDERBUFFER, renderbuffer.id());
+}
+
+// 9.4.2 Framebuffer completeness (bindless).
+GLenum framebuffer::status(GLenum target) const
+{
+  return glCheckNamedFramebufferStatus(id_, target);
 }
 
 // 17.4.1 Selecting buffers for writing (bindless).

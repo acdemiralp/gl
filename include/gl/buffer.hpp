@@ -33,18 +33,12 @@ public:
   buffer& operator=(      buffer&& temp) noexcept;
 
   // 6.1 Create and bind buffer objects.
-  template<GLenum target>
-  void        bind        () const;
-  template<GLenum target>
-  static void unbind      ();
-  template<GLenum target, typename = typename std::enable_if<target == GL_ATOMIC_COUNTER_BUFFER || target == GL_SHADER_STORAGE_BUFFER || target == GL_UNIFORM_BUFFER || target == GL_TRANSFORM_FEEDBACK_BUFFER>::type>
-  void        bind_range  (GLuint index, GLintptr offset, GLsizeiptr size) const;
-  template<GLenum target, typename = typename std::enable_if<target == GL_ATOMIC_COUNTER_BUFFER || target == GL_SHADER_STORAGE_BUFFER || target == GL_UNIFORM_BUFFER || target == GL_TRANSFORM_FEEDBACK_BUFFER>::type>
-  static void unbind_range(GLuint index, GLintptr offset, GLsizeiptr size);
-  template<GLenum target, typename = typename std::enable_if<target == GL_ATOMIC_COUNTER_BUFFER || target == GL_SHADER_STORAGE_BUFFER || target == GL_UNIFORM_BUFFER || target == GL_TRANSFORM_FEEDBACK_BUFFER>::type>
-  void        bind_base   (GLuint index) const;
-  template<GLenum target, typename = typename std::enable_if<target == GL_ATOMIC_COUNTER_BUFFER || target == GL_SHADER_STORAGE_BUFFER || target == GL_UNIFORM_BUFFER || target == GL_TRANSFORM_FEEDBACK_BUFFER>::type>
-  static void unbind_base (GLuint index);
+  void        bind        (GLenum target) const;
+  static void unbind      (GLenum target);
+  void        bind_range  (GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const;
+  static void unbind_range(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
+  void        bind_base   (GLenum target, GLuint index) const;
+  static void unbind_base (GLenum target, GLuint index);
 
   // 6.2 Create / modify buffer object data (bindless).
   void set_data_immutable(GLsizeiptr size, const void* data = nullptr, GLbitfield storage_flags = GL_DYNAMIC_STORAGE_BIT);
@@ -104,38 +98,6 @@ protected:
   cudaGraphicsResource* resource_ = nullptr;
 #endif
 };
-
-// 6.1 Create and bind buffer objects.
-template <GLenum target>
-void buffer::bind        () const
-{
-  glBindBuffer(target, id_);
-}
-template <GLenum target>
-void buffer::unbind      ()
-{
-  glBindBuffer(target, 0);
-}
-template <GLenum target, typename>
-void buffer::bind_range  (GLuint index, GLintptr offset, GLsizeiptr size) const
-{
-  glBindBufferRange(target, index, id_, offset, size);
-}
-template <GLenum target, typename>
-void buffer::unbind_range(GLuint index, GLintptr offset, GLsizeiptr size)
-{
-  glBindBufferRange(target, index, 0, offset, size);
-}
-template <GLenum target, typename>
-void buffer::bind_base   (GLuint index) const
-{
-  glBindBufferBase(target, index, id_);
-}
-template <GLenum target, typename>
-void buffer::unbind_base (GLuint index)
-{
-  glBindBufferBase(target, index, 0);
-}
 
 #ifdef GL_CUDA_INTEROP_SUPPORT
 template <typename type>

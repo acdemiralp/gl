@@ -28,10 +28,8 @@ public:
   framebuffer& operator=(      framebuffer&& temp) noexcept;
 
   // 9.2 Binding and managing.
-  template<GLenum target = GL_FRAMEBUFFER>
-  void        bind    () const;
-  template<GLenum target = GL_FRAMEBUFFER>
-  static void unbind  ();
+  void        bind    (GLenum target = GL_FRAMEBUFFER) const;
+  static void unbind  (GLenum target = GL_FRAMEBUFFER);
   bool        is_valid() const;
 
   // 9.2.1 Framebuffer object parameters (bindless).
@@ -79,8 +77,7 @@ public:
   void attach_texture_layer(GLenum attachment, const texture<type>& texture, GLint level = 0, GLint layer = 0);
 
   // 9.4.2 Framebuffer completeness (bindless).
-  template<GLenum target = GL_FRAMEBUFFER>
-  GLenum status() const;
+  GLenum status(GLenum target = GL_FRAMEBUFFER) const;
 
   // 17.4.1 Selecting buffers for writing (bindless).
   void set_draw_buffer (GLenum buffer);
@@ -119,18 +116,6 @@ protected:
   bool   managed_ = true;
 };
 
-// 9.2 Binding and managing.
-template <GLenum target>
-void framebuffer::bind  () const
-{
-  glBindFramebuffer(target, id_);
-}
-template <GLenum target>
-void framebuffer::unbind()
-{
-  glBindFramebuffer(target, 0);
-}
-
 // 9.2.8 Attaching texture images (bindless).
 template <GLenum type>
 void framebuffer::attach_texture      (GLenum attachment, const texture<type>& texture, GLint level)
@@ -141,13 +126,6 @@ template <GLenum type>
 void framebuffer::attach_texture_layer(GLenum attachment, const texture<type>& texture, GLint level, GLint layer)
 {
   glNamedFramebufferTextureLayer(id_, attachment, texture.id(), level, layer);
-}
-
-// 9.4.2 Framebuffer completeness (bindless).
-template <GLenum target>
-GLenum framebuffer::status() const
-{
-  return glCheckNamedFramebufferStatus(id_, target);
 }
 
 // 17.4.2 Fine control of buffer updates.
