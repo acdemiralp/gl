@@ -89,7 +89,7 @@ program program::create_shader_program(GLenum type, const std::vector<std::strin
   std::transform(shader_strings.begin(), shader_strings.end(), shader_strings_c.begin(), 
   [&](const std::string& shader_string)
   {
-    return shader_string.c_str();
+    return const_cast<char*>(shader_string.c_str());
   });
   return program(glCreateShaderProgramv(type, static_cast<GLsizei>(shader_strings.size()), shader_strings_c.data()));
 }
