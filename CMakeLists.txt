@@ -90,15 +90,15 @@ assign_source_group(${PROJECT_SOURCES})
 ##################################################  Dependencies  ##################################################
 include(import_library)
 
+find_package  (OpenGL REQUIRED)
+import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
+
 find_package_or_conan(glew REQUIRED)
 if   (USE_CONAN) 
   list(APPEND PROJECT_LIBRARIES ${glew})
 else ()
   import_library(GLEW_INCLUDE_DIR GLEW_LIBRARIES)
 endif()
-
-find_package  (OpenGL REQUIRED)
-import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
 
 if(CUDA_INTEROP_SUPPORT)
   find_package(CUDA REQUIRED)
