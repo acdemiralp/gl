@@ -22,10 +22,14 @@ bool debug_output_enabled    ()
   return glIsEnabled(GL_DEBUG_OUTPUT) != 0;
 }
 
+namespace detail
+{
+  extern std::function<void(debug_log)> debug_log_callback = nullptr;
+}
 void set_debug_log_callback(const std::function<void(debug_log)>& callback)
 {
-  detail::debug_log_callback = callback;
-  glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debug_callback), reinterpret_cast<const void*>(&detail::debug_log_callback));
+  static auto function = callback;
+  glDebugMessageCallback(reinterpret_cast<GLDEBUGPROC>(debug_callback), reinterpret_cast<const void*>(&function));
 }
 
 void set_debug_log_filters(GLenum source, GLenum type, const std::vector<GLuint>& ids, GLenum severity, bool enabled)
