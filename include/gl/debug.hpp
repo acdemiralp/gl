@@ -30,10 +30,6 @@ GL_EXPORT void set_debug_output_enabled(bool enabled);
 GL_EXPORT bool debug_output_enabled    ();
 
 // 20.2 Debug message callback.
-namespace detail
-{
-std::function<void(debug_log)> debug_log_callback = nullptr; 
-}
 GL_EXPORT void set_debug_log_callback(const std::function<void(debug_log)>& callback);
 
 // 20.4 Controlling debug messages.
