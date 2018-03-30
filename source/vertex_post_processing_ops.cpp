@@ -5,8 +5,6 @@
 
 #include <gl/vertex_post_processing_ops.hpp>
 
-namespace mak
-{
 namespace gl
 {
 // 13.4 Flatshading.
@@ -35,6 +33,5 @@ bool clip_distance_enabled    (               GLuint index)
 void set_clip_control         (GLenum origin, GLenum depth)
 {
   glClipControl(origin, depth);
-}
 }
 }
