@@ -20,7 +20,7 @@ class GL_EXPORT framebuffer
 public:
   // 9.0 Framebuffer objects.
   framebuffer();
-  framebuffer(GLuint id);
+  explicit framebuffer(GLuint id);
   framebuffer(const framebuffer&  that) = delete;
   framebuffer(      framebuffer&& temp) noexcept;
   virtual ~framebuffer();

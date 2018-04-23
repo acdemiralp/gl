@@ -18,7 +18,7 @@ class GL_EXPORT texture_handle
 {
 public:
   template<GLenum target>
-  texture_handle(const texture<target>& texture) : id_(glGetTextureHandleARB(texture.id()))
+  explicit texture_handle(const texture<target>& texture) : id_(glGetTextureHandleARB(texture.id()))
   {
 
   }

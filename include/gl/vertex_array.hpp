@@ -17,7 +17,7 @@ class GL_EXPORT vertex_array
 public:
   // 10.3.1 Vertex array objects.
   vertex_array();
-  vertex_array(GLuint id);
+  explicit vertex_array(GLuint id);
   vertex_array(const vertex_array&  that) = delete;
   vertex_array(      vertex_array&& temp) noexcept;
   virtual ~vertex_array();

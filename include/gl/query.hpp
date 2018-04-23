@@ -22,7 +22,7 @@ public:
   {
     glCreateQueries(target, 1, &id_);
   }
-  query(GLuint id) : id_(id), managed_(false)
+  explicit query(GLuint id) : id_(id), managed_(false)
   {
     
   }
