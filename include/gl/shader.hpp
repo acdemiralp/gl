@@ -21,7 +21,7 @@ class GL_EXPORT shader
 {
 public:
   // 7.1 Shader objects.
-  shader(GLenum type);
+  explicit shader(GLenum type);
   shader(GLuint id, unmanaged_t unmanaged);
   shader(const shader&  that) = delete;
   shader(      shader&& temp) noexcept;

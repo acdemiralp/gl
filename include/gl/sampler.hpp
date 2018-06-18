@@ -19,7 +19,7 @@ class GL_EXPORT sampler
 public:
   // 8.2 Sampler objects.
   sampler();
-  sampler(GLuint id);
+  explicit sampler(GLuint id);
   sampler(const sampler&  that);
   sampler(      sampler&& temp) noexcept;
   virtual ~sampler();

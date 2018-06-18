@@ -38,7 +38,7 @@ public:
   {
     glCreateTextures(target, 1, &id_);
   }
-  texture(GLuint id) : id_(id), managed_(false)
+  explicit texture(GLuint id) : id_(id), managed_(false)
   {
 
   }

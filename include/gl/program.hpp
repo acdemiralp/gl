@@ -32,7 +32,7 @@ class GL_EXPORT program
 public:
   // 7.3 Program objects.
   program();
-  program(GLuint id);
+  explicit program(GLuint id);
   program(const program&  that) = delete;
   program(      program&& temp) noexcept;
   virtual ~program();

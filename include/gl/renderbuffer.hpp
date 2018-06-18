@@ -19,7 +19,7 @@ class GL_EXPORT renderbuffer
 public:
   // 9.2.4 Renderbuffer objects.
   renderbuffer();
-  renderbuffer(GLuint id);
+  explicit renderbuffer(GLuint id);
   renderbuffer(const renderbuffer&  that);
   renderbuffer(      renderbuffer&& temp) noexcept;
   virtual ~renderbuffer();

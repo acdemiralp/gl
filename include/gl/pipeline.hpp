@@ -17,7 +17,7 @@ class GL_EXPORT pipeline
 public:
   // 7.4 Program pipeline objects.
   pipeline();
-  pipeline(GLuint id);
+  explicit pipeline(GLuint id);
   pipeline(const pipeline&  that) = delete;
   pipeline(      pipeline&& temp) noexcept;
   virtual ~pipeline();
