@@ -2,17 +2,21 @@ from   conans       import ConanFile, CMake, tools
 from   conans.tools import download, unzip
 import os
 
-class GlConan(ConanFile):
+class Project(ConanFile):
     name            = "gl"
-    version         = "1.1.2"     
-    description     = "Conan package for gl."           
+    description     = "Conan package for gl."
+    version         = "1.1.3"                
     url             = "https://github.com/acdemiralp/gl"
-    license         = "MIT"											
     settings        = "arch", "build_type", "compiler", "os"
     generators      = "cmake"
-    requires        = "glew/2.1.0_3@RWTH-VR/thirdparty"
-    options         = {"shared": [True, False]} 
+    requires        = (("catch2/2.2.0@bincrafters/stable"), 
+                       ("glew/2.1.0_3@RWTH-VR/thirdparty"))
+    options         = {"shared": [True, False]}
     default_options = "shared=True", "glew:shared=True"
+
+    def imports(self):
+       self.copy("*.dylib*", dst="", src="lib")
+       self.copy("*.dll"   , dst="", src="bin")
 
     def source(self):
         zip_name = "%s.zip" % self.version
@@ -29,16 +33,16 @@ class GlConan(ConanFile):
 
     def package(self):
         include_folder = "%s-%s/include" % (self.name, self.version)
-        self.copy("*.h"  , dst="include", src=include_folder)
-        self.copy("*.hpp", dst="include", src=include_folder)
-        self.copy("*.inl", dst="include", src=include_folder)
-        self.copy("*.a"  , dst="lib", keep_path=False)
-        self.copy("*.so" , dst="lib", keep_path=False)
-        self.copy("*.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
+        self.copy("*.h"     , dst="include", src=include_folder)
+        self.copy("*.hpp"   , dst="include", src=include_folder)
+        self.copy("*.inl"   , dst="include", src=include_folder)
+        self.copy("*.dylib*", dst="lib"    , keep_path=False   )
+        self.copy("*.lib"   , dst="lib"    , keep_path=False   )
+        self.copy("*.so*"   , dst="lib"    , keep_path=False   )
+        self.copy("*.dll"   , dst="bin"    , keep_path=False   )
 
     def package_info(self):
         self.cpp_info.libs = [self.name]
         if self.settings.os == "Windows":
             if not self.options.shared:
-                self.cpp_info.defines.append("GL_STATIC")
+                self.cpp_info.defines.append("%s_STATIC" % self.name.upper())
