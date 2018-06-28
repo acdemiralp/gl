@@ -29,7 +29,7 @@ void buffer_example()
   gl::buffer buffer;
   
   std::vector<float> vertices(32);
-  buffer.set_data(vertices.size(), vertices.data());
+  buffer.set_data(sizeof(float) * vertices.size(), vertices.data());
 }
 ```
 
@@ -46,7 +46,7 @@ void texture_example()
   texture_1d.set_wrap_s    (GL_CLAMP );
   
   std::array<float, 32> scalars;
-  texture_1d.set_storage   (0, GL_RGBA, scalars.size());
+  texture_1d.set_storage   (0, GL_RGBA, sizeof(float) * scalars.size());
   texture_1d.set_sub_image (0, 0, scalars.size(), GL_RGBA, GL_FLOAT, scalars.data());
 }
 ```
