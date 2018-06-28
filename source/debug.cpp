@@ -22,10 +22,6 @@ bool debug_output_enabled    ()
   return glIsEnabled(GL_DEBUG_OUTPUT) != 0;
 }
 
-namespace detail
-{
-  extern std::function<void(debug_log)> debug_log_callback = nullptr;
-}
 void set_debug_log_callback(const std::function<void(debug_log)>& callback)
 {
   static auto function = callback;
