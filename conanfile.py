@@ -5,7 +5,7 @@ import os
 class Project(ConanFile):
     name            = "gl"
     description     = "Conan package for gl."
-    version         = "1.1.5"                
+    version         = "1.1.6"                
     url             = "https://github.com/acdemiralp/gl"
     settings        = "arch", "build_type", "compiler", "os"
     generators      = "cmake"
@@ -36,6 +36,7 @@ class Project(ConanFile):
         self.copy("*.h"     , dst="include", src=include_folder)
         self.copy("*.hpp"   , dst="include", src=include_folder)
         self.copy("*.inl"   , dst="include", src=include_folder)
+        self.copy("*.a"     , dst="lib"    , keep_path=False   )
         self.copy("*.dylib*", dst="lib"    , keep_path=False   )
         self.copy("*.lib"   , dst="lib"    , keep_path=False   )
         self.copy("*.so*"   , dst="lib"    , keep_path=False   )
