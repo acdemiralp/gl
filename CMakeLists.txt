@@ -82,6 +82,13 @@ if (${BUILD_CONAN_PACKAGE})
   if    (CONAN_LIBS_RELEASE)
     list(APPEND PROJECT_LIBRARIES optimized ${CONAN_LIBS_RELEASE})
   endif ()
+else()
+
+  find_library(GLEW REQUIRED)
+
+  list(APPEND PROJECT_LIBRARIES    ${GLEW_LIBRARIES})
+  list(APPEND PROJECT_INCLUDE_DIRS ${GLEW_INCLUDE_DIRS})
+
 endif()
 
 ##################################################    Targets     ##################################################
