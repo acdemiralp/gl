@@ -13,6 +13,7 @@ set_max_warning_level ()
 ##################################################    Options     ##################################################
 option(BUILD_SHARED_LIBS "Build shared (dynamic) libraries." ON)
 option(BUILD_TESTS "Build tests." OFF)
+option(BUILD_CONAN_PACKAGE "Build conan package." Off)
 option(CUDA_INTEROP_SUPPORT "Include cuda interoperation support for buffers and textures." OFF)
 
 ##################################################    Sources     ##################################################
@@ -32,12 +33,16 @@ include            (assign_source_group)
 assign_source_group(${PROJECT_FILES})
 
 ##################################################  Dependencies  ##################################################
-include(conan)
-include(conan_utility)
+
 include(import_library)
 
-add_conan_remote(bincrafter      https://api.bintray.com/conan/bincrafters/public-conan)
-add_conan_remote(conan-community https://api.bintray.com/conan/conan-community/conan   )
+if (${BUILD_CONAN_PACKAGE})
+  include(conan)
+  include(conan_utility)
+
+  add_conan_remote(bincrafter      https://api.bintray.com/conan/bincrafters/public-conan)
+  add_conan_remote(conan-community https://api.bintray.com/conan/conan-community/conan   )
+endif()
 
 # ADD NON-CONAN LIBRARIES HERE.
 # Examples:
@@ -68,14 +73,16 @@ if(CUDA_INTEROP_SUPPORT)
   import_library(CUDA_INCLUDE_DIRS CUDA_LIBRARIES)
 endif()
 
-conan_cmake_run(CONANFILE conanfile.py BASIC_SETUP BUILD missing)
-list  (APPEND PROJECT_INCLUDE_DIRS ${CONAN_INCLUDE_DIRS_RELEASE})
-if    (CONAN_LIBS_DEBUG)
-  list(APPEND PROJECT_LIBRARIES debug ${CONAN_LIBS_DEBUG})
-endif ()  
-if    (CONAN_LIBS_RELEASE)
-  list(APPEND PROJECT_LIBRARIES optimized ${CONAN_LIBS_RELEASE})
-endif ()
+if (${BUILD_CONAN_PACKAGE})
+  conan_cmake_run(CONANFILE conanfile.py BASIC_SETUP BUILD missing)
+  list  (APPEND PROJECT_INCLUDE_DIRS ${CONAN_INCLUDE_DIRS_RELEASE})
+  if    (CONAN_LIBS_DEBUG)
+    list(APPEND PROJECT_LIBRARIES debug ${CONAN_LIBS_DEBUG})
+  endif ()
+  if    (CONAN_LIBS_RELEASE)
+    list(APPEND PROJECT_LIBRARIES optimized ${CONAN_LIBS_RELEASE})
+  endif ()
+endif()
 
 ##################################################    Targets     ##################################################
 add_library(${PROJECT_NAME} ${PROJECT_FILES})
