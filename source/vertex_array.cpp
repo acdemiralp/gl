@@ -31,6 +31,9 @@ vertex_array& vertex_array::operator=(vertex_array&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (managed_ && id_ != invalid_id)
+      glDeleteVertexArrays(1, &id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 

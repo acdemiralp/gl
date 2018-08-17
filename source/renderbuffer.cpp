@@ -41,6 +41,9 @@ renderbuffer& renderbuffer::operator=(      renderbuffer&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (managed_ && id_ != invalid_id)
+      glDeleteRenderbuffers(1, &id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 

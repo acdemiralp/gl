@@ -33,6 +33,9 @@ pipeline& pipeline::operator=(pipeline&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (managed_ && id_ != invalid_id)
+      glDeleteProgramPipelines(1, &id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 

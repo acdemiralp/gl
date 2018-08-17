@@ -30,6 +30,9 @@ transform_feedback& transform_feedback::operator=(transform_feedback&& temp) noe
 {
   if (this != &temp)
   {
+    if(managed_ && id_ != invalid_id)
+      glDeleteTransformFeedbacks(1, &id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 

@@ -65,6 +65,9 @@ public:
   {
     if (this != &temp)
     {
+      if (managed_ && id_ != invalid_id)
+        glDeleteTextures(1, &id_);
+
       id_       = std::move(temp.id_);
       managed_  = std::move(temp.managed_);
 #ifdef GL_CUDA_INTEROP_SUPPORT
