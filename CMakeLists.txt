@@ -68,6 +68,7 @@ if(CUDA_INTEROP_SUPPORT)
     "-gencode=arch=compute_52,code=sm_52" # Maxwell
     "-gencode=arch=compute_60,code=sm_60" # Pascal
     "-gencode=arch=compute_61,code=sm_61" # Pascal
+    "-gencode=arch=compute_70,code=sm_70" # Volta
     "--expt-extended-lambda")
   import_library(CUDA_INCLUDE_DIRS CUDA_LIBRARIES)
 endif()
