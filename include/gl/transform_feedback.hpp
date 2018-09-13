@@ -17,7 +17,7 @@ class GL_EXPORT transform_feedback
 public:
   // 13.2 Transform feedback.
   transform_feedback();
-  transform_feedback(GLuint id);
+  explicit transform_feedback(GLuint id);
   transform_feedback(const transform_feedback&  that) = delete;
   transform_feedback(      transform_feedback&& temp) noexcept;
   virtual ~transform_feedback();

@@ -25,7 +25,7 @@ class GL_EXPORT buffer
 public:
   // 6.0 Buffer objects.
   buffer();
-  buffer(GLuint id);
+  explicit buffer(GLuint id);
   buffer(const buffer&  that);
   buffer(      buffer&& temp) noexcept;
   virtual ~buffer();
