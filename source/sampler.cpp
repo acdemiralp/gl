@@ -61,6 +61,9 @@ sampler& sampler::operator=(      sampler&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (managed_ && id_ != invalid_id)
+      glDeleteSamplers(1, &id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 

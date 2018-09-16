@@ -27,6 +27,9 @@ sync& sync::operator=(sync&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (id_ != nullptr)
+      glDeleteSync(id_);
+
     id_      = std::move(temp.id_);
     temp.id_ = nullptr;
   }

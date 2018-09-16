@@ -33,6 +33,9 @@ program& program::operator=(program&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (managed_ && id_ != invalid_id)
+      glDeleteProgram(id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 

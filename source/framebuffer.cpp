@@ -34,6 +34,9 @@ framebuffer& framebuffer::operator=(framebuffer&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (managed_ && id_ != invalid_id)
+      glDeleteFramebuffers(1, &id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 
