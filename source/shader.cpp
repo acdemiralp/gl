@@ -33,6 +33,9 @@ shader& shader::operator=(shader&& temp) noexcept
 {
   if (this != &temp)
   {
+    if (managed_ && id_ != invalid_id)
+      glDeleteShader(id_);
+
     id_      = std::move(temp.id_);
     managed_ = std::move(temp.managed_);
 
