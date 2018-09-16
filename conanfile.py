@@ -5,7 +5,7 @@ import os
 class Project(ConanFile):
     name            = "gl"
     description     = "Conan package for gl."
-    version         = "1.1.7"                
+    version         = "1.1.8"                
     url             = "https://github.com/acdemiralp/gl"
     settings        = "arch", "build_type", "compiler", "os"
     generators      = "cmake"
