@@ -5,12 +5,12 @@ import os
 class Project(ConanFile):
     name            = "gl"
     description     = "Conan package for gl."
-    version         = "1.1.8"                
+    version         = "1.2.0"                
     url             = "https://github.com/acdemiralp/gl"
     settings        = "arch", "build_type", "compiler", "os"
     generators      = "cmake"
     requires        = (("catch2/2.2.0@bincrafters/stable"), 
-                       ("glew/2.1.0_3@RWTH-VR/thirdparty"))
+                       ("glew/2.1.0@bincrafters/stable"))
     options         = {"shared": [True, False]}
     default_options = "shared=True", "glew:shared=True"
 
