@@ -84,7 +84,7 @@ if   (USE_CONAN)
   endif ()
   if    (CONAN_LIBS)
     list(APPEND PROJECT_LIBRARIES ${CONAN_LIBS})
-  endif
+  endif ()
 else ()
   find_library  (GLEW REQUIRED)
   import_library(GLEW_INCLUDE_DIRS GLEW_LIBRARIES)
