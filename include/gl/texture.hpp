@@ -11,7 +11,6 @@
 #include <utility>
 
 #include <gl/buffer.hpp>
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/renderbuffer.hpp>
 
@@ -660,11 +659,11 @@ using proxy_cubemap_texture_array        = texture<GL_PROXY_TEXTURE_CUBE_MAP_ARR
 using proxy_texture_2d_multisample       = texture<GL_PROXY_TEXTURE_2D_MULTISAMPLE>;
 using proxy_texture_2d_multisample_array = texture<GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY>;
 
-GL_EXPORT inline void set_seamless_cubemap_enabled(bool enabled)
+inline void set_seamless_cubemap_enabled(bool enabled)
 {
   enabled ? glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS) : glDisable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 }
-GL_EXPORT inline bool seamless_cubemap_enabled    ()
+inline bool seamless_cubemap_enabled    ()
 {
   return glIsEnabled(GL_TEXTURE_CUBE_MAP_SEAMLESS) != 0;
 }

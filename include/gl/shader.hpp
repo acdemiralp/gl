@@ -11,13 +11,12 @@
 #include <tuple>
 #include <vector>
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/unmanaged.hpp>
 
 namespace gl
 {
-class GL_EXPORT shader
+class shader
 {
 public:
   // 7.1 Shader objects.
@@ -62,4 +61,7 @@ protected:
   bool   managed_ = true;
 };
 }
+
+#include <gl/implementation/shader.ipp>
+
 #endif

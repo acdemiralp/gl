@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/program.hpp>
+#ifndef GL_IMPLEMENTATION_PROGRAM_IPP_
+#define GL_IMPLEMENTATION_PROGRAM_IPP_
 
 #include <utility>
 
@@ -1143,3 +1144,5 @@ GLint              program::get_program_stage_parameter               (GLenum   
   return result;
 }
 }
+
+#endif

@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/tessellation.hpp>
+#ifndef GL_IMPLEMENTATION_TESSELLATION_IPP_
+#define GL_IMPLEMENTATION_TESSELLATION_IPP_
 
 namespace gl
 {
@@ -43,3 +44,5 @@ std::array<GLfloat, 4> patch_default_outer_level()
   return result;
 }
 }
+
+#endif

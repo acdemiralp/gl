@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/opengl.hpp>
+#ifndef GL_IMPLEMENTATION_OPENGL_IPP_
+#define GL_IMPLEMENTATION_OPENGL_IPP_
 
 #include <cassert>
 #include <iostream>
@@ -114,3 +115,5 @@ GLsizei type_size             (GLenum type  )
   }
 }
 }
+
+#endif

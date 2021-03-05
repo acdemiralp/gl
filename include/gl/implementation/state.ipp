@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/state.hpp>
+#ifndef GL_IMPLEMENTATION_STATE_IPP_
+#define GL_IMPLEMENTATION_STATE_IPP_
 
 namespace gl
 {
@@ -168,3 +169,5 @@ std::vector<std::string> spir_v_extensions        ()
   return result;
 }
 }
+
+#endif

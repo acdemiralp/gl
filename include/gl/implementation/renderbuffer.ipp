@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/renderbuffer.hpp>
+#ifndef GL_IMPLEMENTATION_RENDERBUFFER_IPP_
+#define GL_IMPLEMENTATION_RENDERBUFFER_IPP_
 
 #include <utility>
 
@@ -149,3 +150,5 @@ GLint renderbuffer::get_parameter(GLenum parameter) const
   return result;
 }
 }
+
+#endif

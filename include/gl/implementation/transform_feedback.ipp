@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/transform_feedback.hpp>
+#ifndef GL_IMPLEMENTATION_TRANSFORM_FEEDBACK_IPP_
+#define GL_IMPLEMENTATION_TRANSFORM_FEEDBACK_IPP_
 
 namespace gl
 {
@@ -145,3 +146,5 @@ GLint64 transform_feedback::get_parameter_64(GLenum parameter, GLuint index) con
   return result;
 }
 }
+
+#endif

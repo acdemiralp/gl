@@ -9,13 +9,12 @@
 #include <array>
 #include <vector>
 
-#include <gl/export.hpp>
 #include <gl/texture.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
-class GL_EXPORT framebuffer
+class framebuffer
 {
 public:
   // 9.0 Framebuffer objects.
@@ -129,23 +128,25 @@ void framebuffer::attach_texture_layer(GLenum attachment, const texture<type>& t
 }
 
 // 17.4.2 Fine control of buffer updates.
-GL_EXPORT void set_color_mask  (const std::array<bool, 4>& mask);
-GL_EXPORT void set_color_mask  (GLuint index, const std::array<bool, 4>& mask);
-GL_EXPORT void set_depth_mask  (bool   mask );
-GL_EXPORT void set_stencil_mask(GLuint mask , GLenum face = GL_FRONT_AND_BACK);
+void set_color_mask  (const std::array<bool, 4>& mask);
+void set_color_mask  (GLuint index, const std::array<bool, 4>& mask);
+void set_depth_mask  (bool   mask );
+void set_stencil_mask(GLuint mask , GLenum face = GL_FRONT_AND_BACK);
 
 // 17.4.3 Clearing the buffers.
-GL_EXPORT void set_clear_color  (const std::array<float, 4>& color);
-GL_EXPORT void set_clear_depth  (GLdouble   depth  );
-GL_EXPORT void set_clear_depth  (GLfloat    depth  );
-GL_EXPORT void set_clear_stencil(GLint      stencil);
-GL_EXPORT void clear            (GLbitfield buffer_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void set_clear_color  (const std::array<float, 4>& color);
+void set_clear_depth  (GLdouble   depth  );
+void set_clear_depth  (GLfloat    depth  );
+void set_clear_stencil(GLint      stencil);
+void clear            (GLbitfield buffer_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 // 18.2 Reading pixels.
-GL_EXPORT std::vector<GLuint> read_pixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type);
+std::vector<GLuint> read_pixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type);
 
 // 18.2.8 Final conversion.
-GL_EXPORT void clamp_read_color(GLenum clamp = GL_FIXED_ONLY);
+void clamp_read_color(GLenum clamp = GL_FIXED_ONLY);
 }
+
+#include <gl/implementation/framebuffer.ipp>
 
 #endif

@@ -6,14 +6,15 @@
 #ifndef GL_COMPUTE_HPP_
 #define GL_COMPUTE_HPP_
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
 // 19.0 Compute shaders.
-GL_EXPORT void dispatch_compute         (GLuint grid_x, GLuint grid_y, GLuint grid_z);
-GL_EXPORT void dispatch_compute_indirect(GLintptr offset);
+void dispatch_compute         (GLuint grid_x, GLuint grid_y, GLuint grid_z);
+void dispatch_compute_indirect(GLintptr offset);
 }
+
+#include <gl/implementation/compute.ipp>
 
 #endif

@@ -6,7 +6,6 @@
 #ifndef GL_RENDERBUFFER_HPP_
 #define GL_RENDERBUFFER_HPP_
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
@@ -14,7 +13,7 @@ namespace gl
 template<GLenum type>
 class texture;
 
-class GL_EXPORT renderbuffer
+class renderbuffer
 {
 public:
   // 9.2.4 Renderbuffer objects.
@@ -78,5 +77,7 @@ void renderbuffer::copy_image_sub_data(
   glCopyImageSubData(source.id(), source_target, source_level, source_x, source_y, source_z, id_, GL_RENDERBUFFER, level, x, y, z, width, height, depth);
 }
 }
+
+#include <gl/implementation/renderbuffer.ipp>
 
 #endif

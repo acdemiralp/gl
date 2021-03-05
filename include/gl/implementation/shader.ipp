@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/shader.hpp>
+#ifndef GL_IMPLEMENTATION_SHADER_IPP_
+#define GL_IMPLEMENTATION_SHADER_IPP_
 
 #include <utility>
 
@@ -148,3 +149,5 @@ GLint shader::get_parameter(GLenum parameter) const
   return result;
 }
 }
+
+#endif

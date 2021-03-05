@@ -10,7 +10,6 @@
 #include <type_traits>
 #include <vector>
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 #ifdef GL_CUDA_INTEROP_SUPPORT
@@ -20,7 +19,7 @@
 
 namespace gl
 {
-class GL_EXPORT buffer
+class buffer
 {
 public:
   // 6.0 Buffer objects.
@@ -111,5 +110,7 @@ type* buffer::cuda_map()
 }
 #endif
 }
+
+#include <gl/implementation/buffer.ipp>
 
 #endif

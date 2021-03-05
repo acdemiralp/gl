@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/debug.hpp>
+#ifndef GL_IMPLEMENTATION_DEBUG_IPP_
+#define GL_IMPLEMENTATION_DEBUG_IPP_
 
 namespace gl
 {
@@ -116,3 +117,5 @@ void* get_debug_callback_user_data()
   return result;
 }
 }
+
+#endif

@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/per_fragment_ops.hpp>
+#ifndef GL_IMPLEMENTATION_PER_FRAGMENT_OPS_IPP_
+#define GL_IMPLEMENTATION_PER_FRAGMENT_OPS_IPP_
 
 namespace gl
 {
@@ -197,3 +198,5 @@ void set_logic_operation        (GLenum operation)
   glLogicOp(operation);
 }
 }
+
+#endif

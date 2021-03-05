@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/texture_handle.hpp>
+#ifndef GL_IMPLEMENTATION_TEXTURE_HANDLE_IPP_
+#define GL_IMPLEMENTATION_TEXTURE_HANDLE_IPP_
 
 namespace gl
 {
@@ -21,3 +22,5 @@ GLuint64 texture_handle::id() const
   return id_;
 }
 }
+
+#endif

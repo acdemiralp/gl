@@ -8,17 +8,18 @@
 
 #include <array>
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
 // 13.6.1 Controlling viewport.
-GL_EXPORT void set_depth_range        (              double near, double far);
-GL_EXPORT void set_depth_range        (              float  near, float  far);
-GL_EXPORT void set_indexed_depth_range(GLuint index, double near, double far);
-GL_EXPORT void set_viewport           (              const std::array<GLint, 2>& offset, const std::array<GLsizei, 2>& size);
-GL_EXPORT void set_indexed_viewport   (GLuint index, const std::array<GLint, 2>& offset, const std::array<GLsizei, 2>& size);
+void set_depth_range        (              double near, double far);
+void set_depth_range        (              float  near, float  far);
+void set_indexed_depth_range(GLuint index, double near, double far);
+void set_viewport           (              const std::array<GLint, 2>& offset, const std::array<GLsizei, 2>& size);
+void set_indexed_viewport   (GLuint index, const std::array<GLint, 2>& offset, const std::array<GLsizei, 2>& size);
 }
+
+#include <gl/implementation/viewport.ipp>
 
 #endif

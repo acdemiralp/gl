@@ -6,12 +6,11 @@
 #ifndef GL_SYNC_HPP_
 #define GL_SYNC_HPP_
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
-class GL_EXPORT sync
+class sync
 {
 public:
   // 4.1 Sync objects and fences.
@@ -38,5 +37,7 @@ protected:
   GLsync id_;
 };
 }
+
+#include <gl/implementation/sync.ipp>
 
 #endif

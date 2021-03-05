@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/sampler.hpp>
+#ifndef GL_IMPLEMENTATION_SAMPLER_IPP_
+#define GL_IMPLEMENTATION_SAMPLER_IPP_
 
 #include <utility>
 
@@ -215,3 +216,5 @@ GLfloat sampler::get_float_parameter(GLenum parameter) const
   return result;
 }
 }
+
+#endif

@@ -6,14 +6,13 @@
 #ifndef GL_IMAGE_HANDLE_HPP_
 #define GL_IMAGE_HANDLE_HPP_
 
-#include <gl/export.hpp>
 #include <gl/texture.hpp>
 
 #ifdef GL_ARB_bindless_texture
 
 namespace gl
 {
-class GL_EXPORT image_handle
+class image_handle
 {
 public:
   template<GLenum target>
@@ -37,6 +36,8 @@ protected:
   GLuint64 id_;
 };
 }
+
+#include <gl/implementation/image_handle.ipp>
 
 #endif
 #endif
