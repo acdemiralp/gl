@@ -1,5 +1,5 @@
 ##################################################    Project     ##################################################
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 project               (gl VERSION 4.6 LANGUAGES CXX)
 list                  (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set_property          (GLOBAL PROPERTY USE_FOLDERS ON)
@@ -28,10 +28,10 @@ assign_source_group(${PROJECT_FILES})
 include(import_library)
 
 find_package  (OpenGL REQUIRED)
-import_library(OPENGL_INCLUDE_DIR OPENGL_LIBRARIES)
+list          (APPEND PROJECT_LIBRARIES OpenGL::GL OpenGL::GLU)
 
-find_library  (GLEW REQUIRED)
-import_library(GLEW_INCLUDE_DIRS GLEW_LIBRARIES)
+find_package  (GLEW REQUIRED)
+list          (APPEND PROJECT_LIBRARIES GLEW::GLEW)
 
 if(CUDA_INTEROP_SUPPORT)
   find_package  (CUDA REQUIRED)
