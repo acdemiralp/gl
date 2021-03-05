@@ -6,7 +6,6 @@
 #ifndef GL_TEXTURE_HANDLE_HPP_
 #define GL_TEXTURE_HANDLE_HPP_
 
-#include <gl/export.hpp>
 #include <gl/sampler.hpp>
 #include <gl/texture.hpp>
 
@@ -14,7 +13,7 @@
 
 namespace gl
 {
-class GL_EXPORT texture_handle
+class texture_handle
 {
 public:
   template<GLenum target>
@@ -43,6 +42,8 @@ protected:
   GLuint64 id_;
 };
 }
+
+#include <gl/implementation/texture_handle.ipp>
 
 #endif
 #endif

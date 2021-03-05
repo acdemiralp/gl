@@ -10,13 +10,12 @@
 #include <string>
 #include <vector>
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/sync.hpp>
 
 namespace gl
 {
-struct GL_EXPORT debug_log
+struct debug_log
 {
   GLenum      source   ;
   GLenum      type     ;
@@ -26,21 +25,21 @@ struct GL_EXPORT debug_log
 };
 
 // 20.0 Debug output.
-GL_EXPORT void set_debug_output_enabled(bool enabled);
-GL_EXPORT bool debug_output_enabled    ();
+void set_debug_output_enabled(bool enabled);
+bool debug_output_enabled    ();
 
 // 20.2 Debug message callback.
-GL_EXPORT void set_debug_log_callback(const std::function<void(debug_log)>& callback);
+void set_debug_log_callback(const std::function<void(debug_log)>& callback);
 
 // 20.4 Controlling debug messages.
-GL_EXPORT void set_debug_log_filters(GLenum source, GLenum type, const std::vector<GLuint>& ids, GLenum severity, bool enabled);
+void set_debug_log_filters(GLenum source, GLenum type, const std::vector<GLuint>& ids, GLenum severity, bool enabled);
 
 // 20.5 Externally generated messages.
-GL_EXPORT void insert_debug_log(const debug_log& log);
+void insert_debug_log(const debug_log& log);
 
 // 20.6 Debug groups.
-GL_EXPORT void push_debug_group(GLenum source, GLuint id, const std::string& message);
-GL_EXPORT void pop_debug_group ();
+void push_debug_group(GLenum source, GLuint id, const std::string& message);
+void pop_debug_group ();
 
 // 20.7 Debug labels.
 template<typename type>
@@ -48,14 +47,14 @@ void set_object_label     (const type& object     , const std::string& label)
 {
   glObjectLabel(type::native_type, object.id(), static_cast<GLsizei>(label.size()), label.data());
 }
-GL_EXPORT void set_sync_object_label(const sync& sync_object, const std::string& label);
+void set_sync_object_label(const sync& sync_object, const std::string& label);
 
 // 20.8 Synchronous Debug output.
-GL_EXPORT void set_syncronous_debug_output_enabled(bool enabled);
-GL_EXPORT bool synchronous_debug_output_enabled   ();
+void set_syncronous_debug_output_enabled(bool enabled);
+bool synchronous_debug_output_enabled   ();
 
 // 20.9 Debug output queries.
-GL_EXPORT std::vector<debug_log> debug_logs(GLuint count);
+std::vector<debug_log> debug_logs(GLuint count);
 
 template<typename type>
 std::string object_label     (const type& object)
@@ -65,11 +64,13 @@ std::string object_label     (const type& object)
   glGetObjectLabel(type::native_type, object.id(), size, nullptr, &label[0]);
   return label;
 }
-GL_EXPORT std::string sync_object_label(const sync& sync_object);
+std::string sync_object_label(const sync& sync_object);
 
 // 22.2 String queries.
 void* get_debug_callback_function ();
 void* get_debug_callback_user_data();
 }
+
+#include <gl/implementation/debug.ipp>
 
 #endif

@@ -8,18 +8,19 @@
 
 #include <limits>
 
-#include <gl/export.hpp>
 #include <GL/glew.h>
 
 namespace gl
 {
-GL_EXPORT bool initialize ();
-GL_EXPORT void print_error(const char* prefix);
+bool initialize ();
+void print_error(const char* prefix);
 
-GL_EXPORT GLsizei format_component_count(GLenum format);
-GL_EXPORT GLsizei type_size             (GLenum type  );
+GLsizei format_component_count(GLenum format);
+GLsizei type_size             (GLenum type  );
 
 const GLuint invalid_id = std::numeric_limits<GLuint>::max();
 }
+
+#include <gl/implementation/opengl.ipp>
 
 #endif

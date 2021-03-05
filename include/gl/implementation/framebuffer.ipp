@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/framebuffer.hpp>
+#ifndef GL_IMPLEMENTATION_FRAMEBUFFER_IPP_
+#define GL_IMPLEMENTATION_FRAMEBUFFER_IPP_
 
 #include <cassert>
 #include <utility>
@@ -338,3 +339,5 @@ void clamp_read_color(GLenum clamp)
   glClampColor(GL_CLAMP_READ_COLOR, clamp);
 }
 }
+
+#endif

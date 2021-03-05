@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/vertex_post_processing_ops.hpp>
+#ifndef GL_IMPLEMENTATION_VERTEX_POST_PROCESSING_OPS_IPP_
+#define GL_IMPLEMENTATION_VERTEX_POST_PROCESSING_OPS_IPP_
 
 namespace gl
 {
@@ -35,3 +36,5 @@ void set_clip_control         (GLenum origin, GLenum depth)
   glClipControl(origin, depth);
 }
 }
+
+#endif

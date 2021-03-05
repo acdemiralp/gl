@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/command_execution.hpp>
+#ifndef GL_IMPLEMENTATION_COMMAND_EXECUTION_IPP_
+#define GL_IMPLEMENTATION_COMMAND_EXECUTION_IPP_
 
 namespace gl
 {
@@ -35,3 +36,5 @@ void finish()
   glFinish();
 }
 }
+
+#endif

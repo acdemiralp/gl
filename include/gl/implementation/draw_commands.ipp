@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/draw_commands.hpp>
+#ifndef GL_IMPLEMENTATION_DRAW_COMMANDS_IPP_
+#define GL_IMPLEMENTATION_DRAW_COMMANDS_IPP_
 
 namespace gl
 {
@@ -151,3 +152,5 @@ void multi_draw_elements_base_vertex                  (GLenum mode, GLenum type,
   glMultiDrawElementsBaseVertex(mode, counts.data(), type, offsets.data(), static_cast<GLsizei>(offset_count_base_vertex_triplets.size()), base_vertices.data());
 }
 }
+
+#endif

@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/sync.hpp>
+#ifndef GL_IMPLEMENTATION_SYNC_IPP_
+#define GL_IMPLEMENTATION_SYNC_IPP_
 
 #include <utility>
 
@@ -67,3 +68,5 @@ GLint sync::get_property(GLenum property) const
   return value;
 }
 }
+
+#endif

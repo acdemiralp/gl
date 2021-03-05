@@ -9,12 +9,11 @@
 #include <array>
 #include <cstddef>
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
-class GL_EXPORT sampler
+class sampler
 {
 public:
   // 8.2 Sampler objects.
@@ -91,5 +90,7 @@ std::array<GLfloat, count> sampler::get_float_parameter(GLenum parameter) const
   return result;
 }
 }
+
+#include <gl/implementation/sampler.ipp>
 
 #endif

@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/image_handle.hpp>
+#ifndef GL_IMPLEMENTATION_IMAGE_HANDLE_IPP_
+#define GL_IMPLEMENTATION_IMAGE_HANDLE_IPP_
 
 namespace gl
 {
@@ -21,3 +22,5 @@ GLuint64 image_handle::id() const
   return id_;
 }
 }
+
+#endif

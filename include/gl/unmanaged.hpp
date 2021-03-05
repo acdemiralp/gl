@@ -6,8 +6,6 @@
 #ifndef GL_UNMANAGED_HPP_
 #define GL_UNMANAGED_HPP_
 
-#include <gl/export.hpp>
-
 namespace gl
 {
 // Some object wrappers in this library have multiple constructors taking 
@@ -40,7 +38,7 @@ namespace gl
 // GLuint raw_id = glCreateShader(GL_VERTEX_SHADER);
 // gl::shader unmanaged_shader(raw_id, gl::unmanaged);
 
-struct GL_EXPORT unmanaged_t
+struct unmanaged_t
 {
   
 };

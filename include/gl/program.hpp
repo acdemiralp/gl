@@ -14,7 +14,6 @@
 #include <utility>
 #include <vector>
 
-#include <gl/export.hpp>
 #include <gl/image_handle.hpp>
 #include <gl/opengl.hpp>
 #include <gl/shader.hpp>
@@ -27,7 +26,7 @@
 namespace gl
 {
 // Next steps: Modularize uniform, uniform block, atomic counter, attribute accesses.
-class GL_EXPORT program
+class program
 {
 public:
   // 7.3 Program objects.
@@ -402,5 +401,7 @@ inline void program::set_uniform_vector(GLint location, const std::vector<GLdoub
   set_uniform_1d(location, values);
 }
 }
+
+#include <gl/implementation/program.ipp>
 
 #endif

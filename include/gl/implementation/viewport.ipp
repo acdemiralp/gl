@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/viewport.hpp>
+#ifndef GL_IMPLEMENTATION_VIEWPORT_IPP_
+#define GL_IMPLEMENTATION_VIEWPORT_IPP_
 
 namespace gl
 {
@@ -29,3 +30,5 @@ void set_indexed_viewport   (GLuint index, const std::array<GLfloat, 2>& offset,
   glViewportIndexedf(index, offset[0], offset[1], size[0], size[1]);
 }
 }
+
+#endif

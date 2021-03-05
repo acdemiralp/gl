@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/pipeline.hpp>
+#ifndef GL_IMPLEMENTATION_PIPELINE_IPP_
+#define GL_IMPLEMENTATION_PIPELINE_IPP_
 
 #include <utility>
 
@@ -132,3 +133,5 @@ GLint pipeline::get_parameter(GLenum parameter) const
   return result;
 }
 }
+
+#endif

@@ -6,14 +6,13 @@
 #ifndef GL_TEXTURE_VIEW_HPP_
 #define GL_TEXTURE_VIEW_HPP_
 
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 #include <gl/texture.hpp>
 
 namespace gl
 {
 template<GLenum target>
-class GL_EXPORT texture_view : public texture<target>
+class texture_view : public texture<target>
 {
 public:
   // 8.18 Texture views.

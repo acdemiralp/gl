@@ -7,12 +7,11 @@
 #define GL_VERTEX_ARRAY_HPP_
 
 #include <gl/buffer.hpp>
-#include <gl/export.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
-class GL_EXPORT vertex_array
+class vertex_array
 {
 public:
   // 10.3.1 Vertex array objects.
@@ -67,5 +66,7 @@ private:
   bool   managed_ = true;
 };
 }
+
+#include <gl/implementation/vertex_array.ipp>
 
 #endif

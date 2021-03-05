@@ -6,13 +6,12 @@
 #ifndef GL_PIPELINE_HPP_
 #define GL_PIPELINE_HPP_
 
-#include <gl/export.hpp>
 #include <gl/program.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
-class GL_EXPORT pipeline
+class pipeline
 {
 public:
   // 7.4 Program pipeline objects.
@@ -58,5 +57,7 @@ protected:
   bool   managed_ = true;
 };
 }
+
+#include <gl/implementation/pipeline.ipp>
 
 #endif

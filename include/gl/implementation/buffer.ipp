@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/buffer.hpp>
+#ifndef GL_IMPLEMENTATION_BUFFER_IPP_
+#define GL_IMPLEMENTATION_BUFFER_IPP_
 
 #include <utility>
 
@@ -247,3 +248,5 @@ GLint64 buffer::get_parameter_64(GLenum parameter) const
   return result;
 }
 }
+
+#endif

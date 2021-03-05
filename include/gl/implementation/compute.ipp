@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/compute.hpp>
+#ifndef GL_IMPLEMENTATION_COMPUTE_IPP_
+#define GL_IMPLEMENTATION_COMPUTE_IPP_
 
 namespace gl
 {
@@ -16,3 +17,5 @@ void dispatch_compute_indirect(GLintptr offset)
   glDispatchComputeIndirect(offset);
 }
 }
+
+#endif

@@ -6,13 +6,12 @@
 #ifndef GL_TRANSFORM_FEEDBACK_HPP_
 #define GL_TRANSFORM_FEEDBACK_HPP_
 
-#include <gl/export.hpp>
 #include <gl/buffer.hpp>
 #include <gl/opengl.hpp>
 
 namespace gl
 {
-class GL_EXPORT transform_feedback
+class transform_feedback
 {
 public:
   // 13.2 Transform feedback.
@@ -62,5 +61,7 @@ protected:
   bool   managed_ = true;
 };
 }
+
+#include <gl/implementation/transform_feedback.ipp>
 
 #endif

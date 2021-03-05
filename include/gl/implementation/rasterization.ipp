@@ -3,7 +3,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <gl/rasterization.hpp>
+#ifndef GL_IMPLEMENTATION_RASTERIZATION_IPP_
+#define GL_IMPLEMENTATION_RASTERIZATION_IPP_
 
 namespace gl
 {
@@ -148,3 +149,5 @@ bool polygon_fill_offset_enabled     ()
   return glIsEnabled(GL_POLYGON_OFFSET_FILL) != 0;
 }
 }
+
+#endif

@@ -12,8 +12,7 @@ Complete OpenGL 4.6 Core Profile Wrapper for C++11.
 
 #### Building
 * Follow the cmake build process for locating the dependencies.
-* Toggle BUILD_SHARED_LIBS for creating dynamic library.
-* Toggle CUDA_INTEROP_SUPPORT for Cuda interoperation support. Note that the build will ask for the location of Cuda upon enabling this option.
+* Toggle CUDA_INTEROP_SUPPORT for CUDA interoperation support. Note that the build will ask for the location of Cuda upon enabling this option.
 
 ---
 
