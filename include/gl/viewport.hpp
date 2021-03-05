@@ -10,6 +10,9 @@
 
 #include <gl/opengl.hpp>
 
+#undef near
+#undef far
+
 namespace gl
 {
 // 13.6.1 Controlling viewport.
