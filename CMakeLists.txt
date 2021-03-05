@@ -14,7 +14,6 @@ set_max_warning_level ()
 option(BUILD_SHARED_LIBS "Build shared (dynamic) libraries." ON)
 option(BUILD_TESTS "Build tests." OFF)
 option(CUDA_INTEROP_SUPPORT "Include cuda interoperation support for buffers and textures." OFF)
-option(USE_CONAN "Use conan package manager for dependencies and publishing." ON)
 
 ##################################################    Sources     ##################################################
 file(GLOB_RECURSE PROJECT_HEADERS include/*.h include/*.hpp)
@@ -34,14 +33,6 @@ assign_source_group(${PROJECT_FILES})
 
 ##################################################  Dependencies  ##################################################
 include(import_library)
-
-if   (USE_CONAN)
-include         (conan)
-include         (conan_utility)
-
-add_conan_remote(bincrafter      https://api.bintray.com/conan/bincrafters/public-conan)
-add_conan_remote(conan-community https://api.bintray.com/conan/conan-community/conan   )
-endif()
 
 # ADD NON-CONAN LIBRARIES HERE.
 # Examples:
@@ -73,14 +64,8 @@ if(CUDA_INTEROP_SUPPORT)
   import_library(CUDA_INCLUDE_DIRS CUDA_LIBRARIES)
 endif()
 
-if   (USE_CONAN)
-  conan_cmake_run(CONANFILE conanfile.py BASIC_SETUP BUILD missing)
-  list(APPEND PROJECT_INCLUDE_DIRS ${CONAN_INCLUDE_DIRS})
-  list(APPEND PROJECT_LIBRARIES ${CONAN_LIBS})
-else ()
-  find_library  (GLEW REQUIRED)
-  import_library(GLEW_INCLUDE_DIRS GLEW_LIBRARIES)
-endif()
+find_library  (GLEW REQUIRED)
+import_library(GLEW_INCLUDE_DIRS GLEW_LIBRARIES)
 
 ##################################################    Targets     ##################################################
 add_library(${PROJECT_NAME} ${PROJECT_FILES})
