@@ -3,13 +3,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_PIPELINE_HPP_
-#define GL_PIPELINE_HPP_
+#ifndef GL_PIPELINE_HPP
+#define GL_PIPELINE_HPP
 
-#include <utility>
+#include <string>
 
-#include <gl/program.hpp>
 #include <gl/opengl.hpp>
+#include <gl/program.hpp>
 
 namespace gl
 {
@@ -17,21 +17,21 @@ class pipeline
 {
 public:
   // 7.4 Program pipeline objects.
-  pipeline()
+  pipeline           ()
   {
     glCreateProgramPipelines(1, &id_);
   }
-  explicit pipeline(GLuint id) : id_(id), managed_(false)
+  explicit pipeline  (const GLuint id) : id_(id), managed_(false)
   {
 
   }
-  pipeline(const pipeline&  that) = delete;
-  pipeline(      pipeline&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  pipeline           (const pipeline&  that) = delete;
+  pipeline           (      pipeline&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
   {
     temp.id_ = invalid_id;
     temp.managed_ = false;
   }
-  virtual ~pipeline()
+  virtual ~pipeline  ()
   {
     if (managed_ && id_ != invalid_id)
       glDeleteProgramPipelines(1, &id_);
@@ -44,8 +44,8 @@ public:
       if (managed_ && id_ != invalid_id)
         glDeleteProgramPipelines(1, &id_);
   
-      id_      = std::move(temp.id_);
-      managed_ = std::move(temp.managed_);
+      id_      = temp.id_;
+      managed_ = temp.managed_;
   
       temp.id_      = invalid_id;
       temp.managed_ = false;
@@ -61,58 +61,70 @@ public:
   {
     glBindProgramPipeline(0);
   }
+
+  [[nodiscard]]
   bool        is_valid() const
   {
     return glIsProgramPipeline(id_) != 0;
   }
 
-  void use_program_stages       (GLbitfield stages, const program& program = gl::program(0)) const
+  void use_program_stages       (const GLbitfield stages, const program& program = gl::program(0)) const
   {
     glUseProgramStages(id_, stages, program.id());
   }
-  void set_active_shader_program(                   const program& program)                  const
+  void set_active_shader_program(                         const program& program)                  const
   {
     glActiveShaderProgram(id_, program.id());
   }
 
   // 7.13 Program pipeline queries.
+  [[nodiscard]]
   bool    validation_status                     () const
   {
     return get_parameter(GL_VALIDATE_STATUS) != 0;
   }
+  [[nodiscard]]
   program active_program                        () const
   {
     return program(get_parameter(GL_ACTIVE_PROGRAM));
   }
+  [[nodiscard]]
   program vertex_shader_program                 () const
   {
     return program(get_parameter(GL_VERTEX_SHADER));
   }
+  [[nodiscard]]
   program fragment_shader_program               () const
   {
     return program(get_parameter(GL_FRAGMENT_SHADER));
   }
+  [[nodiscard]]
   program geometry_shader_program               () const
   {
     return program(get_parameter(GL_GEOMETRY_SHADER));
   }
+  [[nodiscard]]
   program tessellation_control_shader_program   () const
   {
     return program(get_parameter(GL_TESS_CONTROL_SHADER));
   }
+  [[nodiscard]]
   program tessellation_evaluation_shader_program() const
   {
     return program(get_parameter(GL_TESS_EVALUATION_SHADER));
   }
+  [[nodiscard]]
   program compute_shader_program                () const
   {
     return program(get_parameter(GL_COMPUTE_SHADER));
   }
+  [[nodiscard]]
   GLsizei info_log_length                       () const
   {
     return get_parameter(GL_INFO_LOG_LENGTH);
   }
 
+  [[nodiscard]]
   std::string info_log() const
   {
     std::string result;
@@ -122,6 +134,7 @@ public:
   }
 
   // 11.1.3 Shader execution.
+  [[nodiscard]]
   bool validate() const
   {
     glValidateProgram(id_);
@@ -130,13 +143,15 @@ public:
 
   static const GLenum native_type = GL_PROGRAM_PIPELINE;
 
+  [[nodiscard]]
   GLuint id() const
   {
     return id_;
   }
 
 protected:
-  GLint get_parameter(GLenum parameter) const
+  [[nodiscard]]
+  GLint get_parameter(const GLenum parameter) const
   {
     GLint result;
     glGetProgramPipelineiv(id_, parameter, &result);
