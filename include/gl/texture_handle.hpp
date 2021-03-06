@@ -1,10 +1,10 @@
-//          Copyright Ali Can Demiralp 2016 - 2017.
+//          Copyright Ali Can Demiralp 2016 - 2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_TEXTURE_HANDLE_HPP_
-#define GL_TEXTURE_HANDLE_HPP_
+#ifndef GL_TEXTURE_HANDLE_HPP
+#define GL_TEXTURE_HANDLE_HPP
 
 #include <gl/sampler.hpp>
 #include <gl/texture.hpp>
@@ -33,17 +33,24 @@ public:
   texture_handle& operator=(const texture_handle&  that) = default;
   texture_handle& operator=(      texture_handle&& temp) = default;
 
-  void set_resident(bool resident);
-  bool is_resident () const;
+  void set_resident(bool resident)
+  {
+    resident ? glMakeTextureHandleResidentARB(id_) : glMakeTextureHandleNonResidentARB(id_);
+  }
+  bool is_resident () const
+  {
+    return glIsTextureHandleResidentARB(id_) != 0;
+  }
 
-  GLuint64 id() const;
+  GLuint64 id() const
+  {
+    return id_;
+  }
 
 protected:
   GLuint64 id_;
 };
 }
-
-#include <gl/implementation/texture_handle.ipp>
 
 #endif
 #endif

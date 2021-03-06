@@ -1,10 +1,10 @@
-//          Copyright Ali Can Demiralp 2016 - 2017.
+//          Copyright Ali Can Demiralp 2016 - 2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_TEXTURE_HPP_
-#define GL_TEXTURE_HPP_
+#ifndef GL_TEXTURE_HPP
+#define GL_TEXTURE_HPP
 
 #include <array>
 #include <cstddef>
@@ -563,8 +563,8 @@ public:
   template<typename type> 
   type* cuda_map  ()
   {
-    type*  buffer_ptr;
-    size_t buffer_size;
+    type*       buffer_ptr;
+    std::size_t buffer_size;
     cudaGraphicsMapResources(1, &resource_, nullptr);
     cudaGraphicsResourceGetMappedPointer(static_cast<void**>(&buffer_ptr), &buffer_size, resource_);
     return buffer_ptr;

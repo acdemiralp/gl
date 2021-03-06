@@ -1,10 +1,10 @@
-//          Copyright Ali Can Demiralp 2016 - 2017.
+//          Copyright Ali Can Demiralp 2016 - 2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_QUERY_HPP_
-#define GL_QUERY_HPP_
+#ifndef GL_QUERY_HPP
+#define GL_QUERY_HPP
 
 #include <type_traits>
 #include <utility>
