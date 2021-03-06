@@ -10,6 +10,9 @@ set_max_warning_level ()
 
 ##################################################    Options     ##################################################
 option(CUDA_INTEROP_SUPPORT "Include CUDA interoperation support for buffers and textures." OFF)
+if    (CUDA_INTEROP_SUPPORT)
+  list(APPEND PROJECT_COMPILE_DEFINITIONS -DGL_CUDA_INTEROP_SUPPORT)
+endif ()
 
 ##################################################    Sources     ##################################################
 file(GLOB_RECURSE PROJECT_HEADERS include/*.h include/*.hpp include/*.ipp)
@@ -58,10 +61,6 @@ target_include_directories(${PROJECT_NAME}_ PUBLIC ${PROJECT_INCLUDE_DIRS})
 target_link_libraries     (${PROJECT_NAME}_ PUBLIC ${PROJECT_LIBRARIES})
 target_compile_definitions(${PROJECT_NAME}_ PUBLIC ${PROJECT_COMPILE_DEFINITIONS})
 set_target_properties     (${PROJECT_NAME}_ PROPERTIES LINKER_LANGUAGE CXX)
-
-if(CUDA_INTEROP_SUPPORT)
-  set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS -D${PROJECT_NAME_UPPER}_CUDA_INTEROP_SUPPORT)
-endif()
 
 ##################################################  Installation  ##################################################
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}-config)
