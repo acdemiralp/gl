@@ -118,7 +118,7 @@ public:
   {
     glNamedBufferData(id_, size, data, usage);
   }
-  void set_sub_data      (                              const GLintptr offset, const GLsizeiptr size,                                  const void* data) const
+  void set_sub_data      (                              const GLintptr offset, const GLsizeiptr size,                                              const void* data) const
   {
     glNamedBufferSubData(id_, offset, size, data);
   }

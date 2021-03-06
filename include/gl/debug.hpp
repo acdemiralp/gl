@@ -7,6 +7,7 @@
 #define GL_DEBUG_HPP
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <vector>
@@ -48,7 +49,7 @@ inline void set_debug_log_callback(const std::function<void(debug_log)>& callbac
 }
 
 // 20.4 Controlling debug messages.
-inline void set_debug_log_filters(const GLenum source, const GLenum type, const std::vector<GLuint>& ids, const GLenum severity, const bool enabled)
+inline void set_debug_log_filters (const GLenum source, const GLenum type, const std::vector<GLuint>& ids, const GLenum severity, const bool enabled)
 {
   glDebugMessageControl(source, type, severity, static_cast<GLsizei>(ids.size()), ids.data(), enabled);
 }
@@ -118,7 +119,7 @@ inline std::vector<debug_log> debug_logs(const GLuint count)
   }
 
   std::vector<debug_log> debug_logs(real_count);
-  for (unsigned i = 0; i < real_count; i++)
+  for (std::uint32_t i = 0; i < real_count; i++)
     debug_logs[i] = debug_log{sources[i], types[i], ids[i], severities[i], messages[i]};
   return debug_logs;
 }
@@ -126,14 +127,16 @@ inline std::vector<debug_log> debug_logs(const GLuint count)
 template<typename type>
 std::string        object_label     (const type& object)
 {
-  GLint       size ; glGetIntegerv(GL_MAX_LABEL_LENGTH, &size);
-  std::string label; label.resize(size);
+  GLint       size ;
+  glGetIntegerv(GL_MAX_LABEL_LENGTH, &size);
+  std::string label;
+  label.resize(size);
   glGetObjectLabel(type::native_type, object.id(), size, nullptr, &label[0]);
   return label;
 }
 inline std::string sync_object_label(const sync& sync_object)
 {
-  GLint size;
+  GLint       size ;
   glGetIntegerv(GL_MAX_LABEL_LENGTH, &size);
   std::string label;
   label.resize(size);

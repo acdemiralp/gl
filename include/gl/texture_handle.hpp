@@ -6,10 +6,10 @@
 #ifndef GL_TEXTURE_HANDLE_HPP
 #define GL_TEXTURE_HANDLE_HPP
 
+#ifdef GL_ARB_bindless_texture
+
 #include <gl/sampler.hpp>
 #include <gl/texture.hpp>
-
-#ifdef GL_ARB_bindless_texture
 
 namespace gl
 {
@@ -17,32 +17,36 @@ class texture_handle
 {
 public:
   template<GLenum target>
-  explicit texture_handle(const texture<target>& texture) : id_(glGetTextureHandleARB(texture.id()))
+  explicit texture_handle  (const texture<target>& texture)
+  : id_(glGetTextureHandleARB       (texture.id()))
   {
 
   }
   template<GLenum target>
-  texture_handle(const texture<target>& texture, const sampler& sampler) : id_(glGetTextureSamplerHandleARB(texture.id(), sampler.id()))
+  texture_handle           (const texture<target>& texture, const sampler& sampler)
+  : id_(glGetTextureSamplerHandleARB(texture.id(), sampler.id()))
   {
 
   }
-  texture_handle(const texture_handle&  that) = default;
-  texture_handle(      texture_handle&& temp) = default;
- ~texture_handle()                            = default;
-
+  texture_handle           (const texture_handle&  that) = default;
+  texture_handle           (      texture_handle&& temp) = default;
+ ~texture_handle           ()                            = default;
   texture_handle& operator=(const texture_handle&  that) = default;
   texture_handle& operator=(      texture_handle&& temp) = default;
 
-  void set_resident(bool resident)
+  void     set_resident(const bool resident) const
   {
     resident ? glMakeTextureHandleResidentARB(id_) : glMakeTextureHandleNonResidentARB(id_);
   }
-  bool is_resident () const
+
+  [[nodiscard]]
+  bool     is_resident () const
   {
     return glIsTextureHandleResidentARB(id_) != 0;
   }
 
-  GLuint64 id() const
+  [[nodiscard]]
+  GLuint64 id          () const
   {
     return id_;
   }
@@ -53,4 +57,5 @@ protected:
 }
 
 #endif
+
 #endif

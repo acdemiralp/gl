@@ -333,7 +333,7 @@ void set_stencil_mask(GLuint mask , GLenum face = GL_FRONT_AND_BACK)
 }
 
 // 17.4.3 Clearing the buffers.
-void set_clear_color  (const std::array<float, 4>& color)
+void set_clear_color  (const std::array<GLfloat, 4>& color)
 {
   glClearColor(color[0], color[1], color[2], color[3]);
 }

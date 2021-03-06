@@ -16,23 +16,23 @@
 namespace gl
 {
 // 13.6.1 Controlling viewport.
-inline void set_depth_range        (                    const double near, const double far)
+inline void set_depth_range        (                    const GLdouble near, const GLdouble far)
 {
   glDepthRange(near, far);
 }
-inline void set_depth_range        (                    const float  near, const float  far)
+inline void set_depth_range        (                    const GLfloat  near, const GLfloat  far)
 {
   glDepthRangef(near, far);
 }
-inline void set_indexed_depth_range(const GLuint index, const double near, const double far)
+inline void set_indexed_depth_range(const GLuint index, const GLdouble near, const GLdouble far)
 {
   glDepthRangeIndexed(index, near, far);
 }
-inline void set_viewport           (                    const std::array<GLint, 2>& offset, const std::array<GLsizei, 2>& size)
+inline void set_viewport           (                    const std::array<GLint  , 2>& offset, const std::array<GLsizei, 2>& size)
 {
   glViewport(offset[0], offset[1], size[0], size[1]);
 }
-inline void set_indexed_viewport   (const GLuint index, const std::array<float, 2>& offset, const std::array<GLsizei, 2>& size)
+inline void set_indexed_viewport   (const GLuint index, const std::array<GLfloat, 2>& offset, const std::array<GLfloat, 2>& size)
 {
   glViewportIndexedf(index, offset[0], offset[1], size[0], size[1]);
 }
