@@ -7,32 +7,31 @@
 #define GL_QUERY_HPP
 
 #include <type_traits>
-#include <utility>
 
 #include <gl/opengl.hpp>
 
 namespace gl
-{
+{    
 template<GLenum target>
 class query
 {
 public:
   // 4.2 Asynchronous queries.
-  query()
+  query           ()
   {
     glCreateQueries(target, 1, &id_);
   }
-  explicit query(GLuint id) : id_(id), managed_(false)
+  explicit query  (const GLuint id) : id_(id), managed_(false)
   {
     
   }
-  query(const query&  that) = delete;
-  query(      query&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  query           (const query&  that) = delete;
+  query           (      query&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
   {
     temp.id_      = invalid_id;
     temp.managed_ = false;
   }
-  virtual ~query()
+  virtual ~query  ()
   {
     if(managed_ && id_ != invalid_id)
       glDeleteQueries(1, &id_);
@@ -45,8 +44,8 @@ public:
       if (managed_ && id_ != invalid_id)
         glDeleteQueries(1, &id_);
 
-      id_      = std::move(temp.id_);
-      managed_ = std::move(temp.managed_);
+      id_      = temp.id_;
+      managed_ = temp.managed_;
 
       temp.id_      = invalid_id;
       temp.managed_ = false;    
@@ -54,11 +53,11 @@ public:
     return *this;
   }
   
-  void        begin        ()             const
+  void        begin        ()                   const
   {
     glBeginQuery       (target, id_);
   }
-  void        begin_indexed(GLuint index) const
+  void        begin_indexed(const GLuint index) const
   {
     glBeginQueryIndexed(target, index, id_);
   }
@@ -66,10 +65,12 @@ public:
   {
     glEndQuery         (target);
   }
-  static void end_indexed  (GLuint index)
+  static void end_indexed  (const GLuint index)
   {
     glEndQueryIndexed  (target, index);
   }
+
+  [[nodiscard]]
   bool        is_valid     () const
   {
     return glIsQuery(id_);
@@ -81,7 +82,7 @@ public:
     glGetQueryiv       (target,        GL_CURRENT_QUERY, &result);
     return result;
   }
-  static GLenum  current     (GLuint index)
+  static GLenum  current     (const GLuint index)
   {
     GLint  result;
     glGetQueryIndexediv(target, index, GL_CURRENT_QUERY, &result);
@@ -93,21 +94,24 @@ public:
     glGetQueryiv       (target,        GL_QUERY_COUNTER_BITS, &result);
     return result;
   }
-  static GLsizei counter_bits(GLuint index)
+  static GLsizei counter_bits(const GLuint index)
   {
     GLint  result;
     glGetQueryIndexediv(target, index, GL_QUERY_COUNTER_BITS, &result);
     return result;
   }
 
+  [[nodiscard]]
   bool   available     () const
   {
     return get_parameter_64(GL_QUERY_RESULT_AVAILABLE) != 0;
   }
+  [[nodiscard]]
   GLuint result_no_wait() const
   {
     return get_parameter_64(GL_QUERY_RESULT_NO_WAIT);
   }
+  [[nodiscard]]
   GLuint result        () const
   {
     return get_parameter_64(GL_QUERY_RESULT);
@@ -129,7 +133,7 @@ public:
 
   // 10.9 Conditional rendering.
   template<typename = typename std::enable_if<target == GL_SAMPLES_PASSED || target == GL_ANY_SAMPLES_PASSED>::type>
-  void        begin_conditional_render(GLenum mode = GL_QUERY_BY_REGION_NO_WAIT) const
+  void        begin_conditional_render(const GLenum mode = GL_QUERY_BY_REGION_NO_WAIT) const
   {
     glBeginConditionalRender(id_, mode);
   }
@@ -141,13 +145,15 @@ public:
 
   static const GLenum native_type = GL_QUERY;
 
+  [[nodiscard]]
   GLuint id() const
   {
     return id_;  
   }
 
 protected:
-  GLuint64 get_parameter_64(GLenum parameter) const
+  [[nodiscard]]
+  GLuint64 get_parameter_64(const GLenum parameter) const
   {
     GLuint64 result = 0;
     glGetQueryObjectui64v(id_, parameter, &result);

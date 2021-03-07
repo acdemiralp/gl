@@ -17,15 +17,15 @@ class sampler
 {
 public:
   // 8.2 Sampler objects.
-  sampler()
+  sampler           ()
   {
     glCreateSamplers(1, &id_);
   }
-  explicit sampler(GLuint id) : id_(id), managed_(false)
+  explicit sampler  (const GLuint id) : id_(id), managed_(false)
   {
 
   }
-  sampler(const sampler&  that) : sampler()
+  sampler           (const sampler&  that) : sampler()
   {
     set_wrap_s      (that.wrap_s      ());
     set_wrap_t      (that.wrap_t      ());
@@ -39,12 +39,12 @@ public:
     set_compare_mode(that.compare_mode());
     set_compare_func(that.compare_func());
   }
-  sampler(      sampler&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  sampler           (      sampler&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
   {
     temp.id_      = invalid_id;
     temp.managed_ = false;
   }
-  virtual ~sampler()
+  virtual ~sampler  ()
   {
     if (managed_ && id_ != invalid_id)
       glDeleteSamplers(1, &id_);
@@ -71,8 +71,8 @@ public:
       if (managed_ && id_ != invalid_id)
         glDeleteSamplers(1, &id_);
   
-      id_      = std::move(temp.id_);
-      managed_ = std::move(temp.managed_);
+      id_      = temp.id_;
+      managed_ = temp.managed_;
   
       temp.id_      = invalid_id;
       temp.managed_ = false;    
@@ -80,132 +80,148 @@ public:
     return *this;
   }
 
-  void        bind    (GLuint unit) const
+  void        bind    (const GLuint unit) const
   {
     glBindSampler(unit, id_);
   }
-  static void unbind  (GLuint unit)
+  static void unbind  (const GLuint unit)
   {
     glBindSampler(unit, 0);
   }
+
+  [[nodiscard]]
   bool        is_valid() const
   {
     return glIsSampler(id_) != 0;
   }
 
-  void set_wrap_s        (GLenum  mode)
+  void set_wrap_s        (const GLenum                  mode          ) const
   {
     glSamplerParameteri(id_, GL_TEXTURE_WRAP_S, mode);
   }
-  void set_wrap_t        (GLenum  mode)
+  void set_wrap_t        (const GLenum                  mode          ) const
   {
     glSamplerParameteri(id_, GL_TEXTURE_WRAP_T, mode);
   }
-  void set_wrap_r        (GLenum  mode)
+  void set_wrap_r        (const GLenum                  mode          ) const
   {
     glSamplerParameteri(id_, GL_TEXTURE_WRAP_R, mode);
   }
-  void set_min_filter    (GLenum  mode)
+  void set_min_filter    (const GLenum                  mode          ) const
   {
     glSamplerParameteri(id_, GL_TEXTURE_MIN_FILTER, mode);
   }
-  void set_mag_filter    (GLenum  mode)
+  void set_mag_filter    (const GLenum                  mode          ) const
   {
     glSamplerParameteri(id_, GL_TEXTURE_MAG_FILTER, mode);
   }
-  void set_min_lod       (GLfloat value)
+  void set_min_lod       (const GLfloat                 value         ) const
   {
     glSamplerParameterf(id_, GL_TEXTURE_MIN_LOD, value);
   }
-  void set_max_lod       (GLfloat value)
+  void set_max_lod       (const GLfloat                 value         ) const
   {
     glSamplerParameterf(id_, GL_TEXTURE_MAX_LOD, value);
   }
-  void set_border_color  (const std::array<GLint  , 4>& color)
+  void set_border_color  (const std::array<GLint  , 4>& color         ) const
   {
     glSamplerParameterIiv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
   }
-  void set_border_color  (const std::array<GLuint , 4>& color)
+  void set_border_color  (const std::array<GLuint , 4>& color         ) const
   {
     glSamplerParameterIuiv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
   }
-  void set_border_color  (const std::array<GLfloat, 4>& color)
+  void set_border_color  (const std::array<GLfloat, 4>& color         ) const
   {
     glSamplerParameterfv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
   }
-  void set_lod_bias      (GLfloat bias)
+  void set_lod_bias      (const GLfloat                 bias          ) const
   {
     glSamplerParameterf(id_, GL_TEXTURE_LOD_BIAS, bias);
   }
-  void set_max_anisotropy(GLfloat max_anisotropy)
+  void set_max_anisotropy(const GLfloat                 max_anisotropy) const
   {
     glSamplerParameterf(id_, GL_TEXTURE_MAX_ANISOTROPY, max_anisotropy);
   }
-  void set_compare_mode  (GLenum  mode)
+  void set_compare_mode  (const GLenum                  mode          ) const
   {
     glSamplerParameteri(id_, GL_TEXTURE_COMPARE_MODE, mode);
   }
-  void set_compare_func  (GLenum  function)
+  void set_compare_func  (const GLenum                  function      ) const
   {
     glSamplerParameteri(id_, GL_TEXTURE_COMPARE_FUNC, function);
   }
   
   // 8.3 Sampler queries.
-  GLenum  wrap_s        () const
+  [[nodiscard]]
+  GLenum  wrap_s                         () const
   {
     return get_int_parameter(GL_TEXTURE_WRAP_S);
   }
-  GLenum  wrap_t        () const
+  [[nodiscard]]
+  GLenum  wrap_t                         () const
   {
     return get_int_parameter(GL_TEXTURE_WRAP_T);
   }
-  GLenum  wrap_r        () const
+  [[nodiscard]]
+  GLenum  wrap_r                         () const
   {
     return get_int_parameter(GL_TEXTURE_WRAP_R);
   }
-  GLenum  min_filter    () const
+  [[nodiscard]]
+  GLenum  min_filter                     () const
   {
     return get_int_parameter(GL_TEXTURE_MIN_FILTER);
   }
-  GLenum  mag_filter    () const
+  [[nodiscard]]
+  GLenum  mag_filter                     () const
   {
     return get_int_parameter(GL_TEXTURE_MAG_FILTER);
   }
-  GLfloat min_lod       () const
+  [[nodiscard]]
+  GLfloat min_lod                        () const
   {
     return get_float_parameter(GL_TEXTURE_MIN_LOD);
   }
-  GLfloat max_lod       () const
+  [[nodiscard]]
+  GLfloat max_lod                        () const
   {
     return get_float_parameter(GL_TEXTURE_MAX_LOD);
   }
+  [[nodiscard]]
   std::array<GLfloat, 4> border_color    () const
   {
     return get_float_parameter<4>(GL_TEXTURE_BORDER_COLOR);
   }
+  [[nodiscard]]
   std::array<GLint  , 4> border_color_int() const
   {
     return get_int_parameter<4>(GL_TEXTURE_BORDER_COLOR);
   }
-  GLfloat lod_bias      () const
+  [[nodiscard]]
+  GLfloat lod_bias                       () const
   {
     return get_float_parameter(GL_TEXTURE_LOD_BIAS);
   }
-  GLfloat max_anisotropy() const
+  [[nodiscard]]
+  GLfloat max_anisotropy                 () const
   {
     return get_float_parameter(GL_TEXTURE_MAX_ANISOTROPY);
   }
-  GLenum  compare_mode  () const
+  [[nodiscard]]
+  GLenum  compare_mode                   () const
   {
     return get_int_parameter(GL_TEXTURE_COMPARE_MODE);
   }
-  GLenum  compare_func  () const
+  [[nodiscard]]
+  GLenum  compare_func                   () const
   {
     return get_int_parameter(GL_TEXTURE_COMPARE_FUNC);
   }
 
   static const GLenum native_type = GL_SAMPLER;
 
+  [[nodiscard]]
   GLuint id() const
   {
     return id_;
@@ -215,10 +231,11 @@ protected:
   template<std::size_t count>
   std::array<GLint, count>   get_int_parameter  (GLenum parameter) const
   {
-    std::array<GLint, count> result;
+    std::array<GLint, count> result {};
     glGetSamplerParameteriv(id_, parameter, result.data());
     return result;
   }
+  [[nodiscard]]
   GLint                      get_int_parameter  (GLenum parameter) const
   {
     GLint result;
@@ -228,10 +245,11 @@ protected:
   template<std::size_t count>
   std::array<GLfloat, count> get_float_parameter(GLenum parameter) const
   {
-    std::array<GLfloat, count> result;
+    std::array<GLfloat, count> result {};
     glGetSamplerParameterfv(id_, parameter, result.data());
     return result;
   }
+  [[nodiscard]]
   GLfloat                    get_float_parameter(GLenum parameter) const
   {
     GLfloat result;

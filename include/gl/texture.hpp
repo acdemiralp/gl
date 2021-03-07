@@ -9,6 +9,7 @@
 #include <array>
 #include <cstddef>
 #include <utility>
+#include <vector>
 
 #include <gl/buffer.hpp>
 #include <gl/opengl.hpp>
@@ -27,22 +28,22 @@ class texture
 {
 public:
   // 8.0 Textures and samplers.
-  static void set_active(GLenum texture_unit)
+  static void set_active(const GLenum texture_unit)
   {
     glActiveTexture(GL_TEXTURE0 + texture_unit);
   }
 
   // 8.1 Texture objects.
-  texture()
+  texture           ()
   {
     glCreateTextures(target, 1, &id_);
   }
-  explicit texture(GLuint id) : id_(id), managed_(false)
+  explicit texture  (const GLuint id) : id_(id), managed_(false)
   {
 
   }
-  texture(const texture&  that) = delete;
-  texture(      texture&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  texture           (const texture&  that) = delete;
+  texture           (      texture&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
   {
 #ifdef GL_CUDA_INTEROP_SUPPORT
     resource_ = std::move(temp.resource_);
@@ -54,7 +55,7 @@ public:
     temp.resource_ = nullptr;
 #endif 
   }
-  virtual ~texture()
+  virtual ~texture  ()
   {
     if (managed_ && id_ != invalid_id)
       glDeleteTextures(1, &id_);
@@ -67,8 +68,8 @@ public:
       if (managed_ && id_ != invalid_id)
         glDeleteTextures(1, &id_);
 
-      id_       = std::move(temp.id_);
-      managed_  = std::move(temp.managed_);
+      id_       = temp.id_;
+      managed_  = temp.managed_;
 #ifdef GL_CUDA_INTEROP_SUPPORT
       resource_ = std::move(temp.resource_);
 #endif
@@ -90,340 +91,386 @@ public:
   {
     glBindTexture(target, 0  );
   }
-  void        bind_unit (GLuint unit) const
+  void        bind_unit (const GLuint unit) const
   {
     glBindTextureUnit(unit, id_);
   }
+  [[nodiscard]]
   bool        is_valid  () const
   {
     return glIsTexture(id_);
   }
 
   // 8.6 Alternate texture image specification.
-  void set_sub_image (GLint level, GLint x,                   GLsizei width,                                GLenum format, GLenum type, const void* data)
+  void set_sub_image (const GLint level, const GLint x,                               const GLsizei width,                                            const GLenum format, const GLenum type, const void* data) const
   {
     glTextureSubImage1D(id_, level, x,        width,                format, type, data);
   }
-  void set_sub_image (GLint level, GLint x, GLint y,          GLsizei width, GLsizei height,                GLenum format, GLenum type, const void* data)
+  void set_sub_image (const GLint level, const GLint x, const GLint y,                const GLsizei width, const GLsizei height,                      const GLenum format, const GLenum type, const void* data) const
   {
     glTextureSubImage2D(id_, level, x, y,     width, height,        format, type, data);
   }
-  void set_sub_image (GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void* data)
+  void set_sub_image (const GLint level, const GLint x, const GLint y, const GLint z, const GLsizei width, const GLsizei height, const GLsizei depth, const GLenum format, const GLenum type, const void* data) const
   {
     glTextureSubImage3D(id_, level, x , y, z, width, height, depth, format, type, data);
   }
-  void copy_sub_image(GLint level, GLint x,                   GLint read_buffer_x, GLint read_buffer_y, GLsizei width)
+  void copy_sub_image(const GLint level, const GLint x,                               const GLint read_buffer_x, const GLint read_buffer_y, const GLsizei width) const
   {
     // Note: Copies from read buffer.
     glCopyTextureSubImage1D(id_, level, x,       read_buffer_x, read_buffer_y, width);
   }
-  void copy_sub_image(GLint level, GLint x, GLint y,          GLint read_buffer_x, GLint read_buffer_y, GLsizei width, GLsizei height)
+  void copy_sub_image(const GLint level, const GLint x, const GLint y,                const GLint read_buffer_x, const GLint read_buffer_y, const GLsizei width, const GLsizei height) const
   {
     // Note: Copies from read buffer.
     glCopyTextureSubImage2D(id_, level, x, y,    read_buffer_x, read_buffer_y, width, height);
   }
-  void copy_sub_image(GLint level, GLint x, GLint y, GLint z, GLint read_buffer_x, GLint read_buffer_y, GLsizei width, GLsizei height)
+  void copy_sub_image(const GLint level, const GLint x, const GLint y, const GLint z, const GLint read_buffer_x, const GLint read_buffer_y, const GLsizei width, const GLsizei height) const
   {
     // Note: Copies from read buffer.
     glCopyTextureSubImage3D(id_, level, x, y, z, read_buffer_x, read_buffer_y, width, height);
   }
   
   // 8.7 Compressed texture images.
-  void set_compressed_sub_image(GLint level, GLint x,                   GLsizei width,                                GLenum format, GLsizei size, const void* data)
+  void set_compressed_sub_image(const GLint level, const GLint x,                               const GLsizei width,                                            const GLenum format, const GLsizei size, const void* data) const
   {
     glCompressedTextureSubImage1D(id_, level, x,       width,                format, size, data);
   }
-  void set_compressed_sub_image(GLint level, GLint x, GLint y,          GLsizei width, GLsizei height,                GLenum format, GLsizei size, const void* data)
+  void set_compressed_sub_image(const GLint level, const GLint x, const GLint y,                const GLsizei width, const GLsizei height,                      const GLenum format, const GLsizei size, const void* data) const
   {
     glCompressedTextureSubImage2D(id_, level, x, y,    width, height,        format, size, data);
   }
-  void set_compressed_sub_image(GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei size, const void* data)
+  void set_compressed_sub_image(const GLint level, const GLint x, const GLint y, const GLint z, const GLsizei width, const GLsizei height, const GLsizei depth, const GLenum format, const GLsizei size, const void* data) const
   {
     glCompressedTextureSubImage3D(id_, level, x, y, z, width, height, depth, format, size, data);
   }
 
   // 8.9 Buffer textures.
-  void attach_buffer_range (GLenum internal_format, const buffer& buffer, GLintptr offset, GLsizeiptr size)
+  void attach_buffer_range (const GLenum internal_format, const buffer& buffer, const GLintptr offset, const GLsizeiptr size) const
   {
     glTextureBufferRange(id_, internal_format, buffer.id(), offset, size);
   }
-  void attach_buffer       (GLenum internal_format, const buffer& buffer)
+  void attach_buffer       (const GLenum internal_format, const buffer& buffer) const
   {
     glTextureBuffer     (id_, internal_format, buffer.id());
   }
   
   // 8.10 Texture parameters.
-  void set_depth_stencil_mode(GLenum  mode )
+  void set_depth_stencil_mode(const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_DEPTH_STENCIL_TEXTURE_MODE, mode);
   }   
-  void set_wrap_s            (GLenum  mode )
+  void set_wrap_s            (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_WRAP_S, mode);
   }
-  void set_wrap_t            (GLenum  mode )
+  void set_wrap_t            (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_WRAP_T, mode);
   }
-  void set_wrap_r            (GLenum  mode )
+  void set_wrap_r            (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_WRAP_R, mode);
   }  
-  void set_border_color      (const std::array<GLfloat, 4>& color)
+  void set_border_color      (const std::array<GLfloat, 4>& color                            ) const
   {
     glTextureParameterfv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
   }
-  void set_border_color      (const std::array<GLint  , 4>& color, bool convert = false)
+  void set_border_color      (const std::array<GLint  , 4>& color, const bool convert = false) const
   {
     convert 
     ? glTextureParameteriv (id_, GL_TEXTURE_BORDER_COLOR, color.data())
     : glTextureParameterIiv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
   }
-  void set_border_color      (const std::array<GLuint , 4>& color)
+  void set_border_color      (const std::array<GLuint , 4>& color                            ) const
   {
     glTextureParameterIuiv(id_, GL_TEXTURE_BORDER_COLOR, color.data());
   }
-  void set_min_filter        (GLenum  mode )
+  void set_min_filter        (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_MIN_FILTER, mode);
   }
-  void set_mag_filter        (GLenum  mode )
+  void set_mag_filter        (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_MAG_FILTER, mode);
   }
-  void set_lod_bias          (GLfloat bias )
+  void set_lod_bias          (const GLfloat                 bias                             ) const
   {
     glTextureParameterf(id_, GL_TEXTURE_LOD_BIAS, bias);
   }
-  void set_min_lod           (GLfloat value)
+  void set_min_lod           (const GLfloat                 value                            ) const
   {
     glTextureParameterf(id_, GL_TEXTURE_MIN_LOD, value);
   }
-  void set_max_lod           (GLfloat value)
+  void set_max_lod           (const GLfloat                 value                            ) const
   {
     glTextureParameterf(id_, GL_TEXTURE_MAX_LOD, value);
   }
-  void set_max_anisotropy    (GLfloat max_anisotropy)
+  void set_max_anisotropy    (const GLfloat                 max_anisotropy                   ) const
   {
     glTextureParameterf(id_, GL_TEXTURE_MAX_ANISOTROPY, max_anisotropy);
   }
-  void set_base_level        (GLuint  value)
+  void set_base_level        (const GLuint                  value                            ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_BASE_LEVEL, value);
   }
-  void set_max_level         (GLuint  value)
+  void set_max_level         (const GLuint                  value                            ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_MAX_LEVEL, value);
   }
-  void set_swizzle_r         (GLenum  mode )
+  void set_swizzle_r         (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_SWIZZLE_R, mode);
   }
-  void set_swizzle_g         (GLenum  mode )
+  void set_swizzle_g         (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_SWIZZLE_G, mode);
   }
-  void set_swizzle_b         (GLenum  mode )
+  void set_swizzle_b         (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_SWIZZLE_B, mode);
   }
-  void set_swizzle_a         (GLenum  mode )
+  void set_swizzle_a         (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_SWIZZLE_A, mode);
   }
-  void set_swizzle_rgba      (const std::array<GLenum, 4>& modes)
+  void set_swizzle_rgba      (const std::array<GLenum, 4>&  modes                            ) const
   {
     glTextureParameteriv(id_, GL_TEXTURE_SWIZZLE_RGBA, reinterpret_cast<const GLint*>(modes.data()));
   }
-  void set_compare_mode      (GLenum  mode )
+  void set_compare_mode      (const GLenum                  mode                             ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_COMPARE_MODE, mode);
   }
-  void set_compare_func      (GLenum  function)
+  void set_compare_func      (const GLenum                  function                         ) const
   {
     glTextureParameteri(id_, GL_TEXTURE_COMPARE_FUNC, function);
   }   
   
   // 8.11 Texture queries.
+  [[nodiscard]]
   GLenum                 compatibility_type() const
   {
     return get_int_parameter(GL_IMAGE_FORMAT_COMPATIBILITY_TYPE);
   }
+  [[nodiscard]]
   bool                   is_immutable      () const
   {
     return get_int_parameter(GL_TEXTURE_IMMUTABLE_FORMAT);
   }
+  [[nodiscard]]
   GLenum                 depth_stencil_mode() const
   {
     return get_int_parameter(GL_DEPTH_STENCIL_TEXTURE_MODE);
-  }   
+  }
+  [[nodiscard]]
   GLenum                 wrap_s            () const
   {
     return get_int_parameter(GL_TEXTURE_WRAP_S);
   }
+  [[nodiscard]]
   GLenum                 wrap_t            () const
   {
     return get_int_parameter(GL_TEXTURE_WRAP_T);
   }
+  [[nodiscard]]
   GLenum                 wrap_r            () const
   {
     return get_int_parameter(GL_TEXTURE_WRAP_R);
   }
+  [[nodiscard]]
   std::array<GLfloat, 4> border_color      () const
   {
     return get_float_parameter<4>(GL_TEXTURE_BORDER_COLOR);
   }
+  [[nodiscard]]
   std::array<GLint, 4>   border_color_int  () const
   {
     return get_int_parameter<4>(GL_TEXTURE_BORDER_COLOR);
   }
+  [[nodiscard]]
   GLenum                 min_filter        () const
   {
     return get_int_parameter(GL_TEXTURE_MIN_FILTER);
   }
+  [[nodiscard]]
   GLenum                 mag_filter        () const
   {
     return get_int_parameter(GL_TEXTURE_MAG_FILTER);
   }
+  [[nodiscard]]
   GLfloat                lod_bias          () const
   {
     return get_float_parameter(GL_TEXTURE_LOD_BIAS);
   }
+  [[nodiscard]]
   GLfloat                min_lod           () const
   {
     return get_float_parameter(GL_TEXTURE_MIN_LOD);
   }
+  [[nodiscard]]
   GLfloat                max_lod           () const
   {
     return get_float_parameter(GL_TEXTURE_MAX_LOD);
   }
+  [[nodiscard]]
   GLfloat                max_anisotropy    () const
   {
     return get_float_parameter(GL_TEXTURE_MAX_ANISOTROPY);
   }
+  [[nodiscard]]
   GLuint                 base_level        () const
   {
     return get_int_parameter(GL_TEXTURE_BASE_LEVEL);
   }
+  [[nodiscard]]
   GLuint                 max_level         () const
   {
     return get_int_parameter(GL_TEXTURE_MAX_LEVEL);
   }
+  [[nodiscard]]
   GLenum                 swizzle_r         () const
   {
     return get_int_parameter(GL_TEXTURE_SWIZZLE_R);
   }
+  [[nodiscard]]
   GLenum                 swizzle_g         () const
   {
     return get_int_parameter(GL_TEXTURE_SWIZZLE_G);
   }
+  [[nodiscard]]
   GLenum                 swizzle_b         () const
   {
     return get_int_parameter(GL_TEXTURE_SWIZZLE_B);
   }
+  [[nodiscard]]
   GLenum                 swizzle_a         () const
   {
     return get_int_parameter(GL_TEXTURE_SWIZZLE_A);
   }
+  [[nodiscard]]
   std::array<GLint, 4>   swizzle_rgba      () const
   {
     return get_int_parameter<4>(GL_TEXTURE_SWIZZLE_RGBA);
   }
+  [[nodiscard]]
   GLenum                 compare_mode      () const
   {
     return get_int_parameter(GL_TEXTURE_COMPARE_MODE);
   }
+  [[nodiscard]]
   GLenum                 compare_func      () const
   {
     return get_int_parameter(GL_TEXTURE_COMPARE_FUNC);
   }   
- 
-  GLsizei  width                 (GLuint level = 0) const
+
+  [[nodiscard]]
+  GLsizei  width                 (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_WIDTH);
   }
-  GLsizei  height                (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  height                (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_HEIGHT);
   }
-  GLsizei  depth                 (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  depth                 (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_DEPTH);
   }
-  bool     fixed_sample_locations(GLuint level = 0) const
+  [[nodiscard]]
+  bool     fixed_sample_locations(const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_FIXED_SAMPLE_LOCATIONS);
   }
-  GLenum   internal_format       (GLuint level = 0) const
+  [[nodiscard]]
+  GLenum   internal_format       (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_INTERNAL_FORMAT);
   }
-  GLsizei  shared_size           (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  shared_size           (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_SHARED_SIZE);
   }
-  bool     is_compressed         (GLuint level = 0) const
+  [[nodiscard]]
+  bool     is_compressed         (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_COMPRESSED);
   }
-  GLsizei  compressed_size       (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  compressed_size       (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_COMPRESSED_IMAGE_SIZE);
   }
-  GLsizei  samples               (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  samples               (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_SAMPLES);
   }
-  GLintptr buffer_offset         (GLuint level = 0) const
+  [[nodiscard]]
+  GLintptr buffer_offset         (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_BUFFER_OFFSET);
   }
-  GLsizei  buffer_size           (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  buffer_size           (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_BUFFER_SIZE);
   }
-  GLsizei  red_size              (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  red_size              (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_RED_SIZE);
   }
-  GLsizei  green_size            (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  green_size            (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_GREEN_SIZE);
   }
-  GLsizei  blue_size             (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  blue_size             (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_BLUE_SIZE);
   }
-  GLsizei  alpha_size            (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  alpha_size            (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_ALPHA_SIZE);
   }
-  GLsizei  depth_size            (GLuint level = 0) const
+  [[nodiscard]]
+  GLsizei  depth_size            (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_DEPTH_SIZE);
   }
-  GLenum   red_type              (GLuint level = 0) const
+  [[nodiscard]]
+  GLenum   red_type              (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_RED_TYPE);
   }
-  GLenum   green_type            (GLuint level = 0) const
+  [[nodiscard]]
+  GLenum   green_type            (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_GREEN_TYPE);
   }
-  GLenum   blue_type             (GLuint level = 0) const
+  [[nodiscard]]
+  GLenum   blue_type             (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_BLUE_TYPE);
   }
-  GLenum   alpha_type            (GLuint level = 0) const
+  [[nodiscard]]
+  GLenum   alpha_type            (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_ALPHA_TYPE);
   }
-  GLenum   depth_type            (GLuint level = 0) const
+  [[nodiscard]]
+  GLenum   depth_type            (const GLuint level = 0) const
   {
     return get_int_level_parameter(level, GL_TEXTURE_DEPTH_TYPE);
   }
 
-  std::vector<GLubyte> image               (GLint level,                                                                          GLenum format, GLenum type) const
+  [[nodiscard]]
+  std::vector<GLubyte> image               (const GLint level,                                                                                                              const GLenum format, const GLenum type) const
   {
     auto w = width (level); if (w == 0) w = 1;
     auto h = height(level); if (h == 0) h = 1;
@@ -432,7 +479,8 @@ public:
     glGetTextureImage(id_, level, format, type, static_cast<GLsizei>(data.size()), static_cast<void*>(data.data()));
     return data;
   }
-  std::vector<GLubyte> sub_image           (GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type) const
+  [[nodiscard]]
+  std::vector<GLubyte> sub_image           (const GLint level, const GLint x, const GLint y, const GLint z, const GLsizei width, const GLsizei height, const GLsizei depth, const GLenum format, const GLenum type) const
   {
     auto w = width ; if (w == 0) w = 1;
     auto h = height; if (h == 0) h = 1;
@@ -441,13 +489,15 @@ public:
     glGetTextureSubImage(id_, level, x, y, z, w, h, d, format, type, static_cast<GLsizei>(data.size()), static_cast<void*>(data.data()));
     return data;
   }
-  std::vector<GLubyte> compressed_image    (GLint level) const
+  [[nodiscard]]
+  std::vector<GLubyte> compressed_image    (const GLint level) const
   {
     std::vector<GLubyte> data(compressed_size(level));
     glGetCompressedTextureImage(id_, level, static_cast<GLsizei>(data.size()), static_cast<void*>(data.data()));
     return data;
   }
-  std::vector<GLubyte> compressed_sub_image(GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height, GLsizei depth, GLsizei buffer_size) const
+  [[nodiscard]]
+  std::vector<GLubyte> compressed_sub_image(const GLint level, const GLint x, const GLint y, const GLint z, const GLsizei width, const GLsizei height, const GLsizei depth, const GLsizei buffer_size) const
   {
     // Note: Buffer size is exposed since it cannot be calculated due to lack of format and type information.
     std::vector<GLubyte> data(buffer_size);
@@ -456,55 +506,55 @@ public:
   }
 
   // 8.14.4 Manual mipmap generation.
-  void generate_mipmap()
+  void generate_mipmap() const
   {
     glGenerateTextureMipmap(id_);
   }
 
   // 8.19 Immutable format texture images.
-  void set_storage            (GLsizei levels , GLenum internal_format, GLsizei width)
+  void set_storage            (const GLsizei levels , const GLenum internal_format, const GLsizei width) const
   {
     glTextureStorage1D(id_, levels, internal_format, width);
   }
-  void set_storage            (GLsizei levels , GLenum internal_format, GLsizei width, GLsizei height)
+  void set_storage            (const GLsizei levels , const GLenum internal_format, const GLsizei width, const GLsizei height) const
   {
     glTextureStorage2D(id_, levels, internal_format, width, height);
   }
-  void set_storage            (GLsizei levels , GLenum internal_format, GLsizei width, GLsizei height, GLsizei depth)
+  void set_storage            (const GLsizei levels , const GLenum internal_format, const GLsizei width, const GLsizei height, const GLsizei depth) const
   {
     glTextureStorage3D(id_, levels, internal_format, width, height, depth);
   }
-  void set_storage_multisample(GLsizei samples, GLenum internal_format, GLsizei width, GLsizei height,                bool fixed_sample_locations = true)
+  void set_storage_multisample(const GLsizei samples, const GLenum internal_format, const GLsizei width, const GLsizei height,                      const bool fixed_sample_locations = true) const
   {
     glTextureStorage2DMultisample(id_, samples, internal_format, width, height,        fixed_sample_locations);
   }
-  void set_storage_multisample(GLsizei samples, GLenum internal_format, GLsizei width, GLsizei height, GLsizei depth, bool fixed_sample_locations = true)
+  void set_storage_multisample(const GLsizei samples, const GLenum internal_format, const GLsizei width, const GLsizei height, const GLsizei depth, const bool fixed_sample_locations = true) const
   {
     glTextureStorage3DMultisample(id_, samples, internal_format, width, height, depth, fixed_sample_locations);
   }
 
   // 8.20 Invalidate texture image data.
-  void invalidate_sub_image(GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height = 1, GLsizei depth = 1)
+  void invalidate_sub_image(const GLint level, const GLint x, const GLint y, const GLint z, const GLsizei width, const GLsizei height = 1, const GLsizei depth = 1) const
   {
     glInvalidateTexSubImage(id_, level, x, y, z, width, height, depth);
   }
-  void invalidate          (GLint level = 0)
+  void invalidate          (const GLint level = 0) const
   {
     glInvalidateTexImage(id_, level);
   }
 
   // 8.21 Clear texture image data.
-  void clear_sub_image     (GLint level, GLint x, GLint y, GLint z, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void* data = nullptr)
+  void clear_sub_image     (const GLint level, const GLint x, const GLint y, const GLint z, const GLsizei width, const GLsizei height, const GLsizei depth, const GLenum format, const GLenum type, const void* data = nullptr) const
   {
     glClearTexSubImage(id_, level, x, y, z, width, height, depth, format, type, data);
   }
-  void clear               (GLint level,                                                                          GLenum format, GLenum type, const void* data = nullptr)
+  void clear               (const GLint level,                                                                                                              const GLenum format, const GLenum type, const void* data = nullptr) const
   {
     glClearTexImage(id_, level, format, type, data);
   }
 
   // 8.26 Texture image loads / stores.
-  void bind_image_texture  (GLuint unit, GLint level, bool layered, GLint layer, GLenum access, GLenum format)
+  void bind_image_texture  (const GLuint unit, const GLint level, const bool layered, const GLint layer, const GLenum access, const GLenum format) const
   {
     glBindImageTexture(unit, id_, level, layered, layer, access, format);
   }
@@ -512,26 +562,26 @@ public:
   // 18.3 Copying pixels.
   template<GLenum source_target>
   void copy_image_sub_data(const texture<source_target>& source, 
-    GLint source_level, GLint source_x, GLint source_y, GLint source_z,
-    GLint level       , GLint x       , GLint y       , GLint z       , GLint width, GLint height, GLint depth)
+    const GLint source_level, const GLint source_x, const GLint source_y, const GLint source_z,
+    const GLint level       , const GLint x       , const GLint y       , const GLint z       , const GLint width, const GLint height, const GLint depth) const
   {
     glCopyImageSubData(source.id(), source_target, source_level, source_x, source_y, source_z, id_, target, level, x, y, z, width, height, depth);
   }
   void copy_image_sub_data(const renderbuffer& source, 
-    GLint source_level, GLint source_x, GLint source_y, GLint source_z,
-    GLint level       , GLint x       , GLint y       , GLint z       , GLint width, GLint height, GLint depth)
+    const GLint source_level, const GLint source_x, const GLint source_y, const GLint source_z,
+    const GLint level       , const GLint x       , const GLint y       , const GLint z       , const GLint width, const GLint height, const GLint depth) const
   {
     glCopyImageSubData(source.id(), GL_RENDERBUFFER, source_level, source_x, source_y, source_z, id_, target, level, x, y, z, width, height, depth);
   }
   
   // 22.3 Internal format queries.
-  static GLint   internal_format_info   (GLenum internal_format, GLenum parameter)
+  static GLint   internal_format_info   (const GLenum internal_format, const GLenum parameter)
   {
     GLint result;
     glGetInternalformativ(target, internal_format, parameter, 1, &result);
     return result;
   }
-  static GLint64 internal_format_info_64(GLenum internal_format, GLenum parameter)
+  static GLint64 internal_format_info_64(const GLenum internal_format, const GLenum parameter)
   {
     GLint64 result;
     glGetInternalformati64v(target, internal_format, parameter, 1, &result);
@@ -540,13 +590,14 @@ public:
 
   static const GLenum native_type = GL_TEXTURE;
 
+  [[nodiscard]]
   GLuint id() const
   {
     return id_;
   }
   
 #ifdef GL_CUDA_INTEROP_SUPPORT
-  void cuda_register  (cudaGraphicsMapFlags flags = cudaGraphicsMapFlagsNone)
+  void cuda_register  (const cudaGraphicsMapFlags flags = cudaGraphicsMapFlagsNone)
   {
     if (resource_ != nullptr)
       cuda_unregister();
@@ -577,52 +628,56 @@ public:
 
 protected:
   template<std::size_t count>
-  std::array<GLint, count>   get_int_parameter        (GLenum parameter) const
+  std::array<GLint, count>   get_int_parameter        (const GLenum parameter) const
   {
     std::array<GLint, count> result;
     glGetTextureParameteriv(id_, parameter, result.data());
     return result;
   }
-  GLint                      get_int_parameter        (GLenum parameter) const
+  [[nodiscard]]
+  GLint                      get_int_parameter        (const GLenum parameter) const
   {
     GLint result;
     glGetTextureParameteriv(id_, parameter, &result);
     return result;
   }
   template<std::size_t count>
-  std::array<GLfloat, count> get_float_parameter      (GLenum parameter) const
+  std::array<GLfloat, count> get_float_parameter      (const GLenum parameter) const
   {
     std::array<GLfloat, count> result;
     glGetTextureParameterfv(id_, parameter, result.data());
     return result;
   }
-  GLfloat                    get_float_parameter      (GLenum parameter) const
+  [[nodiscard]]
+  GLfloat                    get_float_parameter      (const GLenum parameter) const
   {
     GLfloat result;
     glGetTextureParameterfv(id_, parameter, &result);
     return result;
   }
   template<std::size_t count>
-  std::array<GLint, count>   get_int_level_parameter  (GLuint level, GLenum parameter) const
+  std::array<GLint, count>   get_int_level_parameter  (const GLuint level, const GLenum parameter) const
   {
     std::array<GLint, count> result;
     glGetTextureLevelParameteriv(id_, level, parameter, result.data());
     return result;
   }
-  GLint                      get_int_level_parameter  (GLuint level, GLenum parameter) const
+  [[nodiscard]]
+  GLint                      get_int_level_parameter  (const GLuint level, const GLenum parameter) const
   {
     GLint result;
     glGetTextureLevelParameteriv(id_, level, parameter, &result);
     return result;
   }
   template<std::size_t count>
-  std::array<GLfloat, count> get_float_level_parameter(GLuint level, GLenum parameter) const
+  std::array<GLfloat, count> get_float_level_parameter(const GLuint level, const GLenum parameter) const
   {
     std::array<GLfloat, count> result;
     glGetTextureLevelParameterfv(id_, level, parameter, result.data());
     return result;
   }
-  GLfloat                    get_float_level_parameter(GLuint level, GLenum parameter) const
+  [[nodiscard]]
+  GLfloat                    get_float_level_parameter(const GLuint level, const GLenum parameter) const
   {
     GLfloat result;
     glGetTextureLevelParameterfv(id_, level, parameter, &result);
@@ -659,7 +714,7 @@ using proxy_cubemap_texture_array        = texture<GL_PROXY_TEXTURE_CUBE_MAP_ARR
 using proxy_texture_2d_multisample       = texture<GL_PROXY_TEXTURE_2D_MULTISAMPLE>;
 using proxy_texture_2d_multisample_array = texture<GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY>;
 
-inline void set_seamless_cubemap_enabled(bool enabled)
+inline void set_seamless_cubemap_enabled(const bool enabled)
 {
   enabled ? glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS) : glDisable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 }

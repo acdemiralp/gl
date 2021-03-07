@@ -15,21 +15,21 @@ class transform_feedback
 {
 public:
   // 13.2 Transform feedback.
-  transform_feedback()
+  transform_feedback           ()
   {
     glCreateTransformFeedbacks(1, &id_);
   }
-  explicit transform_feedback(GLuint id) : id_(id), managed_(false)
+  explicit transform_feedback  (const GLuint id) : id_(id), managed_(false)
   {
 
   }
-  transform_feedback(const transform_feedback&  that) = delete;
-  transform_feedback(      transform_feedback&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  transform_feedback           (const transform_feedback&  that) = delete;
+  transform_feedback           (      transform_feedback&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
   {
     temp.id_      = invalid_id;
     temp.managed_ = false;
   }
-  virtual ~transform_feedback()
+  virtual ~transform_feedback  ()
   {
     if (managed_ && id_ != invalid_id)
       glDeleteTransformFeedbacks(1, &id_);
@@ -42,8 +42,8 @@ public:
       if (managed_ && id_ != invalid_id)
         glDeleteTransformFeedbacks(1, &id_);
   
-      id_      = std::move(temp.id_);
-      managed_ = std::move(temp.managed_);
+      id_      = temp.id_;
+      managed_ = temp.managed_;
   
       temp.id_      = invalid_id;
       temp.managed_ = false;    
@@ -59,21 +59,22 @@ public:
   {
     glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, 0);
   }
+  [[nodiscard]]
   bool        is_valid() const
   {
     return glIsTransformFeedback(id_) != 0;
   }
 
-  void set_buffer_range(GLuint index, const buffer& buffer, GLintptr offset, GLsizeiptr size)
+  void set_buffer_range(const GLuint index, const buffer& buffer, const GLintptr offset, const GLsizeiptr size) const
   {
     glTransformFeedbackBufferRange(id_, index, buffer.id(), offset, size);
   }
-  void set_buffer_base (GLuint index, const buffer& buffer)
+  void set_buffer_base (const GLuint index, const buffer& buffer) const
   {
     glTransformFeedbackBufferBase(id_, index, buffer.id());
   }
   
-  static void begin (GLenum primitive_mode = GL_TRIANGLES)
+  static void begin (const GLenum primitive_mode = GL_TRIANGLES)
   {
     glBeginTransformFeedback(primitive_mode);
   }
@@ -91,66 +92,75 @@ public:
   }
 
   // 13.2.3 Transform feedback drawing.
-  void draw                 (GLenum mode)                                        const
+  void draw                 (const GLenum mode)                                                    const
   {
     glDrawTransformFeedback(mode, id_);
   }
-  void draw_instanced       (GLenum mode,                GLsizei instance_count) const
+  void draw_instanced       (const GLenum mode,                      const GLsizei instance_count) const
   {
     glDrawTransformFeedbackInstanced(mode, id_, instance_count);
   }
-  void draw_stream          (GLenum mode, GLuint stream)                         const
+  void draw_stream          (const GLenum mode, const GLuint stream)                               const
   {
     glDrawTransformFeedbackStream(mode, id_, stream);
   }
-  void draw_stream_instanced(GLenum mode, GLuint stream, GLsizei instance_count) const
+  void draw_stream_instanced(const GLenum mode, const GLuint stream, const GLsizei instance_count) const
   {
     glDrawTransformFeedbackStreamInstanced(mode, id_, stream, instance_count);
   }
 
   // 22.4 Transform feedback queries.
+  [[nodiscard]]
   bool    is_paused     () const
   {
     return get_parameter(GL_TRANSFORM_FEEDBACK_PAUSED) != 0;
   }
+  [[nodiscard]]
   bool    is_active     () const
   {
     return get_parameter(GL_TRANSFORM_FEEDBACK_ACTIVE) != 0;
   }
-  GLint   buffer_binding(GLuint index) const
+  [[nodiscard]]
+  GLint   buffer_binding(const GLuint index) const
   {
     return get_parameter(GL_TRANSFORM_FEEDBACK_BUFFER_BINDING, index);
   }
-  GLint   buffer_start  (GLuint index) const
+  [[nodiscard]]
+  GLint   buffer_start  (const GLuint index) const
   {
     return get_parameter(GL_TRANSFORM_FEEDBACK_BUFFER_START, index);
   }
-  GLint64 buffer_size   (GLuint index) const
+  [[nodiscard]]
+  GLint64 buffer_size   (const GLuint index) const
   {
     return get_parameter_64(GL_TRANSFORM_FEEDBACK_BUFFER_SIZE, index);
   }
 
   static const GLenum native_type = GL_TRANSFORM_FEEDBACK;
 
+  [[nodiscard]]
   GLuint id() const
   {
     return id_;
   }
 
 protected:
-  GLint   get_parameter   (GLenum parameter) const
+  [[nodiscard]]
+  GLint   get_parameter   (const GLenum parameter) const
   {
     GLint result;
     glGetTransformFeedbackiv(id_, parameter, &result);
     return result;
   }
-  GLint   get_parameter   (GLenum parameter, GLuint index) const
+  [[nodiscard]]
+  GLint   get_parameter   (const GLenum parameter, const GLuint index) const
   {
     GLint result;
     glGetTransformFeedbacki_v(id_, parameter, index, &result);
     return result;
   }
-  GLint64 get_parameter_64(GLenum parameter, GLuint index) const
+  [[nodiscard]]
+  GLint64 get_parameter_64(const GLenum parameter, const GLuint index) const
   {
     GLint64 result;
     glGetTransformFeedbacki64_v(id_, parameter, index, &result);

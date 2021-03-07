@@ -15,21 +15,21 @@ class vertex_array
 {
 public:
   // 10.3.1 Vertex array objects.
-  vertex_array()
+  vertex_array           ()
   {
     glCreateVertexArrays(1, &id_);
   }
-  explicit vertex_array(GLuint id) : id_(id), managed_(false)
+  explicit vertex_array  (const GLuint id) : id_(id), managed_(false)
   {
 
   }
-  vertex_array(const vertex_array&  that) = delete;
-  vertex_array(      vertex_array&& temp) noexcept : id_(std::move(temp.id_)), managed_(std::move(temp.managed_))
+  vertex_array           (const vertex_array&  that) = delete;
+  vertex_array           (      vertex_array&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
   {
-    temp.id_ = invalid_id;
+    temp.id_      = invalid_id;
     temp.managed_ = false;
   }
-  virtual ~vertex_array()
+  virtual ~vertex_array  ()
   {
     if (managed_ && id_ != invalid_id)
       glDeleteVertexArrays(1, &id_);
@@ -42,8 +42,8 @@ public:
       if (managed_ && id_ != invalid_id)
         glDeleteVertexArrays(1, &id_);
   
-      id_      = std::move(temp.id_);
-      managed_ = std::move(temp.managed_);
+      id_      = temp.id_;
+      managed_ = temp.managed_;
   
       temp.id_      = invalid_id;
       temp.managed_ = false;    
@@ -59,115 +59,131 @@ public:
   {
     glBindVertexArray(0);
   }
+  [[nodiscard]]
   bool        is_valid() const
   {
     return glIsVertexArray(id_) != 0;
   }
 
-  void set_element_buffer(const buffer& buffer)
+  void set_element_buffer(const buffer& buffer) const
   {
     glVertexArrayElementBuffer(id_, buffer.id());
   }
 
   // 10.3.2 Generic vertex attribute arrays.
-  void set_vertex_buffer           (GLuint binding_index, const buffer& buffer, GLintptr offset = 0, GLsizei stride = 1)
+  void set_vertex_buffer           (const GLuint binding_index, const buffer& buffer, const GLintptr offset = 0, const GLsizei stride = 1) const
   {
     glVertexArrayVertexBuffer(id_, binding_index, buffer.id(), offset, stride);
   }
-  void set_attribute_enabled       (GLuint index, bool   enabled      )
+  void set_attribute_enabled       (const GLuint index, const bool   enabled      ) const
   {
     enabled ? glEnableVertexArrayAttrib(id_, index) : glDisableVertexArrayAttrib(id_, index);
   }
-  void set_attribute_binding       (GLuint index, GLuint binding_index)
+  void set_attribute_binding       (const GLuint index, const GLuint binding_index) const
   {
     glVertexArrayAttribBinding(id_, index, binding_index);
   }
-  void set_attribute_format        (GLuint index, GLint  size, GLenum type, bool normalized = false, GLuint relative_offset = 0)
+  void set_attribute_format        (const GLuint index, const GLint  size, const GLenum type, const bool normalized = false, const GLuint relative_offset = 0) const
   {
     glVertexArrayAttribFormat(id_, index, size, type, normalized, relative_offset);
   }
-  void set_attribute_format_integer(GLuint index, GLint  size, GLenum type, GLuint relative_offset = 0)
+  void set_attribute_format_integer(const GLuint index, const GLint  size, const GLenum type, const GLuint relative_offset = 0) const
   {
     glVertexArrayAttribIFormat(id_, index, size, type, relative_offset);
   }
-  void set_attribute_format_long   (GLuint index, GLint  size, GLenum type, GLuint relative_offset = 0)
+  void set_attribute_format_long   (const GLuint index, const GLint  size, const GLenum type, const GLuint relative_offset = 0) const
   {
     glVertexArrayAttribLFormat(id_, index, size, type, relative_offset);
   }
 
   // 10.3.4 Vertex attribute divisors.
-  void set_binding_divisor(GLuint binding_index, GLuint divisor)
+  void set_binding_divisor(const GLuint binding_index, const GLuint divisor) const
   {
     glVertexArrayBindingDivisor(id_, binding_index, divisor);
   }
 
   // 10.5 Vertex array queries.
+  [[nodiscard]]
   buffer  element_buffer                 () const
   {
     return buffer(get_parameter(GL_ELEMENT_ARRAY_BUFFER_BINDING));
   }
-  GLint   attribute_relative_offset      (GLuint index) const
+  [[nodiscard]]
+  GLint   attribute_relative_offset      (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_RELATIVE_OFFSET);
   }
-  bool    attribute_enabled              (GLuint index) const
+  [[nodiscard]]
+  bool    attribute_enabled              (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_ENABLED) != 0;
   }
-  GLsizei attribute_size                 (GLuint index) const
+  [[nodiscard]]
+  GLsizei attribute_size                 (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_SIZE);
   }
-  GLsizei attribute_stride               (GLuint index) const
+  [[nodiscard]]
+  GLsizei attribute_stride               (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_STRIDE);
   }
-  GLenum  attribute_type                 (GLuint index) const
+  [[nodiscard]]
+  GLenum  attribute_type                 (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_TYPE);
   }
-  bool    attribute_normalized           (GLuint index) const
+  [[nodiscard]]
+  bool    attribute_normalized           (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_NORMALIZED) != 0;
   }
-  bool    attribute_integer              (GLuint index) const
+  [[nodiscard]]
+  bool    attribute_integer              (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_INTEGER) != 0;
   }
-  bool    attribute_long                 (GLuint index) const
+  [[nodiscard]]
+  bool    attribute_long                 (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_LONG) != 0;
   }
-  GLint   attribute_divisor              (GLuint index) const
+  [[nodiscard]]
+  GLint   attribute_divisor              (const GLuint index) const
   {
     return get_attribute_parameter(index, GL_VERTEX_ATTRIB_ARRAY_DIVISOR);
   }
-  GLint64 attribute_vertex_binding_offset(GLuint index) const
+  [[nodiscard]]
+  GLint64 attribute_vertex_binding_offset(const GLuint index) const
   {
     return get_attribute_parameter_64(index, GL_VERTEX_BINDING_OFFSET);
   }
 
   static const GLenum native_type = GL_VERTEX_ARRAY;
 
+  [[nodiscard]]
   GLuint id() const
   {
     return id_;
   }
 
 private:
-  GLint   get_parameter             (              GLenum parameter) const
+  [[nodiscard]]
+  GLint   get_parameter             (                    const GLenum parameter) const
   {
     GLint result;
     glGetVertexArrayiv(id_, parameter, &result);
     return result;
   }
-  GLint   get_attribute_parameter   (GLuint index, GLenum parameter) const
+  [[nodiscard]]
+  GLint   get_attribute_parameter   (const GLuint index, const GLenum parameter) const
   {
     GLint result;
     glGetVertexArrayIndexediv(id_, index, parameter, &result);
     return result;
   }
-  GLint64 get_attribute_parameter_64(GLuint index, GLenum parameter) const
+  [[nodiscard]]
+  GLint64 get_attribute_parameter_64(const GLuint index, const GLenum parameter) const
   {
     GLint64 result;
     glGetVertexArrayIndexed64iv(id_, index, parameter, &result);
