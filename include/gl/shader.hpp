@@ -1,10 +1,10 @@
-//          Copyright Ali Can Demiralp 2016 - 2017.
+//          Copyright Ali Can Demiralp 2016 - 2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_SHADER_HPP_
-#define GL_SHADER_HPP_
+#ifndef GL_SHADER_HPP
+#define GL_SHADER_HPP
 
 #include <fstream>
 #include <string>
@@ -20,48 +20,163 @@ class shader
 {
 public:
   // 7.1 Shader objects.
-  explicit shader(GLenum type);
-  shader(GLuint id, unmanaged_t unmanaged);
-  shader(const shader&  that) = delete;
-  shader(      shader&& temp) noexcept;
-  virtual ~shader();
+  explicit shader  (const GLenum type)
+  {
+    id_ = glCreateShader(type);
+  }
+  shader           (const GLuint id, unmanaged_t unmanaged) : id_(id), managed_(false)
+  {
+
+  }
+  shader           (const shader&  that) = delete;
+  shader           (      shader&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
+  {
+    temp.id_ = invalid_id;
+    temp.managed_ = false;
+  }
+  virtual ~shader  ()
+  {
+    if (managed_ && id_ != invalid_id)
+      glDeleteShader(id_);
+  }
   shader& operator=(const shader&  that) = delete;
-  shader& operator=(      shader&& temp) noexcept;
+  shader& operator=(      shader&& temp) noexcept
+  {
+    if (this != &temp)
+    {
+      if (managed_ && id_ != invalid_id)
+        glDeleteShader(id_);
+  
+      id_      = temp.id_;
+      managed_ = temp.managed_;
+  
+      temp.id_      = invalid_id;
+      temp.managed_ = false;    
+    }
+    return *this;
+  }
 
-  void set_source(const std::string& source) const;
-  void set_binary(const std::vector<uint8_t>& binary, GLenum format = GL_SHADER_BINARY_FORMAT_SPIR_V) const;
-  void specialize(const std::string& entry_point, const std::vector<std::tuple<GLuint, GLuint>>& index_value_pairs) const;
-  bool compile   () const;
-  bool is_valid  () const;
+  void set_source(const std::string& source) const
+  {
+    const auto* shader_string = source.c_str();
+    glShaderSource(id_, 1, &shader_string, nullptr);
+  }
+  void set_binary(const std::vector<uint8_t>& binary, const GLenum format = GL_SHADER_BINARY_FORMAT_SPIR_V) const
+  {
+    glShaderBinary(1, &id_, format, static_cast<const void*>(binary.data()), static_cast<GLsizei>(binary.size()));
+  }
+  void specialize(const std::string& entry_point, const std::vector<std::tuple<GLuint, GLuint>>& index_value_pairs) const
+  {
+    std::vector<GLuint> indices;
+    std::vector<GLuint> values ;
+    indices.reserve(index_value_pairs.size());
+    values .reserve(index_value_pairs.size());
+    for (const auto& constant : index_value_pairs)
+    {
+      indices.push_back(std::get<0>(constant));
+      values .push_back(std::get<1>(constant));
+    }
+    glSpecializeShader(id_, entry_point.c_str(), static_cast<GLuint>(index_value_pairs.size()), indices.data(), values.data());
+  }
+  [[nodiscard]]
+  bool compile   () const
+  {
+    glCompileShader(id_);
+    return compile_status();
+  }
+  [[nodiscard]]
+  bool is_valid  () const
+  {
+    return glIsShader(id_) != 0;
+  }
 
-  static void set_binaries    (const std::vector<shader>& shaders, const std::vector<uint8_t>& binary, GLenum format = GL_SHADER_BINARY_FORMAT_SPIR_V);
-  static void release_compiler();
+  static void set_binaries    (const std::vector<shader>& shaders, const std::vector<uint8_t>& binary, const GLenum format = GL_SHADER_BINARY_FORMAT_SPIR_V)
+  {
+    std::vector<GLuint> ids;
+    for(const auto& shader : shaders)
+      ids.push_back(shader.id());
+    glShaderBinary(static_cast<GLsizei>(ids.size()), ids.data(), format, static_cast<const void*>(binary.data()), static_cast<GLsizei>(binary.size()));
+  }
+  static void release_compiler()
+  {
+    glReleaseShaderCompiler();
+  }
 
   // 7.13 Shader queries.
-  GLenum      type            () const;
-  bool        compile_status  () const;
-  bool        delete_status   () const;
-  bool        is_spir_v_binary() const;
-  GLsizei     source_length   () const;
-  GLsizei     info_log_length () const;
-  std::string source          () const;
-  std::string info_log        () const;
+  [[nodiscard]]
+  GLenum      type            () const
+  {
+    return get_parameter(GL_SHADER_TYPE);
+  }
+  [[nodiscard]]
+  bool        compile_status  () const
+  {
+    return get_parameter(GL_COMPILE_STATUS) != 0;
+  }
+  [[nodiscard]]
+  bool        delete_status   () const
+  {
+    return get_parameter(GL_DELETE_STATUS) != 0;
+  }
+  [[nodiscard]]
+  bool        is_spir_v_binary() const
+  {
+    return get_parameter(GL_SPIR_V_BINARY) != 0;
+  }
+  [[nodiscard]]
+  GLsizei     source_length   () const
+  {
+    return get_parameter(GL_SHADER_SOURCE_LENGTH);
+  }
+  [[nodiscard]]
+  GLsizei     info_log_length () const
+  {
+    return get_parameter(GL_INFO_LOG_LENGTH);
+  }
+  [[nodiscard]]
+  std::string source          () const
+  {
+    std::string result;
+    result.resize(source_length());
+    glGetShaderSource(id_, static_cast<GLsizei>(result.size()), nullptr, &result[0]);
+    return result;
+  }
+  [[nodiscard]]
+  std::string info_log        () const
+  {
+    std::string result;
+    result.resize(info_log_length());
+    glGetShaderInfoLog(id_, static_cast<GLsizei>(result.size()), nullptr, &result[0]);
+    return result;
+  }
 
   static const GLenum native_type = GL_SHADER;
 
-  GLuint id() const;
+  [[nodiscard]]
+  GLuint id() const
+  {
+    return id_;
+  }
 
   // Extended functionality.
-  void load_source(const std::string& filename) const;
+  void load_source(const std::string& filename) const
+  {
+    std::ifstream stream(filename);
+    set_source(std::string(std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>()));
+  }
 
 protected:
-  GLint get_parameter(GLenum parameter) const;
+  [[nodiscard]]
+  GLint get_parameter(const GLenum parameter) const
+  {
+    GLint result;
+    glGetShaderiv(id_, parameter, &result);
+    return result;
+  }
 
   GLuint id_      = invalid_id;
   bool   managed_ = true;
 };
 }
-
-#include <gl/implementation/shader.ipp>
 
 #endif

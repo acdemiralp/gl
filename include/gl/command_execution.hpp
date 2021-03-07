@@ -1,10 +1,10 @@
-//          Copyright Ali Can Demiralp 2016 - 2017.
+//          Copyright Ali Can Demiralp 2016 - 2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_COMMAND_EXECUTION_HPP_
-#define GL_COMMAND_EXECUTION_HPP_
+#ifndef GL_COMMAND_EXECUTION_HPP
+#define GL_COMMAND_EXECUTION_HPP
 
 #include <gl/opengl.hpp>
 
@@ -12,17 +12,32 @@
 namespace gl
 {
 // 2.3.1 OpenGL errors.
-GLenum error();
-
-// 2.3.2 Graphics reset recovery.
-GLenum graphics_reset_status();
-GLenum reset_notification_strategy();
-
-// 2.3.3 Flush and finish.
-void flush ();
-void finish();
+inline GLenum error()
+{
+  return glGetError();
 }
 
-#include <gl/implementation/command_execution.ipp>
+// 2.3.2 Graphics reset recovery.
+inline GLenum graphics_reset_status      ()
+{
+  return glGetGraphicsResetStatus();
+}
+inline GLenum reset_notification_strategy()
+{
+  GLint value;
+  glGetIntegerv(GL_RESET_NOTIFICATION_STRATEGY, &value);
+  return value;
+}
+
+// 2.3.3 Flush and finish.
+inline void flush ()
+{
+  glFlush();
+}
+inline void finish()
+{
+  glFinish();
+}
+}
 
 #endif

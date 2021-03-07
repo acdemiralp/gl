@@ -1,13 +1,11 @@
-//          Copyright Ali Can Demiralp 2016 - 2017.
+//          Copyright Ali Can Demiralp 2016 - 2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_BUFFER_HPP_
-#define GL_BUFFER_HPP_
+#ifndef GL_BUFFER_HPP
+#define GL_BUFFER_HPP
 
-#include <cstddef>
-#include <type_traits>
 #include <vector>
 
 #include <gl/opengl.hpp>
@@ -23,72 +21,271 @@ class buffer
 {
 public:
   // 6.0 Buffer objects.
-  buffer();
-  explicit buffer(GLuint id);
-  buffer(const buffer&  that);
-  buffer(      buffer&& temp) noexcept;
-  virtual ~buffer();
-  buffer& operator=(const buffer&  that);
-  buffer& operator=(      buffer&& temp) noexcept;
+  buffer           ()
+  {
+    glCreateBuffers(1, &id_);
+  }
+  explicit buffer  (const GLuint id) : id_(id), managed_(false)
+  {
+
+  }
+  buffer           (const buffer&  that): buffer()
+  {
+    that.is_immutable()
+      ? set_data_immutable(that.size(), nullptr, that.storage_flags())
+      : set_data          (that.size(), nullptr, that.usage        ());
+    copy_sub_data(that, 0, 0, size());
+  }
+  buffer           (      buffer&& temp) noexcept : id_(temp.id_), managed_(temp.managed_)
+  {
+#ifdef GL_CUDA_INTEROP_SUPPORT
+    resource_ = std::move(temp.resource_);
+#endif
+  
+    temp.id_       = invalid_id;
+    temp.managed_  = false;
+#ifdef GL_CUDA_INTEROP_SUPPORT
+    temp.resource_ = nullptr;
+#endif
+  }
+  virtual ~buffer  ()
+  {
+    if (managed_ && id_ != invalid_id)
+      glDeleteBuffers(1, &id_);
+  }
+  buffer& operator=(const buffer&  that)
+  {
+    that.is_immutable()
+      ? set_data_immutable(that.size(), nullptr, that.storage_flags())
+      : set_data          (that.size(), nullptr, that.usage        ());
+    copy_sub_data(that, 0, 0, size());
+    return *this;
+  }
+  buffer& operator=(      buffer&& temp) noexcept
+  { 
+    if (this != &temp)
+    {
+      if (managed_ && id_ != invalid_id)
+        glDeleteBuffers(1, &id_);
+  
+      id_       = temp.id_;
+      managed_  = temp.managed_;
+#ifdef GL_CUDA_INTEROP_SUPPORT
+      resource_ = std::move(temp.resource_);
+#endif
+  
+      temp.id_       = invalid_id;
+      temp.managed_  = false;
+#ifdef GL_CUDA_INTEROP_SUPPORT
+      temp.resource_ = nullptr;
+#endif
+    }
+    return *this;
+  }
 
   // 6.1 Create and bind buffer objects.
-  void        bind        (GLenum target) const;
-  static void unbind      (GLenum target);
-  void        bind_range  (GLenum target, GLuint index, GLintptr offset, GLsizeiptr size) const;
-  static void unbind_range(GLenum target, GLuint index, GLintptr offset, GLsizeiptr size);
-  void        bind_base   (GLenum target, GLuint index) const;
-  static void unbind_base (GLenum target, GLuint index);
+  void        bind        (const GLenum target) const
+  {
+    glBindBuffer(target, id_);
+  }
+  static void unbind      (const GLenum target)
+  {
+    glBindBuffer(target, 0);
+  }
+  void        bind_range  (const GLenum target, const GLuint index, const GLintptr offset, const GLsizeiptr size) const
+  {
+    glBindBufferRange(target, index, id_, offset, size);
+  }
+  static void unbind_range(const GLenum target, const GLuint index, const GLintptr offset, const GLsizeiptr size)
+  {
+    glBindBufferRange(target, index, 0, offset, size);
+  }
+  void        bind_base   (const GLenum target, const GLuint index) const
+  {
+    glBindBufferBase(target, index, id_);
+  }
+  static void unbind_base (const GLenum target, const GLuint index)
+  {
+    glBindBufferBase(target, index, 0);
+  }
 
   // 6.2 Create / modify buffer object data (bindless).
-  void set_data_immutable(GLsizeiptr size, const void* data = nullptr, GLbitfield storage_flags = GL_DYNAMIC_STORAGE_BIT);
-  void set_data          (GLsizeiptr size, const void* data = nullptr, GLenum     usage         = GL_DYNAMIC_DRAW       );
-  void set_sub_data      (                        GLintptr offset, GLsizeiptr size,                                  const void* data);
-  void clear_sub_data    (GLenum internal_format, GLintptr offset, GLsizeiptr size, GLenum format, GLenum data_type, const void* data = nullptr);
-  void clear_data        (GLenum internal_format,                                   GLenum format, GLenum data_type, const void* data = nullptr);
+  void set_data_immutable(const GLsizeiptr size, const void* data = nullptr, const GLbitfield storage_flags = GL_DYNAMIC_STORAGE_BIT) const
+  {
+    glNamedBufferStorage(id_, size, data, storage_flags);
+  }
+  void set_data          (const GLsizeiptr size, const void* data = nullptr, const GLenum     usage         = GL_DYNAMIC_DRAW       ) const
+  {
+    glNamedBufferData(id_, size, data, usage);
+  }
+  void set_sub_data      (                              const GLintptr offset, const GLsizeiptr size,                                              const void* data) const
+  {
+    glNamedBufferSubData(id_, offset, size, data);
+  }
+  void clear_sub_data    (const GLenum internal_format, const GLintptr offset, const GLsizeiptr size, const GLenum format, const GLenum data_type, const void* data = nullptr) const
+  {
+    glClearNamedBufferSubData(id_, internal_format, offset, size, format, data_type, data);
+  }
+  void clear_data        (const GLenum internal_format,                                               const GLenum format, const GLenum data_type, const void* data = nullptr) const
+  {
+    glClearNamedBufferData(id_, internal_format, format, data_type, data);
+  }
 
   // 6.3 Map / unmap buffer data (bindless).
-  void* map_range         (GLintptr offset, GLsizeiptr size, GLbitfield access_flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
-  void* map               (                                  GLenum     access       = GL_READ_WRITE                     );
-  void  flush_mapped_range(GLintptr offset, GLsizeiptr size);
-  void  unmap             ();
+  [[nodiscard]]
+  void* map_range         (const GLintptr offset, const GLsizeiptr size, const GLbitfield access_flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT) const
+  {
+    return glMapNamedBufferRange(id_, offset, size, access_flags);
+  }
+  [[nodiscard]]
+  void* map               (const GLenum access = GL_READ_WRITE) const
+  {
+    return glMapNamedBuffer(id_, access);
+  }
+  void  flush_mapped_range(const GLintptr offset, const GLsizeiptr size) const
+  {
+    glFlushMappedNamedBufferRange(id_, offset, size);
+  }
+  void  unmap             () const
+  {
+    glUnmapNamedBuffer(id_);
+  }
 
   // 6.5 Invalidate buffer data (bindless).
-  void invalidate_sub_data(GLintptr offset, GLsizeiptr size);
-  void invalidate         ();
+  void invalidate_sub_data(const GLintptr offset, const GLsizeiptr size) const
+  {
+    glInvalidateBufferSubData(id_, offset, size);
+  }
+  void invalidate         () const
+  {
+    glInvalidateBufferData(id_);
+  }
 
   // 6.6 Copy between buffers (bindless).
-  void copy_sub_data(const buffer& source, GLintptr source_offset, GLintptr offset, GLsizeiptr size);
+  void copy_sub_data(const buffer& source, const GLintptr source_offset, const GLintptr offset, const GLsizeiptr size) const
+  {
+    glCopyNamedBufferSubData(source.id_, id_, source_offset, offset, size);
+  }
 
   // 6.7 Buffer object queries (bindless).
-  bool                 is_valid     () const;
-  std::vector<GLubyte> sub_data     (GLintptr offset, GLsizeiptr size) const;
-  GLsizeiptr           size         () const;
-  GLenum               usage        () const;
-  GLenum               access       () const;
-  GLbitfield           access_flags () const;
-  bool                 is_mapped    () const;
-  bool                 is_immutable () const;
-  GLbitfield           storage_flags() const;
-  GLintptr             map_offset   () const;
-  GLsizeiptr           map_size     () const;
-  void*                map_pointer  () const;
+  [[nodiscard]]
+  bool                 is_valid     () const
+  {
+    return glIsBuffer(id_) != 0;
+  }
+  [[nodiscard]]
+  std::vector<GLubyte> sub_data     (const GLintptr offset, const GLsizeiptr size) const
+  {
+    std::vector<GLubyte> data(size);
+    glGetNamedBufferSubData(id_, offset, size, static_cast<void*>(data.data()));
+    return data;
+  }
+  [[nodiscard]]
+  GLsizeiptr           size         () const
+  {
+    return get_parameter(GL_BUFFER_SIZE);
+  }
+  [[nodiscard]]
+  GLenum               usage        () const
+  {
+    return get_parameter(GL_BUFFER_USAGE);
+  }
+  [[nodiscard]]
+  GLenum               access       () const
+  {
+    return get_parameter(GL_BUFFER_ACCESS);
+  }
+  [[nodiscard]]
+  GLbitfield           access_flags () const
+  {
+    return get_parameter(GL_BUFFER_ACCESS_FLAGS);
+  }
+  [[nodiscard]]
+  bool                 is_mapped    () const
+  {
+    return get_parameter(GL_BUFFER_MAPPED) != 0;
+  }
+  [[nodiscard]]
+  bool                 is_immutable () const
+  {
+    return get_parameter(GL_BUFFER_IMMUTABLE_STORAGE) != 0;
+  }
+  [[nodiscard]]
+  GLbitfield           storage_flags() const
+  {
+    return get_parameter(GL_BUFFER_STORAGE_FLAGS);
+  }
+  [[nodiscard]]
+  GLintptr             map_offset   () const
+  {
+    return get_parameter_64(GL_BUFFER_MAP_OFFSET);
+  }
+  [[nodiscard]]
+  GLsizeiptr           map_size     () const
+  {
+    return get_parameter_64(GL_BUFFER_MAP_LENGTH);
+  }
+  [[nodiscard]]
+  void*                map_pointer  () const
+  {
+    void* pointer;
+    glGetNamedBufferPointerv(id_, GL_BUFFER_MAP_POINTER, &pointer);
+    return pointer;
+  }
 
   static const GLenum native_type = GL_BUFFER;
 
-  GLuint id() const;
+  [[nodiscard]]
+  GLuint id() const
+  {
+    return id_;
+  }
 
 #ifdef GL_CUDA_INTEROP_SUPPORT
-  void cuda_register  (cudaGraphicsMapFlags flags = cudaGraphicsMapFlagsNone);
-  void cuda_unregister();
+  void cuda_register  (cudaGraphicsMapFlags flags = cudaGraphicsMapFlagsNone)
+  {
+    if (resource_ != nullptr)
+      cuda_unregister();
+    cudaGraphicsGLRegisterBuffer(&resource_, id_, flags);
+  }
+  void cuda_unregister()
+  {
+    if (resource_ == nullptr)
+      return;
+    cudaGraphicsUnregisterResource(resource_);
+    resource_ = nullptr;
+  }
 
   template<typename type>
-  type* cuda_map  ();
-  void  cuda_unmap();
+  type* cuda_map  ()
+  {
+    type*       buffer_ptr;
+    std::size_t buffer_size;
+    cudaGraphicsMapResources(1, &resource_, nullptr);
+    cudaGraphicsResourceGetMappedPointer(static_cast<void**>(&buffer_ptr), &buffer_size, resource_);
+    return buffer_ptr;
+  }
+  void  cuda_unmap()
+  {
+    cudaGraphicsUnmapResources(1, &resource_, nullptr);
+  }
 #endif
 
 protected:
-  GLint   get_parameter   (GLenum parameter) const;
-  GLint64 get_parameter_64(GLenum parameter) const;
+  [[nodiscard]]
+  GLint   get_parameter   (const GLenum parameter) const
+  {
+    GLint result;
+    glGetNamedBufferParameteriv(id_, parameter, &result);
+    return result;
+  }
+  [[nodiscard]]
+  GLint64 get_parameter_64(const GLenum parameter) const
+  {
+    GLint64 result;
+    glGetNamedBufferParameteri64v(id_, parameter, &result);
+    return result;
+  }
 
   GLuint id_      = invalid_id;
   bool   managed_ = true;
@@ -97,20 +294,6 @@ protected:
   cudaGraphicsResource* resource_ = nullptr;
 #endif
 };
-
-#ifdef GL_CUDA_INTEROP_SUPPORT
-template <typename type>
-type* buffer::cuda_map()
-{
-  type*  buffer_ptr ;
-  size_t buffer_size;
-  cudaGraphicsMapResources(1, &resource_, nullptr);
-  cudaGraphicsResourceGetMappedPointer(static_cast<void**>(&buffer_ptr), &buffer_size, resource_);
-  return buffer_ptr;
 }
-#endif
-}
-
-#include <gl/implementation/buffer.ipp>
 
 #endif

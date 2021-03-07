@@ -1,5 +1,5 @@
 #### GL
-Complete OpenGL 4.6 Core Profile Wrapper for C++11.
+Complete C++17 wrapper for OpenGL 4.6 Core Profile.
 
 ---
 

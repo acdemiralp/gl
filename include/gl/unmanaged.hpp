@@ -1,10 +1,10 @@
-//          Copyright Ali Can Demiralp 2016 - 2017.
+//          Copyright Ali Can Demiralp 2016 - 2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GL_UNMANAGED_HPP_
-#define GL_UNMANAGED_HPP_
+#ifndef GL_UNMANAGED_HPP
+#define GL_UNMANAGED_HPP
 
 namespace gl
 {
@@ -38,10 +38,7 @@ namespace gl
 // GLuint raw_id = glCreateShader(GL_VERTEX_SHADER);
 // gl::shader unmanaged_shader(raw_id, gl::unmanaged);
 
-struct unmanaged_t
-{
-  
-};
+struct unmanaged_t { };
 
 constexpr unmanaged_t unmanaged = unmanaged_t();
 }
