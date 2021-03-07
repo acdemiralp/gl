@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include <gl/buffer.hpp>
 #include <gl/opengl.hpp>
+#include <gl/buffer.hpp>
 #include <gl/renderbuffer.hpp>
 
 #ifdef GL_CUDA_INTEROP_SUPPORT

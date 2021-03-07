@@ -8,6 +8,7 @@
 
 #ifdef GL_ARB_bindless_texture
 
+#include <gl/opengl.hpp>
 #include <gl/sampler.hpp>
 #include <gl/texture.hpp>
 

@@ -6,8 +6,8 @@
 #ifndef GL_TRANSFORM_FEEDBACK_HPP
 #define GL_TRANSFORM_FEEDBACK_HPP
 
-#include <gl/buffer.hpp>
 #include <gl/opengl.hpp>
+#include <gl/buffer.hpp>
 
 namespace gl
 {
