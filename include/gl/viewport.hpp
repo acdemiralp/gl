@@ -10,8 +10,13 @@
 
 #include <gl/opengl.hpp>
 
+#ifdef near
 #undef near
+#endif
+
+#ifdef far
 #undef far
+#endif
 
 namespace gl
 {

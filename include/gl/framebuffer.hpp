@@ -10,8 +10,8 @@
 #include <cassert>
 #include <vector>
 
-#include <gl/texture.hpp>
 #include <gl/opengl.hpp>
+#include <gl/texture.hpp>
 
 namespace gl
 {
