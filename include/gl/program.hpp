@@ -182,7 +182,7 @@ public:
 
   // 7.5 Program binaries.
   template<typename type = GLbyte>
-  std::vector<type> program_binary    (const GLenum format) const
+  std::vector<type> program_binary    (GLenum format) const
   {
     std::vector<type> result(binary_length());
     glGetProgramBinary(id_, static_cast<GLsizei>(result.size()), nullptr, &format, static_cast<void*>(result.data()));

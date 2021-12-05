@@ -143,7 +143,6 @@ public:
   {
     glCopyImageSubData(source.id(), source_target, source_level, source_x, source_y, source_z, id_, GL_RENDERBUFFER, level, x, y, z, width, height, depth);
   }
-  [[nodiscard]]
   void copy_image_sub_data(const renderbuffer& source,
     const GLint source_level, const GLint source_x, const GLint source_y, const GLint source_z,
     const GLint level       , const GLint x       , const GLint y       , const GLint z       , const GLint width, const GLint height, const GLint depth) const
